@@ -1,6 +1,5 @@
 // ----------------- IMPORITNG MODULES -----------------
 
-require("dotenv").config();
 const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
@@ -27,8 +26,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // ----------------- ROUTERS -----------------
+const { USERROUTER } = require("./routers/userRouter");
+
 
 // ----------------- ROUTES -----------------
+app.use('/user',USERROUTER);
 
 // ----------------- STARTING SERVER -----------------
 
