@@ -2,41 +2,36 @@
 const mongoose = require("mongoose");
 
 // ----------------- CREATING SCHEMA -----------------
-const userSchema = new mongoose.Schema({
-  name: {
+const vehicleParkingHistorySchema = new mongoose.Schema({
+  vehicleID: {
     type: String,
     required: true,
   },
-  phone: {
-    type: Number,
-    required: true,
-  },
-  email: {
+  ownerID: {
     type: String,
     required: true,
   },
-  sapid: {
+  parkingNumber: {
     type: Number,
     required: true,
   },
-  vehicles: {
-    type: Array,
-    required: false,
-  },
-  parkingHistory: {
-    type: Array,
-    required: false,
-  },
-  registeredOn: {
+  timeIn: {
     type: Date,
     required: true,
+  },
+  timeOut: {
+    type: Date,
+    required: false,
   },
 });
 
 // ----------------- CREATING MODEL -----------------
-const userModel = mongoose.model("user", userSchema);
+const vehicleParkingHistoryModel = mongoose.model(
+  "vehicleParkingHistory",
+  vehicleParkingHistorySchema
+);
 
 // ----------------- EXPORTING MODEL -----------------
 module.exports = {
-  USERMODEL: userModel,
+  VEHICLEPARKINGHISTORYMODEL: vehicleParkingHistoryModel,
 };

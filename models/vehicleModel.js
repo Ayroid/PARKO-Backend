@@ -3,29 +3,21 @@ const mongoose = require("mongoose");
 
 // ----------------- CREATING SCHEMA -----------------
 const vehicleSchema = new mongoose.Schema({
-  name: {
+  ownerID: {
     type: String,
     required: true,
   },
-  phone: {
-    type: Number,
-    required: true,
-  },
-  email: {
+  vehicleRegNumber: {
     type: String,
     required: true,
   },
-  sapid: {
-    type: Number,
+  model: {
+    type: String,
     required: true,
   },
-  Vehicles: {
-    type: Array,
-    required: false,
-  },
-  parkingHistory: {
-    type: Array,
-    required: false,
+  registeredOn: {
+    type: Date,
+    required: true,
   },
 });
 
