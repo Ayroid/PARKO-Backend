@@ -1,6 +1,11 @@
 // ----------------- MODULES IMPORT -----------------
 const express = require("express");
-const {login,register,getUserDetails,registerVehicle} = require('../controller/userController')
+const {
+  LOGIN,
+  REGISTER,
+  GETUSERDETAILS,
+  REGISTERVEHICLE,
+} = require("../controller/userController");
 
 // ----------------- CREATING ROUTER -----------------
 const USER = express.Router();
@@ -8,10 +13,10 @@ const USER = express.Router();
 // ----------------- IMPORTING CONTROLLERS -----------------
 
 // ----------------- API ENDPOINTS -----------------
-USER.post('/register',register);
-USER.post('/login',login);
-USER.post('/userDetails',getUserDetails);
-USER.post('/registerVehicle',registerVehicle);
+USER.post("/register", REGISTER);
+USER.post("/login", LOGIN);
+USER.post("/userDetails", GETUSERDETAILS);
+USER.post("/registerVehicle", REGISTERVEHICLE);
 
 // ----------------- EXPORTING ROUTER -----------------
 
