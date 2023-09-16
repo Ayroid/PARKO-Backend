@@ -2,7 +2,7 @@
 const mongoose = require("mongoose");
 
 // ----------------- CREATING SCHEMA -----------------
-const userSchema = new mongoose.Schema({
+const vehicleSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -30,9 +30,9 @@ const userSchema = new mongoose.Schema({
 });
 
 // ----------------- CREATING MODEL -----------------
-const userModel = mongoose.model("user", userSchema);
+const vehicleModel = mongoose.model("vehicle", vehicleSchema);
 
 // ----------------- EXPORTING MODEL -----------------
 module.exports = {
-  USERMODEL: userModel,
+  VEHICLEMODEL: vehicleModel,
 };
