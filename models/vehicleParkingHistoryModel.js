@@ -11,7 +11,7 @@ const vehicleParkingHistorySchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  parkingNumber: {
+  parkingNumber: {     // Parking String that defines the parking location
     type: Number,
     required: true,
   },

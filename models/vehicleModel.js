@@ -15,6 +15,16 @@ const vehicleSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  parkingHistory: {
+    type: Array,
+    required: false,
+  },
+  registered: {
+    // Defines if vehicle is registered or not
+    type: Boolean,
+    required: true,
+    default: false,
+  },
   registeredOn: {
     type: Date,
     required: true,
