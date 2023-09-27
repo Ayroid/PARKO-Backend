@@ -1,5 +1,5 @@
 // ----------------- IMPORITNG MODULES -----------------
-
+require('dotenv').config();
 const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
@@ -7,6 +7,7 @@ const bodyParser = require("body-parser");
 // ----------------- CUSTOM MODULES IMPORT -----------------
 
 // ----------------- CONNECTING TO DATABASE -----------------
+const connectDB = require('./db/connect');
 
 // ----------------- CONSTANTS -----------------
 
@@ -34,6 +35,20 @@ app.use('/user',USERROUTER);
 
 // ----------------- STARTING SERVER -----------------
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+const start = async () =>{
+  try{
+
+
+    const url = process.env.MONGO_URI;
+
+    await connectDB(url);
+    app.listen(PORT,()=>{
+      console.log(`Server is running on port ${PORT}`);
+    })
+
+  }catch(error){
+      console.log(error);
+  }
+}
+
+start();
