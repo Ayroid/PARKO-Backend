@@ -22,7 +22,7 @@ const USER = express.Router();
 // ----------------- API ENDPOINTS -----------------
 
 USER.get("/register", (req, res) => {
-  res.send("regrsda");
+  res.send("register");
 });
 
 //User routes
