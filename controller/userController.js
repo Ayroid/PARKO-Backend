@@ -1,16 +1,16 @@
-const login = (req, res) => {
+const login = async (req, res) => {
   res.send("Login");
 };
 
-const register = (req, res) => {
+const register =async (req, res) => {
   res.send("register");
 };
 
-const getUserDetails = (req, res) => {
+const getUserDetails =async (req, res) => {
   res.send("user details");
 };
 
-const registerVehicle = (req, res) => {
+const registerVehicle =async (req, res) => {
   res.send("register vehicle");
 };
 

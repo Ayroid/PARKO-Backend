@@ -1,17 +1,17 @@
 // using same parking route for get all parkings and get specific parking with query
-const getParkingSpots = (req,res)=>{
+const getParkingSpots =async (req,res)=>{
     res.send('get parking spots')
 }
 
-const bookParkingSpots = (req,res)=>{
+const bookParkingSpots =async (req,res)=>{
     res.send('book parking spot');
 }
 
-const raiseIssue = (req,res)=>{
+const raiseIssue =async (req,res)=>{
     res.send('Raise Issue');
 }
 
-const findCar = (req,res) =>{
+const findCar = async (req,res) =>{
     res.send('find car');
 }
 
