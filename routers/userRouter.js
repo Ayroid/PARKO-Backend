@@ -1,18 +1,18 @@
 // ----------------- MODULES IMPORT -----------------
 const express = require("express");
 const {
-  LOGIN,
-  REGISTER,
+  LOGINUSER,
+  REGISTERUSER,
   GETUSERDETAILS,
   REGISTERVEHICLE,
-} = require("../controller/userController");
+} = require("../controllers/userController");
 
 const {
   GETPARKING,
   FINDCAR,
   BOOKPARKING,
   RAISEISSUE,
-} = require("../controller/parkingController");
+} = require("../controllers/parkingController");
 
 // ----------------- CREATING ROUTER -----------------
 const USER = express.Router();
@@ -26,8 +26,8 @@ USER.get("/register", (req, res) => {
 });
 
 //User routes
-USER.post("/register", REGISTER);
-USER.post("/login", LOGIN);
+USER.post("/register", REGISTERUSER);
+USER.post("/login", LOGINUSER);
 USER.post("/userDetails", GETUSERDETAILS);
 USER.post("/registerVehicle", REGISTERVEHICLE);
 

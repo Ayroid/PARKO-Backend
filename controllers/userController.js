@@ -3,11 +3,11 @@ const jwt = require("jsonwebtoken");
 const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, UnauthenticatedError } = require("../errors");
 
-const login = async (req, res) => {
-  res.send("Login");
+const loginUser = async (req, res) => {
+  res.send("LoginUser");
 };
 
-const register = async (req, res) => {
+const registerUser = async (req, res) => {
   const { name, phone, email, sapid } = req.body;
 
   if (!name || !email || !phone || !sapid) {
@@ -39,8 +39,8 @@ const registerVehicle = async (req, res) => {
 };
 
 module.exports = {
-  LOGIN: login,
-  REGISTER: register,
+  LOGINUSER: loginUser,
+  REGISTERUSER: registerUser,
   GETUSERDETAILS: getUserDetails,
   REGISTERVEHICLE: registerVehicle,
 };
