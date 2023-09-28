@@ -1,7 +1,7 @@
-// ----------------- MODULES IMPORT -----------------
+// MODULES IMPORT
 const mongoose = require("mongoose");
 
-// ----------------- CREATING SCHEMA -----------------
+// CREATING SCHEMA
 const parkingSchema = new mongoose.Schema({
   parkingNumber: {
     type: String,
@@ -31,10 +31,10 @@ const parkingSchema = new mongoose.Schema({
   },
 });
 
-// ----------------- CREATING MODEL -----------------
+// CREATING MODEL
 const parkingModel = mongoose.model("parking", parkingSchema);
 
-// ----------------- EXPORTING MODEL -----------------
+// EXPORTING MODEL
 module.exports = {
   PARKINGMODEL: parkingModel,
 };

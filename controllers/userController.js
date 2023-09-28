@@ -10,35 +10,6 @@ const { READUSER, CREATEUSER } = require("./db/userDatabase");
 // MAIL CONTROLLER
 const { SENDMAIL } = require("./mails/mailController");
 
-// LOGIN USER CONTROLLER
-const loginUser = async (req, res) => {
-  try {
-    const { email } = req.body;
-
-    const user = await READUSER([{ email: email }]);
-
-    if (user.length === 1) {
-      SENDMAIL(user[0].username, email);
-      return res.status(StatusCodes.OK).send("OTP Sent ✅");
-    } else {
-      return res.status(StatusCodes.NOT_FOUND).send("User Not Registered ❌");
-    }
-  } catch (error) {
-    // 6. Handling errors
-    console.log(error);
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("Error Logging In! ❌");
-  }
-
-  // res.send("LoginUser");
-  // const token = jwt.sign(
-  //   { userId: user._id, name: user.username },
-  //   process.env.JWT_SECRET,
-  //   {
-  //     expiresIn: "30d",
-  //   }
-  // );
-};
-
 // ----------------------------------------------------------------
 
 // REGISTER USER CONTROLLER
@@ -80,6 +51,41 @@ const registerUser = async (req, res) => {
       .send("Error Creating User! ❌");
   }
 };
+
+// ----------------------------------------------------------------
+
+// LOGIN USER CONTROLLER
+const loginUser = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    const user = await READUSER([{ email: email }]);
+
+    if (user.length === 1) {
+      SENDMAIL(user[0].username, email);
+      return res.status(StatusCodes.OK).send("OTP Sent ✅");
+    } else {
+      return res.status(StatusCodes.NOT_FOUND).send("User Not Registered ❌");
+    }
+  } catch (error) {
+    // 6. Handling errors
+    console.log(error);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("Error Logging In! ❌");
+  }
+
+  // res.send("LoginUser");
+  // const token = jwt.sign(
+  //   { userId: user._id, name: user.username },
+  //   process.env.JWT_SECRET,
+  //   {
+  //     expiresIn: "30d",
+  //   }
+  // );
+};
+
+// ----------------------------------------------------------------
+
+// VERIFY OTP CONTROLLER
 
 // ----------------------------------------------------------------
 
