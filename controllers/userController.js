@@ -1,43 +1,73 @@
-const { USERMODEL } = require("../models/userModel");
+// IMPORTING MODULES
 const jwt = require("jsonwebtoken");
-const { StatusCodes } = require("http-status-codes");
-const { BadRequestError, UnauthenticatedError } = require("../errors");
+const mongoose = require("mongoose");
 
+// CUSTOM MODULE IMPORTS
+const { USERMODEL } = require("../models/userModel");
+const { StatusCodes } = require("http-status-codes");
+
+// IMPORTING DATABASE CONTROLLERS
+const { CREATEUSER } = require("./db/userDatabase");
+
+// CONTROLLERS
+
+// LOGIN USER CONTROLLER
 const loginUser = async (req, res) => {
   res.send("LoginUser");
-};
-
-const registerUser = async (req, res) => {
-  const { name, phone, email, sapid } = req.body;
-
-  if (!name || !email || !phone || !sapid) {
-    res
-      .status(StatusCodes.BAD_REQUEST)
-      .send("Please provide email,name,phone and sapid");
-  }
-
-  const tempUser = { name, email, sapid, phone, registeredOn: Date.now() };
-  const user = await USERMODEL.create({ ...tempUser });
-
-  //generating jwt token and signing payload
   const token = jwt.sign(
-    { userId: user._id, name: user.name },
+    { userId: user._id, name: user.username },
     process.env.JWT_SECRET,
     {
       expiresIn: "30d",
     }
   );
-  res.status(StatusCodes.CREATED).send({ user: { name: user.name }, token });
 };
 
+// ----------------------------------------------------------------
+
+// REGISTER USER CONTROLLER
+const registerUser = async (req, res) => {
+  try {
+    // 1. Fetching data from request body
+    const data = ({ username, phone, email, sapid } = req.body);
+
+    // 2. Checking if user already exists
+
+    // 3. Creating final data object
+    const finaldata = { ...data, registeredOn: Date.now() };
+
+    // 4. Creating user
+    const user = await CREATEUSER(finaldata);
+
+    // 5. Sending response
+    if (user) {
+      res.status(StatusCodes.CREATED).send({ userId: user._id });
+    } else {
+      res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .send("Error Creating User! ❌");
+    }
+  } catch (error) {
+    // 6. Handling errors
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .send("Error Creating User! ❌");
+  }
+};
+
+// ----------------------------------------------------------------
+
+// GET USER DETAILS CONTROLLER
 const getUserDetails = async (req, res) => {
   res.send("user details");
 };
 
+// REGISTER VEHICLE CONTROLLER
 const registerVehicle = async (req, res) => {
   res.send("register vehicle");
 };
 
+// EXPORTING MODULES
 module.exports = {
   LOGINUSER: loginUser,
   REGISTERUSER: registerUser,
