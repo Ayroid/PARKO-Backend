@@ -8,7 +8,8 @@ const {
     DELETEPARKINGSPOT,
     EDITPARKINGSPOT,
     UPDATEPARKINGSPOTSTATUS,
-    CREATENEWPARKINGSPOT
+    CREATENEWPARKINGSPOT,
+    GETALLSPOTS
 } = require('../controllers/ParkingSpotController');
 
 //MIDDLEWARES IMPORT
@@ -21,9 +22,10 @@ const {
 
  //PARKING SPOT ROUTES
  PARKINGSPOT.post("/create-spot",CREATENEWPARKINGSPOT);
- PARKINGSPOT.post("/edit-spot",EDITPARKINGSPOT);
- PARKINGSPOT.post("/update-status",UPDATEPARKINGSPOTSTATUS);
- PARKINGSPOT.post("/delete-spot",DELETEPARKINGSPOT);
+ PARKINGSPOT.post("/getallspots",GETALLSPOTS);
+ PARKINGSPOT.patch("/edit-spot/:id",EDITPARKINGSPOT);
+ PARKINGSPOT.patch("/update-status/:id",UPDATEPARKINGSPOTSTATUS);
+ PARKINGSPOT.delete("/delete-spot/:id",DELETEPARKINGSPOT);
 
  //EXPORTING ROUTER
  module.exports = {
