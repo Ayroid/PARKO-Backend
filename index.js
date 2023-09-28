@@ -25,9 +25,11 @@ app.use(bodyParser.json());
 
 // ROUTERS
 const { USERROUTER } = require("./routers/userRouter");
+const { PARKINGSPOTROUTER } = require("./routers/ParkingSpotRouter");
 
 // ROUTES
 app.use("/user", USERROUTER);
+app.use("/parkingspot",PARKINGSPOTROUTER);
 
 // STARTING SERVER
 app.listen(PORT, () => {

@@ -1,0 +1,33 @@
+// MODULES IMPORT
+const express = require('express');
+
+
+// CONTROLLERS IMPORT
+
+const {
+    DELETEPARKINGSPOT,
+    EDITPARKINGSPOT,
+    UPDATEPARKINGSPOTSTATUS,
+    CREATENEWPARKINGSPOT
+} = require('../controllers/ParkingSpotController');
+
+//MIDDLEWARES IMPORT
+
+
+//CREATING ROUTER
+ const PARKINGSPOT = express.Router();
+
+ //API ENDPOINTS
+
+ //PARKING SPOT ROUTES
+ PARKINGSPOT.post("/create-spot",CREATENEWPARKINGSPOT);
+ PARKINGSPOT.post("/edit-spot",EDITPARKINGSPOT);
+ PARKINGSPOT.post("/update-status",UPDATEPARKINGSPOTSTATUS);
+ PARKINGSPOT.post("/delete-spot",DELETEPARKINGSPOT);
+
+ //EXPORTING ROUTER
+ module.exports = {
+    PARKINGSPOTROUTER:PARKINGSPOT,
+ }
+ 
+
