@@ -4,6 +4,9 @@ require("dotenv").config();
 // NODEMAILER CONFIGURATION
 const nodemailer = require("nodemailer");
 
+// CUSTOM MODULES IMPORT
+const { OTPGENERATOR } = require("./optGenController");
+
 // MAIL CONFIGURATION
 let MAIL_HOST = process.env.MAIL_HOST;
 let MAIL_PORT = process.env.MAIL_PORT;
@@ -11,7 +14,7 @@ let MAIL_USERNAME = process.env.MAIL_USERNAME;
 let MAIL_PASSWORD = process.env.MAIL_PASSWORD;
 
 // MAIL TEMPLATES
-const { MAILTEMPLATES } = require("./mailTemplates");
+const { LOGINOTP } = require("./mailTemplates");
 
 // NODEMAILER TRANSPORTER
 const transporter = nodemailer.createTransport({
@@ -25,9 +28,9 @@ const transporter = nodemailer.createTransport({
 });
 
 // SEND MAIL FUNCTION
-const sendMail = async (email, template) => {
+const sendMail = async (username, email) => {
   try {
-    const MAIL_TEMPLATE = MAILTEMPLATES[template];
+    const MAIL_TEMPLATE = LOGINOTP(username, OTPGENERATOR());
     const MAIL_SUBJECT = MAIL_TEMPLATE.subject;
     const MAIL_HTML = MAIL_TEMPLATE.html;
 
@@ -54,9 +57,6 @@ const sendMail = async (email, template) => {
 };
 
 // EXPORTING MODULES
-
-sendMail("ayroids@gmail.com", "BGMI");
-
 module.exports = {
   SENDMAIL: sendMail,
 };

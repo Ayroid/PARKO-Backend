@@ -12,31 +12,23 @@ const { SENDMAIL } = require("./mails/mailController");
 
 // LOGIN USER CONTROLLER
 const loginUser = async (req, res) => {
-  try{
-    const data = ({email} = req.body);
-    
-    const user = await READUSER([
-      {email:email},
-    ]);
+  try {
+    const { email } = req.body;
 
-    if(user.length === 1){
-      return res
-              .status(StatusCodes.OK)
-              .send({email:email});
-    }else{
-      return res 
-              .status(StatusCodes.NOT_FOUND)
-              .send("User Not Registered ❌");
+    const user = await READUSER([{ email: email }]);
+
+    if (user.length === 1) {
+      SENDMAIL(user[0].username, email);
+      return res.status(StatusCodes.OK).send("OTP Sent ✅");
+    } else {
+      return res.status(StatusCodes.NOT_FOUND).send("User Not Registered ❌");
     }
-
-  }catch(error){
+  } catch (error) {
     // 6. Handling errors
     console.log(error);
-    res
-    .status(StatusCodes.INTERNAL_SERVER_ERROR)
-    .send("Invalid Credentials ! ❌");
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("Error Logging In! ❌");
   }
-  
+
   // res.send("LoginUser");
   // const token = jwt.sign(
   //   { userId: user._id, name: user.username },
@@ -76,7 +68,6 @@ const registerUser = async (req, res) => {
     // 5. Sending response
     if (created) {
       res.status(StatusCodes.CREATED).send({ userId: created._id });
-      SENDMAIL(email, "BGMI");
     } else {
       res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
