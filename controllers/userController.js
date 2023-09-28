@@ -13,14 +13,39 @@ const { READUSER, CREATEUSER } = require("./db/userDatabase");
 
 // LOGIN USER CONTROLLER
 const loginUser = async (req, res) => {
-  res.send("LoginUser");
-  const token = jwt.sign(
-    { userId: user._id, name: user.username },
-    process.env.JWT_SECRET,
-    {
-      expiresIn: "30d",
+  try{
+    const data = ({email} = req.body);
+    
+    const user = await READUSER([
+      {email:email},
+    ]);
+
+    if(user.length === 1){
+      return res
+              .status(StatusCodes.OK)
+              .send({email:email});
+    }else{
+      return res 
+              .status(StatusCodes.NOT_FOUND)
+              .send("User Not Registered ❌");
     }
-  );
+
+  }catch(error){
+    // 6. Handling errors
+    console.log(error);
+    res
+    .status(StatusCodes.INTERNAL_SERVER_ERROR)
+    .send("Invalid Credentials ! ❌");
+  }
+  
+  // res.send("LoginUser");
+  // const token = jwt.sign(
+  //   { userId: user._id, name: user.username },
+  //   process.env.JWT_SECRET,
+  //   {
+  //     expiresIn: "30d",
+  //   }
+  // );
 };
 
 // ----------------------------------------------------------------
