@@ -5,6 +5,29 @@ const mongoose = require("mongoose");
 const { USERMODEL } = require("../../models/userModel");
 
 // DATABASE OPERATIONS
+
+// READ USER
+const readUser = (query) => {
+  console.log(query)
+  try {
+    return new Promise((resovle, reject) => {
+      USERMODEL.find({ $or: query })
+        .then((result) => {
+          if (result) {
+            resovle(result);
+          }
+        })
+        .catch((error) => {
+          console.log("Error Reading User ❌", error);
+          reject(false);
+        });
+    });
+  } catch (error) {
+    console.log("Error Reading User ❌", error);
+  }
+};
+
+// CREATE USER
 const createUser = (data) => {
   try {
     return new Promise((resovle, reject) => {
@@ -30,5 +53,6 @@ const createUser = (data) => {
 // EXPORTING MODULES
 
 module.exports = {
+  READUSER: readUser,
   CREATEUSER: createUser,
 };

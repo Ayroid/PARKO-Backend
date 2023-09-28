@@ -7,7 +7,7 @@ const { USERMODEL } = require("../models/userModel");
 const { StatusCodes } = require("http-status-codes");
 
 // IMPORTING DATABASE CONTROLLERS
-const { CREATEUSER } = require("./db/userDatabase");
+const { READUSER, CREATEUSER } = require("./db/userDatabase");
 
 // CONTROLLERS
 
@@ -32,16 +32,26 @@ const registerUser = async (req, res) => {
     const data = ({ username, phone, email, sapid } = req.body);
 
     // 2. Checking if user already exists
+    const user = await READUSER([
+      { phone: phone },
+      { email: email },
+      { sapid: sapid },
+    ]);
+    if (user.length > 0) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .send("User Already Exists! ❌");
+    }
 
     // 3. Creating final data object
     const finaldata = { ...data, registeredOn: Date.now() };
 
     // 4. Creating user
-    const user = await CREATEUSER(finaldata);
+    const created = await CREATEUSER(finaldata);
 
     // 5. Sending response
-    if (user) {
-      res.status(StatusCodes.CREATED).send({ userId: user._id });
+    if (created) {
+      res.status(StatusCodes.CREATED).send({ userId: created._id });
     } else {
       res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
