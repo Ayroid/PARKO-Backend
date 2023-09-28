@@ -49,9 +49,53 @@ const createUser = (data) => {
   }
 };
 
+// UPDATE USER
+const updateUser = (query, data) => {
+  try {
+    return new Promise((resovle, reject) => {
+      USERMODEL.findOneAndUpdate(query, data, { new: true })
+        .then((result) => {
+          if (result) {
+            console.log(`User Updated ✅ - {userId : ${result._id}}`);
+            resovle(result);
+          }
+        })
+        .catch((error) => {
+          console.log("Error Updating User ❌", error);
+          reject(false);
+        });
+    });
+  } catch (error) {
+    console.log("Error Updating User ❌", error);
+  }
+};
+
+// DELETE USER
+const deleteUser = (query) => {
+  try {
+    return new Promise((resovle, reject) => {
+      USERMODEL.findOneAndDelete(query)
+        .then((result) => {
+          if (result) {
+            console.log(`User Deleted ✅ - {userId : ${result._id}}`);
+            resovle(result);
+          }
+        })
+        .catch((error) => {
+          console.log("Error Deleting User ❌", error);
+          reject(false);
+        });
+    });
+  } catch (error) {
+    console.log("Error Deleting User ❌", error);
+  }
+};
+
 // EXPORTING MODULES
 
 module.exports = {
   READUSER: readUser,
   CREATEUSER: createUser,
+  UPDATEUSER: updateUser,
+  DELETEUSER: deleteUser,
 };
