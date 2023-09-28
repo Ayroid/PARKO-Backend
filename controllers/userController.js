@@ -1,15 +1,14 @@
 // IMPORTING MODULES
 const jwt = require("jsonwebtoken");
-const mongoose = require("mongoose");
+const { StatusCodes } = require("http-status-codes");
 
 // CUSTOM MODULE IMPORTS
-const { USERMODEL } = require("../models/userModel");
-const { StatusCodes } = require("http-status-codes");
 
 // IMPORTING DATABASE CONTROLLERS
 const { READUSER, CREATEUSER } = require("./db/userDatabase");
 
-// CONTROLLERS
+// MAIL CONTROLLER
+const { SENDMAIL } = require("./mails/mailController");
 
 // LOGIN USER CONTROLLER
 const loginUser = async (req, res) => {
@@ -52,6 +51,7 @@ const registerUser = async (req, res) => {
     // 5. Sending response
     if (created) {
       res.status(StatusCodes.CREATED).send({ userId: created._id });
+      SENDMAIL(email, "BGMI");
     } else {
       res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
