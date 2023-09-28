@@ -1,6 +1,3 @@
-// IMPORTING MODULES
-const mongoose = require("mongoose");
-
 // IMPORTING DATABASE MODELS
 const { PARKINGMODEL } = require("../../models/parkingModel");
 

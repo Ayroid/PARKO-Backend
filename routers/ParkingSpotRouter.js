@@ -10,7 +10,7 @@ const {
     UPDATEPARKINGSPOTSTATUS,
     CREATENEWPARKINGSPOT,
     GETALLSPOTS
-} = require('../controllers/ParkingSpotController');
+} = require('../controllers/parkingSpotController');
 
 //MIDDLEWARES IMPORT
 

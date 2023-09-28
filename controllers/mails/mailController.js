@@ -6,6 +6,7 @@ const nodemailer = require("nodemailer");
 
 // CUSTOM MODULES IMPORT
 const { OTPGENERATOR } = require("./optGenController");
+const { READOTP, CREATEOTP, DELETEOTP } = require("../db/otpDatabase");
 
 // MAIL CONFIGURATION
 let MAIL_HOST = process.env.MAIL_HOST;
@@ -30,7 +31,8 @@ const transporter = nodemailer.createTransport({
 // SEND MAIL FUNCTION
 const sendMail = async (username, email) => {
   try {
-    const MAIL_TEMPLATE = LOGINOTP(username, OTPGENERATOR());
+    const otpValue = OTPGENERATOR();
+    const MAIL_TEMPLATE = LOGINOTP(username, otpValue);
     const MAIL_SUBJECT = MAIL_TEMPLATE.subject;
     const MAIL_HTML = MAIL_TEMPLATE.html;
 
@@ -44,15 +46,29 @@ const sendMail = async (username, email) => {
       //   attachments: MAIL_TEMPLATE.attachments,
     };
 
-    transporter.sendMail(mailOptions, (err, info) => {
+    transporter.sendMail(mailOptions, async (err, info) => {
       if (err) {
         console.log(err);
       } else {
         console.log(info.accepted + " Sent");
+
+        // CREATING OTP IN DATABASE
+        await CREATEOTP({
+          email: email,
+          otpValue: otpValue,
+          issueTime: Date.now(),
+          expiryTime: Date.now() + 600000,
+        })
+          .then((result) => {
+            console.log("OTP Created ✅", result._id);
+          })
+          .catch((error) => {
+            console.log("Error Creating OTP ❌", error);
+          });
       }
     });
   } catch (err) {
-    console.log("Error in sending mail: " + err);
+    console.log("Error in sending mail ❌" + err);
   }
 };
 
