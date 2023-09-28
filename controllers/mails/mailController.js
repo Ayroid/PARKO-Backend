@@ -4,10 +4,6 @@ require("dotenv").config();
 // NODEMAILER CONFIGURATION
 const nodemailer = require("nodemailer");
 
-// CUSTOM MODULES IMPORT
-const { OTPGENERATOR } = require("./optGenController");
-const { READOTP, CREATEOTP, DELETEOTP } = require("../db/otpDatabase");
-
 // MAIL CONFIGURATION
 let MAIL_HOST = process.env.MAIL_HOST;
 let MAIL_PORT = process.env.MAIL_PORT;
@@ -29,9 +25,8 @@ const transporter = nodemailer.createTransport({
 });
 
 // SEND MAIL FUNCTION
-const sendMail = async (username, email) => {
+const sendMail = async (username, email, otpValue) => {
   try {
-    const otpValue = OTPGENERATOR();
     const MAIL_TEMPLATE = LOGINOTP(username, otpValue);
     const MAIL_SUBJECT = MAIL_TEMPLATE.subject;
     const MAIL_HTML = MAIL_TEMPLATE.html;
@@ -51,20 +46,6 @@ const sendMail = async (username, email) => {
         console.log(err);
       } else {
         console.log(info.accepted + " Sent");
-
-        // CREATING OTP IN DATABASE
-        await CREATEOTP({
-          email: email,
-          otpValue: otpValue,
-          issueTime: Date.now(),
-          expiryTime: Date.now() + 600000,
-        })
-          .then((result) => {
-            console.log("OTP Created ✅", result._id);
-          })
-          .catch((error) => {
-            console.log("Error Creating OTP ❌", error);
-          });
       }
     });
   } catch (err) {

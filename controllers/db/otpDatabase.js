@@ -50,10 +50,10 @@ const createOTP = (data) => {
 const deleteOTP = (query) => {
   try {
     return new Promise((resovle, reject) => {
-      USERMODEL.findOneAndDelete(query)
+      OTPMODEL.findOneAndDelete(query)
         .then((result) => {
           if (result) {
-            console.log(`User Deleted ✅ - {userId : ${result._id}}`);
+            console.log(`OTP Deleted ✅ - {OTPId : ${result._id}}`);
             resovle(result);
           }
         })

@@ -20,5 +20,5 @@ const verifyUser = (req, res, next) => {
 // EXPORTING MODULES
 
 module.exports = {
-  VERIFYUSER: verifyUser,
+  VERIFYUSERMW: verifyUser,
 };

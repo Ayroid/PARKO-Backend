@@ -4,6 +4,7 @@ const express = require("express");
 // CONTROLLERS IMPORT
 const {
   LOGINUSER,
+  VERIFYOTP,
   REGISTERUSER,
   GETUSERDETAILS,
   REGISTERVEHICLE,
@@ -18,7 +19,7 @@ const {
 
 // MIDDLEWARES IMPORT
 
-const { VERIFYUSER } = require("../middlewares/usermw");
+const { VERIFYUSERMW } = require("../middlewares/usermw");
 
 // CREATING ROUTER
 const USER = express.Router();
@@ -30,8 +31,9 @@ USER.get("/register", (req, res) => {
 });
 
 //User routes
-USER.post("/register", VERIFYUSER, REGISTERUSER);
+USER.post("/register", VERIFYUSERMW, REGISTERUSER);
 USER.post("/login", LOGINUSER);
+USER.post("/verify",VERIFYOTP);
 USER.post("/userDetails", GETUSERDETAILS);
 USER.post("/registerVehicle", REGISTERVEHICLE);
 
