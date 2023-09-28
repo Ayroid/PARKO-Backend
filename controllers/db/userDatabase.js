@@ -8,7 +8,6 @@ const { USERMODEL } = require("../../models/userModel");
 
 // READ USER
 const readUser = (query) => {
-  console.log(query)
   try {
     return new Promise((resovle, reject) => {
       USERMODEL.find({ $or: query })
