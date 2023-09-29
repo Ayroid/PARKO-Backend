@@ -20,6 +20,9 @@ const {
 // MIDDLEWARES IMPORT
 const { VERIFYUSERMW } = require("../middlewares/userMW");
 
+// JWT IMPORT
+const { VERIFYTOKEN } = require("../middlewares/jwtAuthMW");
+
 // CREATING ROUTER
 const USER = express.Router();
 
@@ -31,8 +34,8 @@ USER.get("/register", (req, res) => {
 // USER ROUTES
 USER.post("/register", VERIFYUSERMW, REGISTERUSER);
 USER.post("/login", LOGINUSER);
-USER.post("/verify",VERIFYOTP);
-USER.post("/userDetails", GETUSERDETAILS);
+USER.post("/verify", VERIFYOTP);
+USER.post("/getDetails", VERIFYTOKEN, GETUSERDETAILS);
 USER.post("/registerVehicle", REGISTERVEHICLE);
 
 // PARKING ROUTES
