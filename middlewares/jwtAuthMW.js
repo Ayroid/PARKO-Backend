@@ -25,15 +25,15 @@ const verifyAccessToken = (req, res, next) => {
   }
 };
 
-const deleteAccessToken = (req, res) => {
-  refreshTokens = refreshTokens.filter(
-    (token) => token !== req.body.refreshToken
-  );
-  res.send("Logout Successful");
-};
+// const deleteAccessToken = (req, res) => {
+//   refreshTokens = refreshTokens.filter(
+//     (token) => token !== req.body.refreshToken
+//   );
+//   res.send("Logout Successful");
+// };
 
 module.exports = {
   GENERATETOKEN: generateAccessToken,
   VERIFYTOKEN: verifyAccessToken,
-  DELETETOKEN: deleteAccessToken,
+  // DELETETOKEN: deleteAccessToken,
 };

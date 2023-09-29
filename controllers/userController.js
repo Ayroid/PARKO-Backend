@@ -13,11 +13,7 @@ const { SENDMAIL } = require("./mails/mailController");
 const { OTPGENERATOR } = require("./mails/optGenController");
 
 // JWT CONTROLLER
-const {
-  GENERATETOKEN,
-  VERIFYTOKEN,
-  DELETETOKEN,
-} = require("../middlewares/jwtAuthMW");
+const { GENERATETOKEN } = require("../middlewares/jwtAuthMW");
 
 // ----------------------------------------------------------------
 
