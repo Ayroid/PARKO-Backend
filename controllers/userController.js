@@ -169,12 +169,31 @@ const verifyOTP = async (req, res) => {
 
 // GET USER DETAILS CONTROLLER
 const getUserDetails = async (req, res) => {
+
+  /*
+
+  SAMPLE QUERY OBJECT
+
+  {
+    "query": {
+      "email": "email@email.com",
+      "phone": 1234567890,
+    }
+  }
+
+  */
+
   try {
     // 1. FETCHING DATA FROM REQUEST BODY
-    const { email } = req.body;
+    let { query } = req.body;
+
+    // 2. CHECKING IF QUERY IS EMPTY
+    if (!query) {
+      query = { _id: req.body.payload.userId };
+    }
 
     // 2. CHECKING IF USER EXISTS
-    const user = await READUSER([{ email: email }]);
+    const user = await READUSER([query]);
 
     // 3. SENDING RESPONSE
     if (user.length === 1) {
