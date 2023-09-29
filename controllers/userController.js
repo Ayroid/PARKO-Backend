@@ -102,6 +102,15 @@ const loginUser = async (req, res) => {
   }
 };
 
+// const logOutUser = async (req,res) =>{
+//   try{
+
+//   } catch (error) {
+//     console.log(error)
+//     res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("Error logging out ❌");
+//   }
+// }
+
 // ----------------------------------------------------------------
 
 // VERIFY OTP CONTROLLER
@@ -194,4 +203,5 @@ module.exports = {
   REGISTERUSER: registerUser,
   GETUSERDETAILS: getUserDetails,
   REGISTERVEHICLE: registerVehicle,
+  LOGOUTUSER : logOutUser,
 };

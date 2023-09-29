@@ -31,6 +31,7 @@ USER.get("/register", (req, res) => {
 // USER ROUTES
 USER.post("/register", VERIFYUSERMW, REGISTERUSER);
 USER.post("/login", LOGINUSER);
+// USER.post("/logout", LOGINOUTUSER);
 USER.post("/verify",VERIFYOTP);
 USER.post("/userDetails", GETUSERDETAILS);
 USER.post("/registerVehicle", REGISTERVEHICLE);
