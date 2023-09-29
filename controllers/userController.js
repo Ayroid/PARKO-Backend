@@ -95,7 +95,7 @@ const loginUser = async (req, res) => {
           console.log("Error Creating OTP ❌", error);
         });
 
-      return res.status(StatusCodes.OK).send("OTP Sent ✅");
+      return res.status(StatusCodes.OK).send("OTP Sent ✅ ", otpValue);
     } else {
       return res.status(StatusCodes.NOT_FOUND).send("User Not Registered ❌");
     }
@@ -118,19 +118,23 @@ const verifyOTP = async (req, res) => {
     // 2. CHECKING IF OTP EXISTS
     const otpexist = await READOTP([{ email: email }]);
 
-    // 3. CHECKING IF OTP IS VALID
+    // 3. FETCHING USER DATA
+    const user = await READUSER([{ email: email }]);
+
+    // 4. CHECKING IF OTP IS VALID
     if (otpexist.length !== 1) {
       return res.status(StatusCodes.NOT_FOUND).send("OTP Not Found ❌");
     }
-    // 4. CHECKING IF OTP IS EXPIRED
-    if (otpexist[0].expiryTime > Date.now()) {
+
+    // 5. CHECKING IF OTP IS EXPIRED
+    if (otpexist[0].expiryTime < Date.now()) {
       return res.status(StatusCodes.BAD_REQUEST).send("OTP Expired ❌");
     }
-    // 5. CHECKING IF OTP IS CORRECT
-    if (otpexist[0].otpValue === otpValue) {
+    // 6. CHECKING IF OTP IS CORRECT
+    if (otpexist[0].otpValue !== otpValue) {
       return res.status(StatusCodes.BAD_REQUEST).send("OTP Incorrect ❌");
     }
-    // 6. DELETING OTP FROM DATABASE
+    // 7. DELETING OTP FROM DATABASE
     await DELETEOTP({ email: email })
       .then((result) => {
         console.log("OTP Deleted ✅", result._id);
@@ -138,8 +142,19 @@ const verifyOTP = async (req, res) => {
       .catch((error) => {
         console.log("Error Deleting OTP ❌", error);
       });
-    // 7. CREATING TOKEN
-    const token = GENERATETOKEN({ email: email }, "36500d"); // 100 years
+
+    // 8. CREATING PAYLOAD
+    const payload = {
+      userId: user[0]._id,
+      username: user[0].username,
+      phone: user[0].phone,
+      email: user[0].email,
+      sapid: user[0].sapid,
+      registeredOn: user[0].registeredOn,
+    };
+
+    // 9. CREATING TOKEN
+    const token = GENERATETOKEN(payload, "36500d"); // 100 years
     return res.status(StatusCodes.OK).send({ token: token });
   } catch (error) {
     // 10. HANDLING ERRORS
@@ -153,7 +168,28 @@ const verifyOTP = async (req, res) => {
 // ----------------------------------------------------------------
 
 // GET USER DETAILS CONTROLLER
-const getUserDetails = async (req, res) => {};
+const getUserDetails = async (req, res) => {
+  try {
+    // 1. FETCHING DATA FROM REQUEST BODY
+    const { email } = req.body;
+
+    // 2. CHECKING IF USER EXISTS
+    const user = await READUSER([{ email: email }]);
+
+    // 3. SENDING RESPONSE
+    if (user.length === 1) {
+      res.status(StatusCodes.OK).send({ user: user[0] });
+    } else {
+      res.status(StatusCodes.NOT_FOUND).send("User Not Found ❌");
+    }
+  } catch (error) {
+    // 4. HANDLING ERRORS
+    console.log(error);
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .send("Error Getting User Details! ❌");
+  }
+};
 
 // REGISTER VEHICLE CONTROLLER
 const registerVehicle = async (req, res) => {

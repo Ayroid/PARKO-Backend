@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 
 // CREATING ACCESS TOKEN
 function generateAccessToken(payload, tokenExpiry) {
-  return jwt.sign(payload, process.env.SECRET_ACCESS_TOKEN, {
+  return jwt.sign(payload, process.env.JWT_SECRET, {
     expiresIn: tokenExpiry,
   });
 }
@@ -12,7 +12,7 @@ function generateAccessToken(payload, tokenExpiry) {
 function verifyAccessToken(req, res, next) {
   const token = req.headers["authorization"];
   if (token) {
-    jwt.verify(token, process.env.SECRET_ACCESS_TOKEN, (err, data) => {
+    jwt.verify(token, process.env.JWT_SECRET, (err, data) => {
       if (err) {
         return res.sendStatus(403).json({ msg: "No Valid Token Provided" });
       } else {
@@ -29,7 +29,7 @@ function deleteAccessToken(req, res) {
   refreshTokens = refreshTokens.filter(
     (token) => token !== req.body.refreshToken
   );
-  res.send(204);
+  res.send("Logout Successful");
 }
 
 module.exports = {
