@@ -18,7 +18,7 @@ const {
 } = require("../controllers/parkingController");
 
 // MIDDLEWARES IMPORT
-const { VERIFYUSERMW } = require("../middlewares/usermw");
+const { VERIFYUSERMW } = require("../middlewares/userMW");
 
 // CREATING ROUTER
 const USER = express.Router();
