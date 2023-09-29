@@ -12,6 +12,13 @@ const { READOTP, CREATEOTP, DELETEOTP } = require("./db/otpDatabase");
 const { SENDMAIL } = require("./mails/mailController");
 const { OTPGENERATOR } = require("./mails/optGenController");
 
+// JWT CONTROLLER
+const {
+  GENERATETOKEN,
+  VERIFYTOKEN,
+  DELETETOKEN,
+} = require("../middlewares/jwtAuthMW");
+
 // ----------------------------------------------------------------
 
 // REGISTER USER CONTROLLER
@@ -105,36 +112,37 @@ const loginUser = async (req, res) => {
 
 const verifyOTP = async (req, res) => {
   try {
+    // 1. FETCHNG DATA FROM REQUEST BODY
     const { email, otpValue } = req.body;
 
+    // 2. CHECKING IF OTP EXISTS
     const otpexist = await READOTP([{ email: email }]);
 
-    if (otpexist.length === 1) {
-      if (otpexist[0].expiryTime > Date.now()) {
-        if (otpexist[0].otpValue === otpValue) {
-          await DELETEOTP({ email: email })
-            .then((result) => {
-              console.log("OTP Deleted ✅", result._id);
-            })
-            .catch((error) => {
-              console.log("Error Deleting OTP ❌", error);
-            });
-
-          const token = jwt.sign({ email: email }, process.env.JWT_SECRET, {
-            expiresIn: "36500d", // expires in 100 years
-          });
-          return res.status(StatusCodes.OK).send({ token: token });
-        } else {
-          return res.status(StatusCodes.BAD_REQUEST).send("OTP Incorrect ❌");
-        }
-      } else {
-        return res.status(StatusCodes.BAD_REQUEST).send("OTP Expired ❌");
-      }
-    } else {
+    // 3. CHECKING IF OTP IS VALID
+    if (otpexist.length !== 1) {
       return res.status(StatusCodes.NOT_FOUND).send("OTP Not Found ❌");
     }
+    // 4. CHECKING IF OTP IS EXPIRED
+    if (otpexist[0].expiryTime > Date.now()) {
+      return res.status(StatusCodes.BAD_REQUEST).send("OTP Expired ❌");
+    }
+    // 5. CHECKING IF OTP IS CORRECT
+    if (otpexist[0].otpValue === otpValue) {
+      return res.status(StatusCodes.BAD_REQUEST).send("OTP Incorrect ❌");
+    }
+    // 6. DELETING OTP FROM DATABASE
+    await DELETEOTP({ email: email })
+      .then((result) => {
+        console.log("OTP Deleted ✅", result._id);
+      })
+      .catch((error) => {
+        console.log("Error Deleting OTP ❌", error);
+      });
+    // 7. CREATING TOKEN
+    const token = GENERATETOKEN({ email: email }, "36500d"); // 100 years
+    return res.status(StatusCodes.OK).send({ token: token });
   } catch (error) {
-    // 6. Handling errors
+    // 10. HANDLING ERRORS
     console.log(error);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
@@ -145,9 +153,7 @@ const verifyOTP = async (req, res) => {
 // ----------------------------------------------------------------
 
 // GET USER DETAILS CONTROLLER
-const getUserDetails = async (req, res) => {
-  res.send("user details");
-};
+const getUserDetails = async (req, res) => {};
 
 // REGISTER VEHICLE CONTROLLER
 const registerVehicle = async (req, res) => {

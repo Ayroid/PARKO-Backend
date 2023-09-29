@@ -1,7 +1,7 @@
-// ----------------- MODULES IMPORT -----------------
+// MODULES IMPORT
 const mongoose = require("mongoose");
 
-// ----------------- CREATING SCHEMA -----------------
+// CREATING SCHEMA
 const vehicleSchema = new mongoose.Schema({
   ownerID: {
     type: String,
@@ -31,10 +31,10 @@ const vehicleSchema = new mongoose.Schema({
   },
 });
 
-// ----------------- CREATING MODEL -----------------
+// CREATING MODEL
 const vehicleModel = mongoose.model("vehicle", vehicleSchema);
 
-// ----------------- EXPORTING MODEL -----------------
+// EXPORTING MODEL
 module.exports = {
   VEHICLEMODEL: vehicleModel,
 };
