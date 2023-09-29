@@ -3,13 +3,13 @@ require("dotenv").config();
 const jwt = require("jsonwebtoken");
 
 // CREATING ACCESS TOKEN
-function generateAccessToken(payload, tokenExpiry) {
+const generateAccessToken = (payload, tokenExpiry) => {
   return jwt.sign(payload, process.env.JWT_SECRET, {
     expiresIn: tokenExpiry,
   });
-}
+};
 
-function verifyAccessToken(req, res, next) {
+const verifyAccessToken = (req, res, next) => {
   const token = req.headers["authorization"];
   if (token) {
     jwt.verify(token, process.env.JWT_SECRET, (err, data) => {
@@ -23,14 +23,14 @@ function verifyAccessToken(req, res, next) {
   } else {
     return res.status(401).json({ msg: "No Valid Token Provided" });
   }
-}
+};
 
-function deleteAccessToken(req, res) {
+const deleteAccessToken = (req, res) => {
   refreshTokens = refreshTokens.filter(
     (token) => token !== req.body.refreshToken
   );
   res.send("Logout Successful");
-}
+};
 
 module.exports = {
   GENERATETOKEN: generateAccessToken,
