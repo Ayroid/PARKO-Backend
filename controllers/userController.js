@@ -170,6 +170,7 @@ const getUserDetails = async (req, res) => {
       "email": "email@email.com",
       "phone": 1234567890,
     }
+  }
 
   */
 
