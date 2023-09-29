@@ -142,11 +142,6 @@ const verifyOTP = async (req, res) => {
     // 8. CREATING PAYLOAD
     const payload = {
       userId: user[0]._id,
-      username: user[0].username,
-      phone: user[0].phone,
-      email: user[0].email,
-      sapid: user[0].sapid,
-      registeredOn: user[0].registeredOn,
     };
 
     // 9. CREATING TOKEN
