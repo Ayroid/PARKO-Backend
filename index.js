@@ -25,7 +25,7 @@ app.use(bodyParser.json());
 
 // ROUTERS
 const { USERROUTER } = require("./routers/userRouter");
-const { PARKINGSPOTROUTER } = require("./routers/ParkingSpotRouter");
+const { PARKINGSPOTROUTER } = require("./routers/parkingSpotRouter");
 
 // ROUTES
 app.use("/user", USERROUTER);
