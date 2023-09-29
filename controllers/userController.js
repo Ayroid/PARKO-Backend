@@ -91,7 +91,7 @@ const loginUser = async (req, res) => {
           console.log("Error Creating OTP ❌", error);
         });
 
-      return res.status(StatusCodes.OK).send("OTP Sent ✅ ", otpValue);
+      return res.status(StatusCodes.OK).send("OTP Sent ✅");
     } else {
       return res.status(StatusCodes.NOT_FOUND).send("User Not Registered ❌");
     }
