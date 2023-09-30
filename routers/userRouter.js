@@ -36,9 +36,9 @@ USER.get("/register", (req, res) => {
 USER.post("/register", VERIFYUSERMW, REGISTERUSER);
 USER.post("/login", LOGINUSER);
 USER.post("/verify", VERIFYOTP);
-USER.post("/userDetails", GETUSER);
-USER.post("/updateUser", UPDATEUSER);
-USER.post("/deleteUser", DELETEUSER);
+USER.post("/userDetails", VERIFYTOKEN, GETUSER);
+USER.post("/updateUser", VERIFYTOKEN, UPDATEUSER);
+USER.post("/deleteUser", VERIFYTOKEN, DELETEUSER);
 // USER.post("/logout", LOGOUTUSER);
 
 // PARKING ROUTES
