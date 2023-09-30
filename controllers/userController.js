@@ -228,31 +228,35 @@ const updateUser = async (req, res) => {
     } else {
       // 3. CHECKING IF USER EXISTS
       const user = await READUSER([query]);
+
       if (user.length === 0) {
         return res.status(StatusCodes.NOT_FOUND).send("User Not Found ❌");
       }
 
-      // 4. CHECKING IF USER IS AUTHORIZED
-      if (user[0]._id !== req.body.payload.userId) {
+      // 4. FETCHING USER ID
+      const userId = user[0]._id;
+
+      // 5. CHECKING IF USER IS AUTHORIZED
+      if (userId != req.body.payload.userId) {
         return res
           .status(StatusCodes.UNAUTHORIZED)
           .send("User Not Authorized ❌");
       }
     }
 
-    // 5. UPDATING USER
+    // 6. UPDATING USER
     const updated = await UPDATEUSER(query, data);
 
-    // 6. SENDING RESPONSE
+    // 7. SENDING RESPONSE
     if (updated) {
-      res.status(StatusCodes.OK).send("User Updated ✅", updated);
+      res.status(StatusCodes.OK).send("User Updated ✅");
     } else {
       res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
         .send("Error Updating User! ❌");
     }
   } catch (error) {
-    // 7. HANDLING ERRORS
+    // 8. HANDLING ERRORS
     console.log(error);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
