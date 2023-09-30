@@ -28,8 +28,8 @@ const { VERIFYTOKEN } = require("../middlewares/jwtAuthMW");
 const USER = express.Router();
 
 // API ENDPOINTS
-USER.get("/register", (req, res) => {
-  res.send("register");
+USER.get("/test", (req, res) => {
+  res.send("test");
 });
 
 // USER ROUTES
