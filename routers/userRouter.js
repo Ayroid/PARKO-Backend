@@ -36,7 +36,7 @@ USER.get("/register", (req, res) => {
 USER.post("/register", VERIFYUSERMW, REGISTERUSER);
 USER.post("/login", LOGINUSER);
 USER.post("/verify", VERIFYOTP);
-USER.post("/userDetails", VERIFYTOKEN, GETUSER);
+USER.post("/getUserDetails", VERIFYTOKEN, GETUSER);
 USER.post("/updateUser", VERIFYTOKEN, UPDATEUSER);
 USER.post("/deleteUser", VERIFYTOKEN, DELETEUSER);
 // USER.post("/logout", LOGOUTUSER);
