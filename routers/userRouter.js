@@ -6,7 +6,7 @@ const {
   LOGINUSER,
   VERIFYOTP,
   REGISTERUSER,
-  GETUSER,
+  READUSER,
   UPDATEUSER,
   DELETEUSER,
 } = require("../controllers/userController");
@@ -36,7 +36,7 @@ USER.get("/test", (req, res) => {
 USER.post("/register", VERIFYUSERMW, REGISTERUSER);
 USER.post("/login", LOGINUSER);
 USER.post("/verify", VERIFYOTP);
-USER.post("/getUser", VERIFYTOKEN, GETUSER);
+USER.post("/getUser", VERIFYTOKEN, READUSER);
 USER.post("/updateUser", VERIFYTOKEN, UPDATEUSER);
 USER.post("/deleteUser", VERIFYTOKEN, DELETEUSER);
 // USER.post("/logout", LOGOUTUSER);

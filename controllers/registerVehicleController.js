@@ -9,6 +9,8 @@ const {
   DELETEVEHICLE,
 } = require("./db/vehicleDatabase");
 
+const { READUSER, UPDATEUSER } = require("./db/userDatabase");
+
 // REGISTER VEHICLE CONTROLLER
 const registerVehicle = async (req, res) => {
   try {
@@ -24,7 +26,7 @@ const registerVehicle = async (req, res) => {
     }
 
     // 3. FETCHING USER DATA
-    const userdata = ({ userId } = req.body.payload);
+    const userdata = ({ userId: userId } = req.body.payload);
 
     // 4. EXTRA DATA OBJECT
     const extradata = {
@@ -41,7 +43,18 @@ const registerVehicle = async (req, res) => {
 
     // 7. SENDING VEHICLE
     if (created) {
-      res.status(StatusCodes.CREATED).send({ vehicleId: created._id });
+      // 8. LINKING VEHICLE TO USER
+      const dataToUpdate = { $push: { vehicles: created._id } };
+      const updated = await UPDATEUSER({ _id: userdata.userId }, dataToUpdate);
+
+      // 9. SENDING VEHICLE
+      if (updated) {
+        res.status(StatusCodes.CREATED).send({ vehicleId: created._id });
+      } else {
+        res
+          .status(StatusCodes.INTERNAL_SERVER_ERROR)
+          .send("Error Registering Vehicle! ❌");
+      }
     } else {
       res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)

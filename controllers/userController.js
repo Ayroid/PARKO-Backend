@@ -174,7 +174,7 @@ const verifyOTP = async (req, res) => {
 
 // ----------------------------------------------------------------
 // GET USER DETAILS CONTROLLER
-const getUser = async (req, res) => {
+const readUser = async (req, res) => {
   /*
 
   SAMPLE QUERY OBJECT
@@ -315,7 +315,7 @@ module.exports = {
   LOGINUSER: loginUser,
   VERIFYOTP: verifyOTP,
   REGISTERUSER: registerUser,
-  GETUSER: getUser,
+  READUSER: readUser,
   UPDATEUSER: updateUser,
   DELETEUSER: deleteUser,
   // LOGOUTUSER : logOutUser,

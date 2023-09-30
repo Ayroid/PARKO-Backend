@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 
 // CREATING SCHEMA
 const vehicleSchema = new mongoose.Schema({
-  userID: {
+  userId: {
     type: String,
     required: true,
   },
