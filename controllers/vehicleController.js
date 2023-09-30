@@ -9,7 +9,7 @@ const {
   DELETEVEHICLE,
 } = require("./db/vehicleDatabase");
 
-const { READUSER, UPDATEUSER } = require("./db/userDatabase");
+const { UPDATEUSER } = require("./db/userDatabase");
 
 // REGISTER VEHICLE CONTROLLER
 const registerVehicle = async (req, res) => {

@@ -249,7 +249,7 @@ const updateUser = async (req, res) => {
 
     // 7. SENDING RESPONSE
     if (updated) {
-      res.status(StatusCodes.OK).send("User Updated ✅");
+      res.status(StatusCodes.OK).send(updated);
     } else {
       res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)

@@ -7,7 +7,7 @@ const {
   REGISTERVEHICLE,
   UPDATEVEHICLE,
   DELETEVEHICLE,
-} = require("../controllers/registerVehicleController");
+} = require("../controllers/vehicleController");
 
 // JWT IMPORT
 const { VERIFYTOKEN } = require("../middlewares/jwtAuthMW");
