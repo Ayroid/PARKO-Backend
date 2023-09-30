@@ -61,22 +61,27 @@ const registerUser = async (req, res) => {
 // LOGIN USER CONTROLLER
 const loginUser = async (req, res) => {
   try {
+      // 1. FETCHING DATA FROM REQUEST BODY
     const { email } = req.body;
 
+      // 2. CHECKING IF USER ALREADY EXIST OR NOT
     const user = await READUSER([{ email: email }]);
 
+    // 3. IF USER EXIST , CHECK OTP 
     if (user.length === 1) {
       const otpexist = await READOTP([{ email: email }]);
 
+      // 4. IF OTP EXIST AND NOT EXPIRED 
       if (otpexist.length > 0 && otpexist[0].expiryTime > Date.now()) {
         return res.status(StatusCodes.BAD_REQUEST).send("OTP Already Sent ✅");
       }
 
+      //5. GENERATE OTP 
       const otpValue = OTPGENERATOR();
-
+      // SENDING OTP THROUGH MAIL
       SENDMAIL(user[0].username, email, otpValue);
 
-      // CREATING OTP IN DATABASE
+      //6. CREATING OTP IN DATABASE
       await CREATEOTP({
         email: email,
         otpValue: otpValue,
@@ -95,7 +100,7 @@ const loginUser = async (req, res) => {
       return res.status(StatusCodes.NOT_FOUND).send("User Not Registered ❌");
     }
   } catch (error) {
-    // 6. Handling errors
+    // 7. Handling errors
     console.log(error);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("Error Logging In! ❌");
   }
