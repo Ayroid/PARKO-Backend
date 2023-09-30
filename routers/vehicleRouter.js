@@ -15,17 +15,11 @@ const { VERIFYTOKEN } = require("../middlewares/jwtAuthMW");
 // CREATING ROUTER
 const VEHICLE = express.Router();
 
-// API ENDPOINTS
-VEHICLE.get("/test", (req, res) => {
-  res.send("test");
-});
-
 // VEHICLE ROUTES
 VEHICLE.post("/registerVehicle", VERIFYTOKEN, REGISTERVEHICLE);
 VEHICLE.post("/getVehicle", VERIFYTOKEN, READVEHICLE);
 VEHICLE.post("/updateVehicle", VERIFYTOKEN, UPDATEVEHICLE);
 VEHICLE.post("/deleteVehicle", VERIFYTOKEN, DELETEVEHICLE);
-// VEHICLE.post("/logout", LOGOUTVEHICLE);
 
 // PARKING ROUTES
 // VEHICLE.post("/raiseIssue", RAISEISSUE);
