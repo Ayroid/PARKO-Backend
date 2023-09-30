@@ -4,7 +4,12 @@ const { StatusCodes } = require("http-status-codes");
 // CUSTOM MODULE IMPORTS
 
 // IMPORTING DATABASE CONTROLLERS
-const { READUSER, CREATEUSER } = require("./db/userDatabase");
+const {
+  READUSER,
+  CREATEUSER,
+  UPDATEUSER,
+  DELETEUSER,
+} = require("./db/userDatabase");
 const { READOTP, CREATEOTP, DELETEOTP } = require("./db/otpDatabase");
 
 // MAIL CONTROLLER
@@ -61,22 +66,22 @@ const registerUser = async (req, res) => {
 // LOGIN USER CONTROLLER
 const loginUser = async (req, res) => {
   try {
-      // 1. FETCHING DATA FROM REQUEST BODY
+    // 1. FETCHING DATA FROM REQUEST BODY
     const { email } = req.body;
 
-      // 2. CHECKING IF USER ALREADY EXIST OR NOT
+    // 2. CHECKING IF USER ALREADY EXIST OR NOT
     const user = await READUSER([{ email: email }]);
 
-    // 3. IF USER EXIST , CHECK OTP 
+    // 3. IF USER EXIST , CHECK OTP
     if (user.length === 1) {
       const otpexist = await READOTP([{ email: email }]);
 
-      // 4. IF OTP EXIST AND NOT EXPIRED 
+      // 4. IF OTP EXIST AND NOT EXPIRED
       if (otpexist.length > 0 && otpexist[0].expiryTime > Date.now()) {
         return res.status(StatusCodes.BAD_REQUEST).send("OTP Already Sent ✅");
       }
 
-      //5. GENERATE OTP 
+      //5. GENERATE OTP
       const otpValue = OTPGENERATOR();
       // SENDING OTP THROUGH MAIL
       SENDMAIL(user[0].username, email, otpValue);
@@ -116,9 +121,7 @@ const loginUser = async (req, res) => {
 // }
 
 // ----------------------------------------------------------------
-
 // VERIFY OTP CONTROLLER
-
 const verifyOTP = async (req, res) => {
   try {
     // 1. FETCHNG DATA FROM REQUEST BODY
@@ -170,10 +173,8 @@ const verifyOTP = async (req, res) => {
 };
 
 // ----------------------------------------------------------------
-
 // GET USER DETAILS CONTROLLER
-const getUserDetails = async (req, res) => {
-
+const getUser = async (req, res) => {
   /*
 
   SAMPLE QUERY OBJECT
@@ -192,7 +193,7 @@ const getUserDetails = async (req, res) => {
     let { query } = req.body;
 
     // 2. CHECKING IF QUERY IS EMPTY
-    if (!query) {
+    if (query === undefined || query === null) {
       query = { _id: req.body.payload.userId };
     }
 
@@ -201,7 +202,7 @@ const getUserDetails = async (req, res) => {
 
     // 3. SENDING RESPONSE
     if (user.length === 1) {
-      res.status(StatusCodes.OK).send({ user: user[0] });
+      res.status(StatusCodes.OK).send(user);
     } else {
       res.status(StatusCodes.NOT_FOUND).send("User Not Found ❌");
     }
@@ -214,11 +215,104 @@ const getUserDetails = async (req, res) => {
   }
 };
 
+// ----------------------------------------------------------------
+// UPDATE USER DETAILS CONTROLLER
+const updateUser = async (req, res) => {
+  try {
+    // 1. FETCHING DATA FROM REQUEST BODY
+    const { query, data } = req.body;
+
+    // 2. CHECKING IF QUERY IS EMPTY
+    if (query === undefined || query === null) {
+      query = { _id: req.body.payload.userId };
+    } else {
+      // 3. CHECKING IF USER EXISTS
+      const user = await READUSER([query]);
+      if (user.length === 0) {
+        return res.status(StatusCodes.NOT_FOUND).send("User Not Found ❌");
+      }
+
+      // 4. CHECKING IF USER IS AUTHORIZED
+      if (user[0]._id !== req.body.payload.userId) {
+        return res
+          .status(StatusCodes.UNAUTHORIZED)
+          .send("User Not Authorized ❌");
+      }
+    }
+
+    // 5. UPDATING USER
+    const updated = await UPDATEUSER(query, data);
+
+    // 6. SENDING RESPONSE
+    if (updated) {
+      res.status(StatusCodes.OK).send("User Updated ✅", updated);
+    } else {
+      res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .send("Error Updating User! ❌");
+    }
+  } catch (error) {
+    // 7. HANDLING ERRORS
+    console.log(error);
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .send("Error Updating User! ❌");
+  }
+};
+
+// ----------------------------------------------------------------
+
+// DELETE USER CONTROLLER
+const deleteUser = async (req, res) => {
+  try {
+    // 1. FETCHING DATA FROM REQUEST BODY
+    const { query } = req.body;
+
+    // 2. CHECKING IF QUERY IS EMPTY
+    if (query === undefined || query === null) {
+      query = { _id: req.body.payload.userId };
+    } else {
+      // 3. CHECKING IF USER EXISTS
+      const user = await READUSER([query]);
+      if (user.length === 0) {
+        return res.status(StatusCodes.NOT_FOUND).send("User Not Found ❌");
+      }
+
+      // 4. CHECKING IF USER IS AUTHORIZED
+      if (user[0]._id !== req.body.payload.userId) {
+        return res
+          .status(StatusCodes.UNAUTHORIZED)
+          .send("User Not Authorized ❌");
+      }
+    }
+
+    // 5. DELETING USER
+    const deleted = await DELETEUSER(query);
+
+    // 6. SENDING RESPONSE
+    if (deleted) {
+      res.status(StatusCodes.OK).send("User Deleted ✅", deleted);
+    } else {
+      res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .send("Error Deleting User! ❌");
+    }
+  } catch (error) {
+    // 7. HANDLING ERRORS
+    console.log(error);
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .send("Error Deleting User! ❌");
+  }
+};
+
 // EXPORTING MODULES
 module.exports = {
   LOGINUSER: loginUser,
   VERIFYOTP: verifyOTP,
   REGISTERUSER: registerUser,
-  GETUSERDETAILS: getUserDetails,
+  GETUSER: getUser,
+  UPDATEUSER: updateUser,
+  DELETEUSER: deleteUser,
   // LOGOUTUSER : logOutUser,
 };
