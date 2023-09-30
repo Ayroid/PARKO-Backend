@@ -3,11 +3,11 @@ const mongoose = require("mongoose");
 
 // CREATING SCHEMA
 const vehicleSchema = new mongoose.Schema({
-  ownerID: {
+  userID: {
     type: String,
     required: true,
   },
-  vehicleRegNumber: {
+  vehicleNumber: {
     type: String,
     required: true,
   },
@@ -19,15 +19,19 @@ const vehicleSchema = new mongoose.Schema({
     type: Array,
     required: false,
   },
-  registered: {
-    // Defines if vehicle is registered or not
-    type: Boolean,
-    required: true,
-    default: false,
-  },
+  // registered: {
+  //   // Defines if vehicle is registered or not - RETHINK OVER IT
+  //   type: Boolean,
+  //   required: true,
+  //   default: false,
+  // },
   registeredOn: {
     type: Date,
     required: true,
+  },
+  lastUpdated: {
+    type: Date,
+    required: false,
   },
 });
 

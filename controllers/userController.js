@@ -1,5 +1,4 @@
 // IMPORTING MODULES
-const jwt = require("jsonwebtoken");
 const { StatusCodes } = require("http-status-codes");
 
 // CUSTOM MODULE IMPORTS
@@ -20,10 +19,10 @@ const { GENERATETOKEN } = require("../middlewares/jwtAuthMW");
 // REGISTER USER CONTROLLER
 const registerUser = async (req, res) => {
   try {
-    // 1. Fetching data from request body
+    // 1. FETCHING DATA FROM REQUEST BODY
     const data = ({ username, phone, email, sapid } = req.body);
 
-    // 2. Checking if user already exists
+    // 2. CHECKING IF THE USER EXISTS
     const user = await READUSER([
       { phone: phone },
       { email: email },
@@ -35,13 +34,13 @@ const registerUser = async (req, res) => {
         .send("User Already Exists! ❌");
     }
 
-    // 3. Creating final data object
+    // 3. CREATING FINAL DATA OBJECT
     const finaldata = { ...data, registeredOn: Date.now() };
 
-    // 4. Creating user
+    // 4. CREATING USER
     const created = await CREATEUSER(finaldata);
 
-    // 5. Sending response
+    // 5. SENDING USER
     if (created) {
       res.status(StatusCodes.CREATED).send({ userId: created._id });
     } else {
@@ -50,7 +49,7 @@ const registerUser = async (req, res) => {
         .send("Error Creating User! ❌");
     }
   } catch (error) {
-    // 6. Handling errors
+    // 6. HANDLING ERRORS
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .send("Error Creating User! ❌");
@@ -210,17 +209,11 @@ const getUserDetails = async (req, res) => {
   }
 };
 
-// REGISTER VEHICLE CONTROLLER
-const registerVehicle = async (req, res) => {
-  res.send("register vehicle");
-};
-
 // EXPORTING MODULES
 module.exports = {
   LOGINUSER: loginUser,
   VERIFYOTP: verifyOTP,
   REGISTERUSER: registerUser,
   GETUSERDETAILS: getUserDetails,
-  REGISTERVEHICLE: registerVehicle,
-  LOGOUTUSER : logOutUser,
+  // LOGOUTUSER : logOutUser,
 };
