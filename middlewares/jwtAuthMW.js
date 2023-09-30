@@ -2,6 +2,10 @@
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 
+//IMPORT DB-CONTROLLER FOR CHECKING BLACKLISTED CONTROLLER
+const {ISBLACKLISTED} = require('../controllers/db/tokenBlacklistDatabase');
+const { StatusCodes } = require("http-status-codes");
+
 // CREATING ACCESS TOKEN
 const generateAccessToken = (payload, tokenExpiry) => {
   return jwt.sign(payload, process.env.JWT_SECRET, {
@@ -32,8 +36,22 @@ const verifyAccessToken = (req, res, next) => {
 //   res.send("Logout Successful");
 // };
 
+const checkTokenBlacklist = async (req,res,next)=>{
+  const token = req.headers["authorization"];
+
+  const blacklist = await ISBLACKLISTED(
+    {token:token});
+  
+  if(blacklist){
+    res.status(StatusCodes.UNAUTHORIZED).send("Token Revoked, Please re-authenticate ");
+  }
+
+  next();
+}
+
 module.exports = {
   GENERATETOKEN: generateAccessToken,
   VERIFYTOKEN: verifyAccessToken,
+  CHECKTOKENBLACKLIST : checkTokenBlacklist
   // DELETETOKEN: deleteAccessToken,
 };
