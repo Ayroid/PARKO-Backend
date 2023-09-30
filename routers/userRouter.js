@@ -6,8 +6,9 @@ const {
   LOGINUSER,
   VERIFYOTP,
   REGISTERUSER,
-  GETUSERDETAILS,
-  REGISTERVEHICLE,
+  GETUSER,
+  UPDATEUSER,
+  DELETEUSER,
 } = require("../controllers/userController");
 
 const {
@@ -34,10 +35,11 @@ USER.get("/register", (req, res) => {
 // USER ROUTES
 USER.post("/register", VERIFYUSERMW, REGISTERUSER);
 USER.post("/login", LOGINUSER);
+USER.post("/verify", VERIFYOTP);
+USER.post("/userDetails", GETUSER);
+USER.post("/updateUser", UPDATEUSER);
+USER.post("/deleteUser", DELETEUSER);
 // USER.post("/logout", LOGOUTUSER);
-USER.post("/verify",VERIFYOTP);
-USER.post("/userDetails", GETUSERDETAILS);
-USER.post("/registerVehicle", REGISTERVEHICLE);
 
 // PARKING ROUTES
 USER.post("/raiseIssue", RAISEISSUE);
