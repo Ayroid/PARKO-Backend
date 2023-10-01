@@ -5,13 +5,13 @@ require("dotenv").config();
 const nodemailer = require("nodemailer");
 
 // MAIL CONFIGURATION
-let MAIL_HOST = process.env.MAIL_HOST;
-let MAIL_PORT = process.env.MAIL_PORT;
-let MAIL_USERNAME = process.env.MAIL_USERNAME;
-let MAIL_PASSWORD = process.env.MAIL_PASSWORD;
+const MAIL_HOST = process.env.MAIL_HOST;
+const MAIL_PORT = process.env.MAIL_PORT;
+const MAIL_USERNAME = process.env.MAIL_USERNAME;
+const MAIL_PASSWORD = process.env.MAIL_PASSWORD;
 
 // MAIL TEMPLATES
-const { LOGINOTP } = require("./mailTemplates");
+const { EMAILLOGINOTP } = require("./mailTemplates");
 
 // NODEMAILER TRANSPORTER
 const transporter = nodemailer.createTransport({
@@ -27,7 +27,7 @@ const transporter = nodemailer.createTransport({
 // SEND MAIL FUNCTION
 const sendMail = async (username, email, otpValue) => {
   try {
-    const MAIL_TEMPLATE = LOGINOTP(username, otpValue);
+    const MAIL_TEMPLATE = EMAILLOGINOTP(username, otpValue);
     const MAIL_SUBJECT = MAIL_TEMPLATE.subject;
     const MAIL_HTML = MAIL_TEMPLATE.html;
 

@@ -1,11 +1,10 @@
 // IMPORT DATABASE MODELS
 const { TOKENBLACKLISTMODEL } = require("../../models/tokenBlacklistModel");
 
-// ADD TOKEN TO BLACKLIST
+// ADDING TOKEN TO BLACKLIST
 const createBlackListToken = (data) => {
   return new Promise((resolve, reject) => {
     try {
-      // 1. CREATING NEW TOKEN
       const newToken = new TOKENBLACKLISTMODEL(data);
       newToken
         .save()
@@ -29,11 +28,6 @@ const createBlackListToken = (data) => {
 //CHECK IF TOKEN IS BLACKLISTED OR NOT
 const getBlackListToken = (query) => {
   try {
-    // 1. FETCHING DATA FROM REQUEST BODY
-    if (typeof query === "string") {
-      query = JSON.parse(query);
-    }
-    // 2. GETTING TOKEN
     return new Promise((resovle, reject) => {
       TOKENBLACKLISTMODEL.find({ $or: [query] })
         .then((result) => {
