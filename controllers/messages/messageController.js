@@ -26,7 +26,7 @@ const sendSMS = async (phone, otpValue) => {
       from: TWILIO_PHONE_NUMBER,
       to: phone,
     });
-    console.log(message.sid);
+    console.log(message.sid + " Sent ✅");
   } catch (error) {
     console.log(error);
   }

@@ -45,7 +45,7 @@ const sendMail = async (username, email, otpValue) => {
       if (err) {
         console.log(err);
       } else {
-        console.log(info.accepted + " Sent");
+        console.log(info.accepted + " Sent ✅");
       }
     });
   } catch (err) {
