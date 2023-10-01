@@ -3,7 +3,7 @@ const { StatusCodes } = require("http-status-codes");
 
 // CUSTOM MODULE IMPORTS
 const { PARKINGMODEL } = require("../models/parkingModel");
-const { READSPOTDETAILS, CREATESPOT } = require("./db/spotDatabase");
+const { READSPOT, CREATESPOT } = require("./db/spotDatabase");
 
 // ----------------------------------------------------------------
 
@@ -14,14 +14,11 @@ const createNewParkingSpot = async (req, res) => {
     const data = ({ parkingNumber, location } = req.body);
 
     // 2. CHECHKING IF SPOT EXISTS
-    const spot = await READSPOTDETAILS([
+    const spot = await READSPOT([
       { parkingNumber: parkingNumber },
       { location: location },
-      { lastParked: lastParked },
-      { currentlyParked: currentlyParked },
     ]);
-    if (spot.length === 1) {
-      //spot exists
+    if (spot.length >= 1) {
       return res
         .status(StatusCodes.BAD_GATEWAY)
         .send("Spot is Already Mapped ! ❌");
@@ -65,7 +62,7 @@ const getParkingSpots = async (req, res) => {
       query = {};
     }
     // 2. GETTING PARKING SPOTS
-    const spots = await PARKINGMODEL.find(query);
+    const spots = await READSPOT(query);
 
     // 3. SENDING RESPONSE
     res.status(StatusCodes.OK).send({ spots });

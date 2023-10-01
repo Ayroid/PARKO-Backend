@@ -4,7 +4,7 @@ const { PARKINGMODEL } = require("../../models/parkingModel");
 // DATABASE OPERATIONS
 
 // READ USER
-const readSpotDetails = (query) => {
+const readSpot = (query) => {
   try {
     return new Promise((resovle, reject) => {
       PARKINGMODEL.find({ $or: query })
@@ -49,6 +49,6 @@ const createSpot = (data) => {
 // EXPORTING MODULES
 
 module.exports = {
-  READSPOTDETAILS: readSpotDetails,
+  READSPOT: readSpot,
   CREATESPOT: createSpot,
 };
