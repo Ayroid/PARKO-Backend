@@ -1,12 +1,13 @@
 // IMPORT DATABASE MODELS
-const { TOKENBLACKLISTMODEL } = require('../../models/tokenBlacklistModel');
+const { TOKENBLACKLISTMODEL } = require("../../models/tokenBlacklistModel");
 
 // ADD TOKEN TO BLACKLIST
-const blacklistToken = (data) => {
+const createBlackListToken = (data) => {
   return new Promise((resolve, reject) => {
     try {
-      const newUser = new TOKENBLACKLISTMODEL(data);
-      newUser
+      // 1. CREATING NEW TOKEN
+      const newToken = new TOKENBLACKLISTMODEL(data);
+      newToken
         .save()
         .then((result) => {
           if (result) {
@@ -15,43 +16,42 @@ const blacklistToken = (data) => {
           }
         })
         .catch((error) => {
-          console.log('Error BLACKLISTING TOKEN ❌', error);
+          console.log("Error BLACKLISTING TOKEN ❌", error);
           reject(false);
         });
     } catch (error) {
-      console.log('Error BLACKLISTING TOKEN ❌', error);
+      console.log("Error BLACKLISTING TOKEN ❌", error);
       reject(false);
     }
   });
 };
 
 //CHECK IF TOKEN IS BLACKLISTED OR NOT
-const isBlacklisted = (query) => {
-    try {
-
-        // Parse the query if it's a string
-        if (typeof query === 'string') {
-            query = JSON.parse(query);
-        }
-
-      return new Promise((resovle, reject) => {
-        TOKENBLACKLISTMODEL.find({ $or: [query] }) // Wrap query in an array
-        .then((result) => {
-            if (result) {
-              resovle(result);
-            }
-          })
-          .catch((error) => {
-            console.log("Error Reading BlackListed Token ❌", error);
-            reject(false);
-          });
-      });
-    } catch (error) {
-            console.log("Error Reading BlackListed Token ❌", error);
+const getBlackListToken = (query) => {
+  try {
+    // 1. FETCHING DATA FROM REQUEST BODY
+    if (typeof query === "string") {
+      query = JSON.parse(query);
     }
-  };
+    // 2. GETTING TOKEN
+    return new Promise((resovle, reject) => {
+      TOKENBLACKLISTMODEL.find({ $or: [query] })
+        .then((result) => {
+          if (result) {
+            resovle(result);
+          }
+        })
+        .catch((error) => {
+          console.log("Error Reading BlackListed Token ❌", error);
+          reject(false);
+        });
+    });
+  } catch (error) {
+    console.log("Error Reading BlackListed Token ❌", error);
+  }
+};
 
 module.exports = {
-  BLACKLISTTOKEN: blacklistToken,
-  ISBLACKLISTED: isBlacklisted,
+  GETBLACKLISTTOKEN: getBlackListToken,
+  CREATEBLACKLISTTOKEN: createBlackListToken,
 };
