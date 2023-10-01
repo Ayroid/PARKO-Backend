@@ -11,6 +11,7 @@ const {
   DELETEUSER,
 } = require("./db/userDatabase");
 const { READOTP, CREATEOTP, DELETEOTP } = require("./db/otpDatabase");
+const {BLACKLISTTOKEN} = require('./db/tokenBlacklistDatabase');
 
 // MAIL CONTROLLER
 const { SENDMAIL } = require("./mails/mailController");
@@ -18,6 +19,7 @@ const { OTPGENERATOR } = require("./mails/optGenController");
 
 // JWT CONTROLLER
 const { GENERATETOKEN } = require("../middlewares/jwtAuthMW");
+
 
 // ----------------------------------------------------------------
 
@@ -111,14 +113,23 @@ const loginUser = async (req, res) => {
   }
 };
 
-// const logOutUser = async (req,res) =>{
-//   try{
 
-//   } catch (error) {
-//     console.log(error)
-//     res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("Error logging out ❌");
-//   }
-// }
+//NOTE : the logout function must work after removing the token from local storage (Front-end)
+const logOutUser = async (req,res) =>{
+  try{
+    //getting the jwt token 
+      const token = req.headers.authorization;
+
+    //storing the token in the BlackList database;
+    await BLACKLISTTOKEN({
+      token:token});
+    res.status(StatusCodes.OK).send("User Logged Out "); 
+
+  } catch (error) {
+    console.log(error)
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("Error logging out ❌");
+  }
+}
 
 // ----------------------------------------------------------------
 // VERIFY OTP CONTROLLER
@@ -318,5 +329,5 @@ module.exports = {
   READUSER: readUser,
   UPDATEUSER: updateUser,
   DELETEUSER: deleteUser,
-  // LOGOUTUSER : logOutUser,
+  LOGOUTUSER : logOutUser,
 };
