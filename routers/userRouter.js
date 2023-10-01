@@ -3,7 +3,7 @@ const express = require("express");
 
 // CONTROLLERS IMPORT
 const {
-  LOGINUSER,
+  LOGINUSERMAIL,
   VERIFYOTP,
   REGISTERUSER,
   READUSER,
@@ -23,7 +23,7 @@ const {
 const { VERIFYUSERMW } = require("../middlewares/userMW");
 
 // JWT IMPORT AND BLACKLIST CHECK IMPORT
-const { VERIFYTOKEN,CHECKTOKENBLACKLIST } = require("../middlewares/jwtAuthMW");
+const { VERIFYTOKEN } = require("../middlewares/jwtAuthMW");
 
 // CREATING ROUTER
 const USER = express.Router();
@@ -35,12 +35,9 @@ USER.get("/test", (req, res) => {
 
 // USER ROUTES
 USER.post("/register", VERIFYUSERMW, REGISTERUSER);
-USER.post("/login", LOGINUSER);
+USER.post("/login", LOGINUSERMAIL);
 USER.post("/verify", VERIFYOTP);
-USER.post("/getUser",  VERIFYTOKEN, READUSER);
-
-//  Checking Token Authenticity Currently Throws error
-// USER.post("/getUser", CHECKTOKENBLACKLIST, VERIFYTOKEN, READUSER);
+USER.post("/getUser", VERIFYTOKEN, READUSER);
 
 USER.post("/updateUser",  VERIFYTOKEN,UPDATEUSER);
 USER.post("/deleteUser", VERIFYTOKEN, DELETEUSER);
