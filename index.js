@@ -3,6 +3,7 @@ require("dotenv").config();
 const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 
 // CUSTOM MODULES IMPORT
 const { CONNECTDATABSE } = require("./controllers/db/connectDatabase");
@@ -22,6 +23,9 @@ app.use(express.static(path.join(__dirname, "public")));
 // SETTING UP BODY PARSER
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+// SETTING UP CORS
+app.use(cors());
 
 // ROUTERS
 const { USERROUTER } = require("./routers/userRouter");
