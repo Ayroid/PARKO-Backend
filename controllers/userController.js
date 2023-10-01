@@ -10,16 +10,25 @@ const {
   UPDATEUSER,
   DELETEUSER,
 } = require("./db/userDatabase");
+
 const { READOTP, CREATEOTP, DELETEOTP } = require("./db/otpDatabase");
-const {BLACKLISTTOKEN} = require('./db/tokenBlacklistDatabase');
+
+const {
+  CREATEBLACKLISTTOKEN,
+  GETBLACKLISTTOKEN,
+} = require("./db/tokenBlacklistDatabase");
+
+// OTP GENERATOR CONTROLLER
+const { OTPGENERATOR } = require("./optGenController");
 
 // MAIL CONTROLLER
 const { SENDMAIL } = require("./mails/mailController");
-const { OTPGENERATOR } = require("./mails/optGenController");
+
+// SMS CONTROLLER
+const { SENDSMS } = require("./messages/messageController");
 
 // JWT CONTROLLER
 const { GENERATETOKEN } = require("../middlewares/jwtAuthMW");
-
 
 // ----------------------------------------------------------------
 
@@ -65,47 +74,99 @@ const registerUser = async (req, res) => {
 
 // ----------------------------------------------------------------
 
-// LOGIN USER CONTROLLER
-const loginUser = async (req, res) => {
+// LOGIN USER CONTROLLER - MAIL
+const loginUserMail = async (req, res) => {
   try {
     // 1. FETCHING DATA FROM REQUEST BODY
     const { email } = req.body;
 
     // 2. CHECKING IF USER ALREADY EXIST OR NOT
     const user = await READUSER([{ email: email }]);
-
-    // 3. IF USER EXIST , CHECK OTP
-    if (user.length === 1) {
-      const otpexist = await READOTP([{ email: email }]);
-
-      // 4. IF OTP EXIST AND NOT EXPIRED
-      if (otpexist.length > 0 && otpexist[0].expiryTime > Date.now()) {
-        return res.status(StatusCodes.BAD_REQUEST).send("OTP Already Sent ✅");
-      }
-
-      //5. GENERATE OTP
-      const otpValue = OTPGENERATOR();
-      // SENDING OTP THROUGH MAIL
-      SENDMAIL(user[0].username, email, otpValue);
-
-      //6. CREATING OTP IN DATABASE
-      await CREATEOTP({
-        email: email,
-        otpValue: otpValue,
-        issueTime: Date.now(),
-        expiryTime: Date.now() + 600000,
-      })
-        .then((result) => {
-          console.log("OTP Created ✅", result._id);
-        })
-        .catch((error) => {
-          console.log("Error Creating OTP ❌", error);
-        });
-
-      return res.status(StatusCodes.OK).send("OTP Sent ✅");
-    } else {
+    if (user.length !== 1) {
       return res.status(StatusCodes.NOT_FOUND).send("User Not Registered ❌");
     }
+
+    // 3. CHECKING IF OTP EXISTS
+    const otpexist = await READOTP([{ email: email }]);
+
+    // 4. IF OTP EXIST AND NOT EXPIRED
+    if (otpexist.length > 0 && otpexist[0].expiryTime > Date.now()) {
+      return res.status(StatusCodes.BAD_REQUEST).send("OTP Already Sent ✅");
+    }
+
+    // 5. GENERATE OTP
+    const otpValue = OTPGENERATOR();
+    // SENDING OTP THROUGH MAIL
+    SENDMAIL(user[0].username, email, otpValue);
+
+    // 6. CREATING OTP IN DATABASE
+    await CREATEOTP({
+      otpType: "EMAIL",
+      email: email,
+      otpValue: otpValue,
+      issueTime: Date.now(),
+      expiryTime: Date.now() + 600000,
+    })
+      .then((result) => {
+        console.log("OTP Created ✅", result._id);
+      })
+      .catch((error) => {
+        console.log("Error Creating OTP ❌", error);
+      });
+
+    // 7. SENDING RESPONSE
+    return res.status(StatusCodes.OK).send("OTP Sent ✅");
+  } catch (error) {
+    // 8. Handling errors
+    console.log(error);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("Error Logging In! ❌");
+  }
+};
+
+// ----------------------------------------------------------------
+
+// LOGIN USER CONTROLLER - PHONE
+const loginUserPhone = async (req, res) => {
+  try {
+    // 1. FETCHING DATA FROM REQUEST BODY
+    const { phone } = req.body;
+
+    // 2. CHECKING IF USER ALREADY EXIST OR NOT
+    const user = await READUSER([{ phone: phone }]);
+    if (user.length !== 1) {
+      return res.status(StatusCodes.NOT_FOUND).send("User Not Registered ❌");
+    }
+
+    // 3. CHECKING IF OTP EXISTS
+    const otpexist = await READOTP([{ phone: phone }]);
+
+    // 4. IF OTP EXIST AND NOT EXPIRED
+    if (otpexist.length > 0 && otpexist[0].expiryTime > Date.now()) {
+      return res.status(StatusCodes.BAD_REQUEST).send("OTP Already Sent ✅");
+    }
+
+    //5. GENERATE OTP
+    const otpValue = OTPGENERATOR();
+    // SENDING OTP THROUGH SMS
+    SENDSMS(phone, otpValue);
+
+    //6. CREATING OTP IN DATABASE
+    await CREATEOTP({
+      otpType: "SMS",
+      phone: phone,
+      otpValue: otpValue,
+      issueTime: Date.now(),
+      expiryTime: Date.now() + 600000,
+    })
+      .then((result) => {
+        console.log("OTP Created ✅", result._id);
+      })
+
+      .catch((error) => {
+        console.log("Error Creating OTP ❌", error);
+      });
+
+    return res.status(StatusCodes.OK).send("OTP Sent ✅");
   } catch (error) {
     // 7. Handling errors
     console.log(error);
@@ -113,27 +174,36 @@ const loginUser = async (req, res) => {
   }
 };
 
+// ----------------------------------------------------------------
 
-//NOTE : the logout function must work after removing the token from local storage (Front-end)
-const logOutUser = async (req,res) =>{
-  try{
-    //getting the jwt token 
-      const token = req.headers.authorization;
+// LOGOUT USER CONTROLLER
+// NOTE : the logout function must work after removing the token from local storage (Front-end)
+const logOutUser = async (req, res) => {
+  try {
+    // 1. FETCHING TOKEN FROM REQUEST HEADERS
+    const token = req.headers.authorization;
 
-    //storing the token in the BlackList database;
-    await BLACKLISTTOKEN({
-      token:token});
-    res.status(StatusCodes.OK).send("User Logged Out "); 
+    // 2. CHECKING IF TOKEN IS ALREADY BLACKLISTED
+    const blackListed = await GETBLACKLISTTOKEN({ token: token });
 
+    // 3. IF TOKEN IS NOT BLACKLISTED THEN BLACKLIST IT
+    if (blackListed.length === 0) {
+      await CREATEBLACKLISTTOKEN({
+        token: token,
+      });
+    }
+
+    // 4. SENDING RESPONSE
+    res.status(StatusCodes.OK).send("Logged Out ✅");
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("Error logging out ❌");
   }
-}
+};
 
 // ----------------------------------------------------------------
-// VERIFY OTP CONTROLLER
-const verifyOTP = async (req, res) => {
+// VERIFY OTP CONTROLLER - MAIL
+const verifyOTPMail = async (req, res) => {
   try {
     // 1. FETCHNG DATA FROM REQUEST BODY
     const { email, otpValue } = req.body;
@@ -141,23 +211,20 @@ const verifyOTP = async (req, res) => {
     // 2. CHECKING IF OTP EXISTS
     const otpexist = await READOTP([{ email: email }]);
 
-    // 3. FETCHING USER DATA
-    const user = await READUSER([{ email: email }]);
-
-    // 4. CHECKING IF OTP IS VALID
+    // 3. CHECKING IF OTP IS VALID
     if (otpexist.length !== 1) {
       return res.status(StatusCodes.NOT_FOUND).send("OTP Not Found ❌");
     }
 
-    // 5. CHECKING IF OTP IS EXPIRED
+    // 4. CHECKING IF OTP IS EXPIRED
     if (otpexist[0].expiryTime < Date.now()) {
       return res.status(StatusCodes.BAD_REQUEST).send("OTP Expired ❌");
     }
-    // 6. CHECKING IF OTP IS CORRECT
+    // 5. CHECKING IF OTP IS CORRECT
     if (otpexist[0].otpValue !== otpValue) {
       return res.status(StatusCodes.BAD_REQUEST).send("OTP Incorrect ❌");
     }
-    // 7. DELETING OTP FROM DATABASE
+    // 6. DELETING OTP FROM DATABASE
     await DELETEOTP({ email: email })
       .then((result) => {
         console.log("OTP Deleted ✅", result._id);
@@ -165,6 +232,9 @@ const verifyOTP = async (req, res) => {
       .catch((error) => {
         console.log("Error Deleting OTP ❌", error);
       });
+
+    // 7. FETCHING USER DATA
+    const user = await READUSER([{ email: email }]);
 
     // 8. CREATING PAYLOAD
     const payload = {
@@ -176,6 +246,63 @@ const verifyOTP = async (req, res) => {
     return res.status(StatusCodes.OK).send({ token: token });
   } catch (error) {
     // 10. HANDLING ERRORS
+    console.log(error);
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .send("Error Verifying OTP! ❌");
+  }
+};
+
+// ----------------------------------------------------------------
+
+// VERIFY OTP CONTROLLER - PHONE
+const verifyOTPPhone = async (req, res) => {
+  try {
+    // 1. FETCHNG DATA FROM REQUEST BODY
+    const { phone, otpValue } = req.body;
+
+    // 2. CHECKING IF OTP EXISTS
+    const otpexist = await READOTP([{ phone: phone }]);
+
+    // 3. CHECKING IF OTP IS VALID
+    if (otpexist.length !== 1) {
+      return res.status(StatusCodes.NOT_FOUND).send("OTP Not Found ❌");
+    }
+
+    // 4. CHECKING IF OTP IS EXPIRED
+    if (otpexist[0].expiryTime < Date.now()) {
+      return res.status(StatusCodes.BAD_REQUEST).send("OTP Expired ❌");
+    }
+
+    // 5. CHECKING IF OTP IS CORRECT
+    if (otpexist[0].otpValue !== otpValue) {
+      return res.status(StatusCodes.BAD_REQUEST).send("OTP Incorrect ❌");
+    }
+
+    // 6. DELETING OTP FROM DATABASE
+    await DELETEOTP({ phone: phone })
+      .then((result) => {
+        console.log("OTP Deleted ✅", result._id);
+      })
+      .catch((error) => {
+        console.log("Error Deleting OTP ❌", error);
+      });
+
+    // 7. FETCHING USER DATA
+    const user = await READUSER([{ phone: phone }]);
+
+    // 8. CREATING PAYLOAD
+    const payload = {
+      userId: user[0]._id,
+    };
+
+    // 9. CREATING TOKEN
+    const token = GENERATETOKEN(payload, "36500d"); // 100 years
+
+    // 10. SENDING RESPONSE
+    return res.status(StatusCodes.OK).send({ token: token });
+  } catch (error) {
+    // 11. HANDLING ERRORS
     console.log(error);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
@@ -323,11 +450,13 @@ const deleteUser = async (req, res) => {
 
 // EXPORTING MODULES
 module.exports = {
-  LOGINUSER: loginUser,
-  VERIFYOTP: verifyOTP,
+  LOGINUSERMAIL: loginUserMail,
+  VERIFYOTPMAIL: verifyOTPMail,
+  LOGINUSERPHONE: loginUserPhone,
+  VERIFYOTPPHONE: verifyOTPPhone,
   REGISTERUSER: registerUser,
   READUSER: readUser,
   UPDATEUSER: updateUser,
   DELETEUSER: deleteUser,
-  LOGOUTUSER : logOutUser,
+  LOGOUTUSER: logOutUser,
 };

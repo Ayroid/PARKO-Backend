@@ -4,7 +4,9 @@ const express = require("express");
 // CONTROLLERS IMPORT
 const {
   LOGINUSERMAIL,
-  VERIFYOTP,
+  VERIFYOTPMAIL,
+  LOGINUSERPHONE,
+  VERIFYOTPPHONE,
   REGISTERUSER,
   READUSER,
   UPDATEUSER,
@@ -35,8 +37,10 @@ USER.get("/test", (req, res) => {
 
 // USER ROUTES
 USER.post("/register", VERIFYUSERMW, REGISTERUSER);
-USER.post("/login", LOGINUSERMAIL);
-USER.post("/verify", VERIFYOTP);
+USER.post("/login/mail", LOGINUSERMAIL);
+USER.post("/verify/mail", VERIFYOTPMAIL);
+USER.post("/login/phone", LOGINUSERPHONE);
+USER.post("/verify/phone", VERIFYOTPPHONE);
 USER.post("/getUser", VERIFYTOKEN, READUSER);
 
 USER.post("/updateUser",  VERIFYTOKEN,UPDATEUSER);
