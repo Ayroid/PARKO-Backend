@@ -48,10 +48,10 @@ USER.post("/deleteUser", VERIFYTOKEN, DELETEUSER);
 USER.post("/logout", VERIFYTOKEN,LOGOUTUSER);
 
 // PARKING ROUTES
-USER.post("/raiseIssue", RAISEISSUE);
-USER.post("/findcar", FINDCAR);
-USER.post("/bookParking", BOOKPARKING);
-USER.post("/getParking", GETPARKING);
+// USER.post("/raiseIssue", RAISEISSUE);
+// USER.post("/findcar", FINDCAR);
+// USER.post("/bookParking", BOOKPARKING);
+// USER.post("/getParking", GETPARKING);
 
 // EXPORTING ROUTER
 module.exports = {
