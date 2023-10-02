@@ -6,26 +6,32 @@ const path = require("path");
 
 /* FILE UPLOAD FUNCTIONS */
 
-// FILE 
+// FILE DESTINATION MAPPING
+const fileDestionationMapping = (fileName) => {
+  const fileDestionationMap = {
+    resume: "public/img/screenshots/resume",
+    transactionSS: "public/img/screenshots/transactionSS",
+  };
+  return fileDestionationMap[fileName];
+};
+
+// FILE NAME MAPPING
+const filenameMapping = (req, fileName, fileExtension) => {
+  const fileNameMap = {
+    resume: `${req.body.personalEmail}${fileExtension}`,
+    transactionSS: `${req.body.personalEmail}${fileExtension}`,
+  };
+  return fileNameMap[fileName];
+};
 
 // MULTER CONFIGURATION
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    if (file.fieldname === "resume") {
-      cb(null, "public/img/screenshots/resume");
-    } else if (file.fieldname === "transactionSS") {
-      cb(null, "public/img/screenshots/transactionSS");
-    }
+    cb(null, fileDestionationMapping(file.fieldname));
   },
   filename: (req, file, cb) => {
     const fileExtension = path.extname(file.originalname);
-    let filename = "";
-    if (file.fieldname === "resume") {
-      filename = `${req.body.personalEmail}${fileExtension}`;
-    } else if (file.fieldname === "transactionSS") {
-      filename = `${req.body.personalEmail}${fileExtension}`;
-    }
-    cb(null, filename);
+    cb(null, filenameMapping(req, file.fieldname, fileExtension));
   },
   limits: {
     fileSize: 10 * 1024 * 1024, // 10 MB in bytes
