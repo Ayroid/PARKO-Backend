@@ -9,8 +9,9 @@ const path = require("path");
 // FILE DESTINATION MAPPING
 const fileDestionationMapping = (fileName) => {
   const fileDestionationMap = {
-    resume: "public/img/screenshots/resume",
-    transactionSS: "public/img/screenshots/transactionSS",
+    profilePic:
+      "/home/ayroid/Documents/Projects/Parko/MINOR-APIServer/public/img/profilePIc",
+    transactionSS: "/public/img/screenshots/transactionSS",
   };
   return fileDestionationMap[fileName];
 };
@@ -18,8 +19,8 @@ const fileDestionationMapping = (fileName) => {
 // FILE NAME MAPPING
 const filenameMapping = (req, fileName, fileExtension) => {
   const fileNameMap = {
-    resume: `${req.body.personalEmail}${fileExtension}`,
-    transactionSS: `${req.body.personalEmail}${fileExtension}`,
+    profilePic: `${req.body.email}${fileExtension}`,
+    transactionSS: `${req.body.email}${fileExtension}`,
   };
   return fileNameMap[fileName];
 };
