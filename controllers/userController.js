@@ -1,5 +1,6 @@
 // IMPORTING MODULES
 const { StatusCodes } = require("http-status-codes");
+const path = require("path");
 
 // CUSTOM MODULE IMPORTS
 
@@ -448,6 +449,62 @@ const deleteUser = async (req, res) => {
   }
 };
 
+// ----------------------------------------------------------------
+
+// UPLOAD PROFILE PIC CONTROLLER
+const uploadProfilePic = async (req, res) => {
+  try {
+    // 0. SETTING DEFAULT URL
+    const defaultUrl = "http://localhost:3000/img/profilePic/";
+
+    console.log(req.body);
+
+    // 1. FETCHING DATA FROM REQUEST BODY
+    const query = { _id: req.body.payload.userId };
+
+    // 2. CHECKING IF USER EXISTS
+    const user = await READUSER([query]);
+    if (user.length === 0) {
+      return res.status(StatusCodes.NOT_FOUND).send("User Not Found ❌");
+    }
+
+    // 3. FETCHING USER ID
+    const userId = user[0]._id;
+
+    // 4. CHECKING IF USER IS AUTHORIZED
+    if (userId != req.body.payload.userId) {
+      return res
+        .status(StatusCodes.UNAUTHORIZED)
+        .send("User Not Authorized ❌");
+    }
+
+    // 5. CREATING DATA OBJECT
+    const extension = path.extname(req.files.profilePic[0].filename),
+      filename = user[0].email;
+    const data = {
+      profilePic: defaultUrl + filename + extension,
+    };
+
+    // 6. UPDATING USER
+    const updated = await UPDATEUSER({ _id: userId }, data);
+
+    // 7. SENDING RESPONSE
+    if (updated) {
+      res.status(StatusCodes.OK).send("Profile Pic Uploaded ✅");
+    } else {
+      res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .send("Error Uploading Profile Pic! ❌");
+    }
+  } catch (error) {
+    // 8. HANDLING ERRORS
+    console.log(error);
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .send("Error Uploading Profile Pic! ❌");
+  }
+};
+
 // EXPORTING MODULES
 module.exports = {
   LOGINUSERMAIL: loginUserMail,
@@ -459,4 +516,5 @@ module.exports = {
   UPDATEUSER: updateUser,
   DELETEUSER: deleteUser,
   LOGOUTUSER: logOutUser,
+  UPLOADPROFILEPIC: uploadProfilePic,
 };
