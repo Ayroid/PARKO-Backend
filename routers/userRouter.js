@@ -11,7 +11,8 @@ const {
   READUSER,
   UPDATEUSER,
   DELETEUSER,
-  LOGOUTUSER
+  LOGOUTUSER,
+  UPLOADPROFILEPIC,
 } = require("../controllers/userController");
 
 const {
@@ -23,6 +24,9 @@ const {
 
 // MIDDLEWARES IMPORT
 const { VERIFYUSERMW } = require("../middlewares/userMW");
+
+// FILE UPLOAD CONTROLLER IMPORT
+const { UPLOAD } = require("../controllers/fileUploadController");
 
 // JWT IMPORT AND BLACKLIST CHECK IMPORT
 const { VERIFYTOKEN } = require("../middlewares/jwtAuthMW");
@@ -42,10 +46,15 @@ USER.post("/verify/mail", VERIFYOTPMAIL);
 USER.post("/login/phone", LOGINUSERPHONE);
 USER.post("/verify/phone", VERIFYOTPPHONE);
 USER.post("/getUser", VERIFYTOKEN, READUSER);
-
-USER.post("/updateUser",  VERIFYTOKEN,UPDATEUSER);
+USER.post("/updateUser", VERIFYTOKEN, UPDATEUSER);
+USER.post(
+  "/uploadProfilePic",
+  VERIFYTOKEN,
+  UPLOAD.fields([{ name: "profilePic", maxCount: 1 }]),
+  UPLOADPROFILEPIC
+);
 USER.post("/deleteUser", VERIFYTOKEN, DELETEUSER);
-USER.post("/logout", VERIFYTOKEN,LOGOUTUSER);
+USER.post("/logout", VERIFYTOKEN, LOGOUTUSER);
 
 // PARKING ROUTES
 // USER.post("/raiseIssue", RAISEISSUE);
