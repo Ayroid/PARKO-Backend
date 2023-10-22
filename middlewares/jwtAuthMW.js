@@ -21,7 +21,7 @@ const verifyAccessToken = async (req, res, next) => {
 
   const blackListed = await GETBLACKLISTTOKEN({ token: token });
 
-  if (blackListed) {
+  if (blackListed.length > 0) {
     return res.status(StatusCodes.UNAUTHORIZED).send("Token Expired! ");
   } else if (token) {
     jwt.verify(token, process.env.JWT_SECRET, (err, data) => {
