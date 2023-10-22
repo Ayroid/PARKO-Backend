@@ -19,13 +19,20 @@ const userSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  profilePic: {
+    type: String,
+    required: false,
+    default: "-",
+  },
   vehicles: {
     type: Array,
     required: false,
+    default: [],
   },
   parkingHistory: {
     type: Array,
     required: false,
+    default: [],
   },
   registeredOn: {
     type: Date,
