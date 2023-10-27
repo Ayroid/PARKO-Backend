@@ -3,7 +3,7 @@ const { StatusCodes } = require("http-status-codes");
 
 // CUSTOM MODULE IMPORTS
 const { PARKINGMODEL } = require("../models/parkingModel");
-const { READSPOT, CREATESPOT } = require("./db/spotDatabase");
+const { READSPOT, CREATESPOT } = require("./db/parkingSpotDatabase");
 
 // ----------------------------------------------------------------
 
