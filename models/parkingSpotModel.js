@@ -23,7 +23,7 @@ const parkingSchema = new mongoose.Schema({
   },
   currentlyParked: {
     type: String, // vehicleID
-    required: true,
+    required: false,
   },
   lastParked: {
     type: String, // vehicleID

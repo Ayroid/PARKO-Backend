@@ -1,5 +1,5 @@
 // IMPORTING DATABASE MODELS
-const { PARKINGMODEL } = require("../../models/parkingModel");
+const { PARKINGMODEL } = require("../../models/parkingSpotModel");
 
 // DATABASE OPERATIONS
 

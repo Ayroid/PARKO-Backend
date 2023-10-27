@@ -2,8 +2,14 @@
 const { StatusCodes } = require("http-status-codes");
 
 // CUSTOM MODULE IMPORTS
-const { PARKINGMODEL } = require("../models/parkingModel");
-const { READSPOT, CREATESPOT } = require("./db/parkingSpotDatabase");
+const { PARKINGMODEL } = require("../models/parkingSpotModel");
+const {
+  READSPOT,
+  CREATESPOT,
+  UPDATESPOT,
+  DELETESPOT,
+} = require("./db/parkingSpotDatabase");
+const { Query } = require("mongoose");
 
 // ----------------------------------------------------------------
 
@@ -27,8 +33,8 @@ const createNewParkingSpot = async (req, res) => {
     // 3. CREATING FINAL DATA OBJECT
     const finaldata = {
       ...data,
-      lastParked: null,
-      currentlyParked: null,
+      lastParked: "",
+      currentlyParked: "",
       createdAt: Date.now(),
     };
 
@@ -58,16 +64,22 @@ const getParkingSpots = async (req, res) => {
   try {
     // 1. FETCHING DATA FROM REQUEST BODY
     const { query } = req.body;
-    if (query === null) {
+
+    // 2. CHECKING IF QUERY IS EMPTY
+    if (query === null || query === undefined) {
       query = {};
     }
-    // 2. GETTING PARKING SPOTS
-    const spots = await READSPOT(query);
+    // 3. GETTING PARKING SPOTS
+    const spots = await READSPOT([query]);
 
-    // 3. SENDING RESPONSE
-    res.status(StatusCodes.OK).send({ spots });
+    // 4. SENDING RESPONSE
+    if (spots.length >= 0) {
+      res.status(StatusCodes.OK).send({ spots });
+    } else {
+      res.status(StatusCodes.NOT_FOUND).send("No Parking Spots Found! ❌");
+    }
   } catch (error) {
-    // 4. HANDLING ERRORS
+    // 5. HANDLING ERRORS
     console.log(error);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
@@ -81,21 +93,27 @@ const getParkingSpots = async (req, res) => {
 const updateParkingSpot = async (req, res) => {
   try {
     // 1. FETCHING DATA FROM REQUEST BODY
-    const { spotId, dataToUpdate } = req.body;
+    const { query, data } = req.body;
 
     // 2. CHECKING IF SPOT EXISTS
-    const spot = await PARKINGMODEL.findById(spotId);
-    if (spot.length !== 1) {
+    const spot = await READSPOT([query]);
+    if (spot.length === 0) {
       return res
         .status(StatusCodes.NOT_FOUND)
-        .send("Parking Spot not Found ! ❌");
+        .send("Parking Spot Not Found ! ❌");
     }
 
     // 3. UPDATING SPOT STATUS
-    await PARKINGMODEL.findByIdAndUpdate(spotId, dataToUpdate);
+    const updated = await UPDATESPOT(query, data);
 
     // 4. SENDING RESPONSE
-    res.status(StatusCodes.OK).send("Parking spot status updated! ✅ ");
+    if (updated) {
+      res.status(StatusCodes.OK).send(updated);
+    } else {
+      res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .send("Error Updating parking Spot! ❌");
+    }
   } catch (error) {
     // 5. HANDLING ERRORS
     console.log(error);
@@ -110,10 +128,10 @@ const updateParkingSpot = async (req, res) => {
 const deleteParkingSpot = async (req, res) => {
   try {
     // 1. FETCHING DATA FROM REQUEST BODY
-    const { spotId } = req.body;
+    const { query } = req.body;
 
     // 2. CHECKING IF SPOT EXISTS
-    const spot = await PARKINGMODEL.findById(spotId);
+    const spot = await READSPOT([query]);
     if (spot.length !== 1) {
       return res
         .status(StatusCodes.NOT_FOUND)
@@ -121,13 +139,18 @@ const deleteParkingSpot = async (req, res) => {
     }
 
     // 3. DELETING SPOT
-    await PARKINGMODEL.findByIdAndDelete(spotId);
+    const deleted = await DELETESPOT(query);
 
     // 4. SENDING RESPONSE
-    res.status(StatusCodes.OK).send("Parking spot deleted Sucessfully! ✅ ");
+    if (deleted) {
+      res.status(StatusCodes.OK).send("Parking spot deleted Sucessfully! ✅ ");
+    } else {
+      res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .send("Error Deleting parking Spot! ❌");
+    }
   } catch (error) {
     // 5. HANDLING ERRORS
-
     console.log(error);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
