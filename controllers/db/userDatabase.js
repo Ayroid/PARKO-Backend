@@ -1,11 +1,7 @@
 // IMPORTING DATABASE MODELS
 const { USERMODEL } = require("../../models/userModel");
 
-// ----------------------------------------------------------------
-
 // DATABASE OPERATIONS
-
-// ----------------------------------------------------------------
 
 // READ USER
 const readUser = (query) => {
@@ -26,8 +22,6 @@ const readUser = (query) => {
     console.log("Error Reading User ❌", error);
   }
 };
-
-// ----------------------------------------------------------------
 
 // CREATE USER
 const createUser = (data) => {
@@ -52,8 +46,6 @@ const createUser = (data) => {
   }
 };
 
-// ----------------------------------------------------------------
-
 // UPDATE USER
 const updateUser = (query, data) => {
   try {
@@ -75,8 +67,6 @@ const updateUser = (query, data) => {
   }
 };
 
-// ----------------------------------------------------------------
-
 // DELETE USER
 const deleteUser = (query) => {
   try {
@@ -97,8 +87,6 @@ const deleteUser = (query) => {
     console.log("Error Deleting User ❌", error);
   }
 };
-
-// ----------------------------------------------------------------
 
 // EXPORTING MODULES
 module.exports = {

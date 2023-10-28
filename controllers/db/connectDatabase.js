@@ -1,12 +1,8 @@
 // DOT ENV CONFIGURATION
 require("dotenv").config();
 
-// ------------------------------------------------------------------------------
-
 // IMPORTING MODULES
 const mongoose = require("mongoose");
-
-// ------------------------------------------------------------------------------
 
 // DATABASE CONFIGURATION
 const connectDatabase = async () => {
@@ -30,8 +26,6 @@ const connectDatabase = async () => {
     console.log("Database Connection Error ❌", error);
   }
 };
-
-// ------------------------------------------------------------------------------
 
 // EXPORTING MODULE
 module.exports = { CONNECTDATABSE: connectDatabase };

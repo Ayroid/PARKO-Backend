@@ -1,8 +1,6 @@
 // IMPORTING MODULES
 const crypto = require("crypto");
 
-// ----------------------------------------------------------------
-
 // OTP GENERATOR
 function otpGenerator() {
   const min = 100000; // Minimum 6-digit number
@@ -12,8 +10,6 @@ function otpGenerator() {
   const randomNumber = parseInt(randomBytes.toString("hex"), 16); // Convert bytes to an integer
   return (randomNumber % (max - min + 1)) + min;
 }
-
-// ----------------------------------------------------------------
 
 // EXPORTING MODULES
 module.exports = {

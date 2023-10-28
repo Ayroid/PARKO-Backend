@@ -1,30 +1,20 @@
 // DOT ENV CONFIGURATION
 require("dotenv").config();
 
-// ----------------------------------------------------------------
-
 // IMPORTING MODULES
 const { StatusCodes } = require("http-status-codes");
 const twilio = require("twilio");
 
-// ----------------------------------------------------------------
-
 // CUSTOM MODULE IMPORTS
 const { SMSLOGINOTP } = require("./messageTemplates");
-
-// ----------------------------------------------------------------
 
 // SMS CONFIGURATION
 const TWILIO_ACCOUNT_SID = process.env.TWILIO_ACCOUNT_SID;
 const TWILIO_AUTH_TOKEN = process.env.TWILIO_AUTH_TOKEN;
 const TWILIO_PHONE_NUMBER = process.env.TWILIO_PHONE_NUMBER;
 
-// ----------------------------------------------------------------
-
 // TWILIO CLIENT
 const client = twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
-
-// ----------------------------------------------------------------
 
 // SEND SMS FUNCTION
 const sendSMS = async (phone, otpValue) => {
@@ -40,8 +30,6 @@ const sendSMS = async (phone, otpValue) => {
     console.log(error);
   }
 };
-
-// ----------------------------------------------------------------
 
 // EXPORTING MODULES
 module.exports = {

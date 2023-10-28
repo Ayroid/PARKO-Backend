@@ -1,8 +1,6 @@
 // IMPORTING MODULES
 const { StatusCodes } = require("http-status-codes");
 
-// ----------------------------------------------------------------
-
 // CUSTOM MODULE IMPORTS
 const { PARKINGMODEL } = require("../models/parkingSpotModel");
 const {
@@ -12,8 +10,6 @@ const {
   DELETESPOT,
 } = require("./db/parkingSpotDatabase");
 const { Query } = require("mongoose");
-
-// ----------------------------------------------------------------
 
 // CREATE NEW PARKING SPOT CONTROLLER
 const createNewParkingSpot = async (req, res) => {
@@ -60,8 +56,6 @@ const createNewParkingSpot = async (req, res) => {
   }
 };
 
-// ----------------------------------------------------------------
-
 // GET PARKING SPOTS CONTROLLER
 const getParkingSpots = async (req, res) => {
   try {
@@ -89,8 +83,6 @@ const getParkingSpots = async (req, res) => {
       .send("Error Getting Parking Spots! ❌");
   }
 };
-
-// ----------------------------------------------------------------
 
 // UPDATE PARKING SPOT CONTROLLER
 const updateParkingSpot = async (req, res) => {
@@ -125,8 +117,6 @@ const updateParkingSpot = async (req, res) => {
       .send("Error Updating parking Spot! ❌");
   }
 };
-
-// ----------------------------------------------------------------
 
 // DELETE PARKING SPOT CONTROLLER
 const deleteParkingSpot = async (req, res) => {

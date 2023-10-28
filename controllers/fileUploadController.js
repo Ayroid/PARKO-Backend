@@ -2,8 +2,6 @@
 const multer = require("multer");
 const path = require("path");
 
-// ------------------------------------------------------------------------------
-
 /* FILE UPLOAD FUNCTIONS */
 
 // FILE DESTINATION MAPPING
@@ -39,12 +37,9 @@ const storage = multer.diskStorage({
   },
 });
 
-// ------------------------------------------------------------------------------
-
 // MULTER UPLOAD
 const upload = multer({ storage: storage });
 
-// ------------------------------------------------------------------------------
 // EXPORTING FUNCTIONS
 module.exports = {
   UPLOAD: upload,

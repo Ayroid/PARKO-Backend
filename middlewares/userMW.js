@@ -1,5 +1,4 @@
 // USER DETAILS VERIFICATION CONTROLLER
-
 const verifyUser = (req, res, next) => {
   const { username, phone, email, sapid } = req.body;
   if (!username || !email || !phone || !sapid) {

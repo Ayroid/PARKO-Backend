@@ -21,8 +21,6 @@ const templates = {
   },
 };
 
-// ----------------------------------------------------------------
-
 // CUSTOM TEMPLATING CONTROLLERS
 const emailLoginOTP = (username, otpvalue) => {
   const template = templates.LOGIN;
@@ -30,8 +28,6 @@ const emailLoginOTP = (username, otpvalue) => {
   template.html = template.html.replace("otpvalue", otpvalue);
   return template;
 };
-
-// ----------------------------------------------------------------
 
 // EXPORTING MODULES
 module.exports = { EMAILLOGINOTP: emailLoginOTP };

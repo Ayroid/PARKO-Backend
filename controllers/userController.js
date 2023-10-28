@@ -2,11 +2,7 @@
 const { StatusCodes } = require("http-status-codes");
 const path = require("path");
 
-// ----------------------------------------------------------------
-
 // CUSTOM MODULE IMPORTS
-
-// ----------------------------------------------------------------
 
 // IMPORTING DATABASE CONTROLLERS
 const {
@@ -34,8 +30,6 @@ const { SENDSMS } = require("./messages/messageController");
 
 // JWT CONTROLLER
 const { GENERATETOKEN } = require("../middlewares/jwtAuthMW");
-
-// ----------------------------------------------------------------
 
 // REGISTER USER CONTROLLER
 const registerUser = async (req, res) => {
@@ -76,8 +70,6 @@ const registerUser = async (req, res) => {
       .send("Error Creating User! ❌");
   }
 };
-
-// ----------------------------------------------------------------
 
 // LOGIN USER CONTROLLER - MAIL
 const loginUserMail = async (req, res) => {
@@ -128,8 +120,6 @@ const loginUserMail = async (req, res) => {
   }
 };
 
-// ----------------------------------------------------------------
-
 // LOGIN USER CONTROLLER - PHONE
 const loginUserPhone = async (req, res) => {
   try {
@@ -179,8 +169,6 @@ const loginUserPhone = async (req, res) => {
   }
 };
 
-// ----------------------------------------------------------------
-
 // LOGOUT USER CONTROLLER
 const logOutUser = async (req, res) => {
   try {
@@ -204,8 +192,6 @@ const logOutUser = async (req, res) => {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("Error logging out ❌");
   }
 };
-
-// ----------------------------------------------------------------
 
 // VERIFY OTP CONTROLLER - MAIL
 const verifyOTPMail = async (req, res) => {
@@ -257,8 +243,6 @@ const verifyOTPMail = async (req, res) => {
       .send("Error Verifying OTP! ❌");
   }
 };
-
-// ----------------------------------------------------------------
 
 // VERIFY OTP CONTROLLER - PHONE
 const verifyOTPPhone = async (req, res) => {
@@ -315,8 +299,6 @@ const verifyOTPPhone = async (req, res) => {
   }
 };
 
-// ----------------------------------------------------------------
-
 // GET USER DETAILS CONTROLLER
 const readUser = async (req, res) => {
   try {
@@ -345,8 +327,6 @@ const readUser = async (req, res) => {
       .send("Error Getting User Details! ❌");
   }
 };
-
-// ----------------------------------------------------------------
 
 // UPDATE USER DETAILS CONTROLLER
 const updateUser = async (req, res) => {
@@ -396,8 +376,6 @@ const updateUser = async (req, res) => {
   }
 };
 
-// ----------------------------------------------------------------
-
 // DELETE USER CONTROLLER
 const deleteUser = async (req, res) => {
   try {
@@ -441,8 +419,6 @@ const deleteUser = async (req, res) => {
       .send("Error Deleting User! ❌");
   }
 };
-
-// ----------------------------------------------------------------
 
 // UPLOAD PROFILE PIC CONTROLLER
 const uploadProfilePic = async (req, res) => {
@@ -497,8 +473,6 @@ const uploadProfilePic = async (req, res) => {
       .send("Error Uploading Profile Pic! ❌");
   }
 };
-
-// ----------------------------------------------------------------
 
 // EXPORTING MODULES
 module.exports = {
