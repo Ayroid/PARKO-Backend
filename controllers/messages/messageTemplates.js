@@ -5,12 +5,16 @@ const templates = {
   },
 };
 
+// ----------------------------------------------------------------
+
 // CUSTOM TEMPLATING CONTROLLERS
 const smsLoginOTP = (otpvalue) => {
   const template = templates.LOGIN;
   template.body = template.body.replace("otpvalue", otpvalue);
   return template;
 };
+
+// ----------------------------------------------------------------
 
 // EXPORTING MODULES
 module.exports = { SMSLOGINOTP: smsLoginOTP };

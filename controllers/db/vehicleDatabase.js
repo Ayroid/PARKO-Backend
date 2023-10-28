@@ -1,7 +1,11 @@
 // IMPORTING DATABASE MODELS
 const { VEHICLEMODEL } = require("../../models/vehicleModel");
 
+// ----------------------------------------------------------------
+
 // DATABASE OPERATIONS
+
+// ----------------------------------------------------------------
 
 // READ USER
 const readVehicle = (query) => {
@@ -22,6 +26,8 @@ const readVehicle = (query) => {
     console.log("Error Reading Vehicle ❌", error);
   }
 };
+
+// ----------------------------------------------------------------
 
 // CREATE USER
 const createVehicle = (data) => {
@@ -46,6 +52,8 @@ const createVehicle = (data) => {
   }
 };
 
+// ----------------------------------------------------------------
+
 // UPDATE USER
 const updateVehicle = (query, data) => {
   try {
@@ -66,6 +74,8 @@ const updateVehicle = (query, data) => {
     console.log("Error Updating Vehicle ❌", error);
   }
 };
+
+// ----------------------------------------------------------------
 
 // DELETE USER
 const deleteVehicle = (query) => {
@@ -88,8 +98,9 @@ const deleteVehicle = (query) => {
   }
 };
 
-// EXPORTING MODULES
+// ----------------------------------------------------------------
 
+// EXPORTING MODULES
 module.exports = {
   READVEHICLE: readVehicle,
   CREATEVEHICLE: createVehicle,

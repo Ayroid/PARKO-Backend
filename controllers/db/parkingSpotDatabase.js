@@ -1,7 +1,11 @@
 // IMPORTING DATABASE MODELS
 const { PARKINGMODEL } = require("../../models/parkingSpotModel");
 
+// ----------------------------------------------------------------
+
 // DATABASE OPERATIONS
+
+// ----------------------------------------------------------------
 
 // READ SPOT
 const readSpot = (query) => {
@@ -22,6 +26,8 @@ const readSpot = (query) => {
     console.log("Error Reading Parking Spot ❌", error);
   }
 };
+
+// ----------------------------------------------------------------
 
 // CREATE SPOT
 const createSpot = (data) => {
@@ -46,6 +52,8 @@ const createSpot = (data) => {
   }
 };
 
+// ----------------------------------------------------------------
+
 // UPDATE SPOT
 const updateSpot = (query, data) => {
   try {
@@ -68,6 +76,8 @@ const updateSpot = (query, data) => {
   }
 };
 
+// ----------------------------------------------------------------
+
 // DELETE SPOT
 const deleteSpot = (query) => {
   try {
@@ -89,8 +99,9 @@ const deleteSpot = (query) => {
   }
 };
 
-// EXPORTING MODULES
+// ----------------------------------------------------------------
 
+// EXPORTING MODULES
 module.exports = {
   READSPOT: readSpot,
   CREATESPOT: createSpot,

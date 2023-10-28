@@ -2,7 +2,11 @@
 const { StatusCodes } = require("http-status-codes");
 const path = require("path");
 
+// ----------------------------------------------------------------
+
 // CUSTOM MODULE IMPORTS
+
+// ----------------------------------------------------------------
 
 // IMPORTING DATABASE CONTROLLERS
 const {
@@ -178,7 +182,6 @@ const loginUserPhone = async (req, res) => {
 // ----------------------------------------------------------------
 
 // LOGOUT USER CONTROLLER
-// NOTE : the logout function must work after removing the token from local storage (Front-end)
 const logOutUser = async (req, res) => {
   try {
     // 1. FETCHING TOKEN FROM REQUEST HEADERS
@@ -203,6 +206,7 @@ const logOutUser = async (req, res) => {
 };
 
 // ----------------------------------------------------------------
+
 // VERIFY OTP CONTROLLER - MAIL
 const verifyOTPMail = async (req, res) => {
   try {
@@ -312,21 +316,9 @@ const verifyOTPPhone = async (req, res) => {
 };
 
 // ----------------------------------------------------------------
+
 // GET USER DETAILS CONTROLLER
 const readUser = async (req, res) => {
-  /*
-
-  SAMPLE QUERY OBJECT
-
-  {
-    "query": {
-      "email": "email@email.com",
-      "phone": 1234567890,
-    }
-  }
-
-  */
-
   try {
     // 1. FETCHING DATA FROM REQUEST BODY
     let { query } = req.body;
@@ -355,6 +347,7 @@ const readUser = async (req, res) => {
 };
 
 // ----------------------------------------------------------------
+
 // UPDATE USER DETAILS CONTROLLER
 const updateUser = async (req, res) => {
   try {
@@ -504,6 +497,8 @@ const uploadProfilePic = async (req, res) => {
       .send("Error Uploading Profile Pic! ❌");
   }
 };
+
+// ----------------------------------------------------------------
 
 // EXPORTING MODULES
 module.exports = {

@@ -1,7 +1,11 @@
 // IMPORTING DATABASE MODELS
 const { OTPMODEL } = require("../../models/otpModel");
 
+// ----------------------------------------------------------------
+
 // DATABASE OPERATIONS
+
+// ----------------------------------------------------------------
 
 // READ OTP
 const readOTP = (query) => {
@@ -22,6 +26,8 @@ const readOTP = (query) => {
     console.log("Error Reading OTP ❌", error);
   }
 };
+
+// ----------------------------------------------------------------
 
 // CREATE OTP
 const createOTP = (data) => {
@@ -46,6 +52,8 @@ const createOTP = (data) => {
   }
 };
 
+// ----------------------------------------------------------------
+
 // DELETE OTP
 const deleteOTP = (query) => {
   try {
@@ -67,8 +75,9 @@ const deleteOTP = (query) => {
   }
 };
 
-// EXPORTING MODULES
+// ----------------------------------------------------------------
 
+// EXPORTING MODULES
 module.exports = {
   READOTP: readOTP,
   CREATEOTP: createOTP,

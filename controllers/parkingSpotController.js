@@ -1,6 +1,8 @@
 // IMPORTING MODULES
 const { StatusCodes } = require("http-status-codes");
 
+// ----------------------------------------------------------------
+
 // CUSTOM MODULE IMPORTS
 const { PARKINGMODEL } = require("../models/parkingSpotModel");
 const {
@@ -59,6 +61,7 @@ const createNewParkingSpot = async (req, res) => {
 };
 
 // ----------------------------------------------------------------
+
 // GET PARKING SPOTS CONTROLLER
 const getParkingSpots = async (req, res) => {
   try {
@@ -124,6 +127,7 @@ const updateParkingSpot = async (req, res) => {
 };
 
 // ----------------------------------------------------------------
+
 // DELETE PARKING SPOT CONTROLLER
 const deleteParkingSpot = async (req, res) => {
   try {

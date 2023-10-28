@@ -1,6 +1,8 @@
 // IMPORTING MODULES
 const { StatusCodes } = require("http-status-codes");
 
+// ----------------------------------------------------------------
+
 // IMPORTING DATABASE CONTROLLERS
 const {
   READVEHICLE,
@@ -10,6 +12,8 @@ const {
 } = require("./db/vehicleDatabase");
 
 const { UPDATEUSER } = require("./db/userDatabase");
+
+// ----------------------------------------------------------------
 
 // REGISTER VEHICLE CONTROLLER
 const registerVehicle = async (req, res) => {
@@ -140,7 +144,6 @@ const updateVehicle = async (req, res) => {
 // ----------------------------------------------------------------
 
 // DELETE VEHICLE CONTROLLER
-
 const deleteVehicle = async (req, res) => {
   try {
     // 1. FETCHING DATA FROM REQUEST BODY

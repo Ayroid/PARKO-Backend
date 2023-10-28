@@ -1,8 +1,12 @@
 // DOT ENV CONFIGURATION
 require("dotenv").config();
 
+// ------------------------------------------------------------------------------
+
 // NODEMAILER CONFIGURATION
 const nodemailer = require("nodemailer");
+
+// ------------------------------------------------------------------------------
 
 // MAIL CONFIGURATION
 const MAIL_HOST = process.env.MAIL_HOST;
@@ -10,8 +14,12 @@ const MAIL_PORT = process.env.MAIL_PORT;
 const MAIL_USERNAME = process.env.MAIL_USERNAME;
 const MAIL_PASSWORD = process.env.MAIL_PASSWORD;
 
+// ------------------------------------------------------------------------------
+
 // MAIL TEMPLATES
 const { EMAILLOGINOTP } = require("./mailTemplates");
+
+// ------------------------------------------------------------------------------
 
 // NODEMAILER TRANSPORTER
 const transporter = nodemailer.createTransport({
@@ -23,6 +31,8 @@ const transporter = nodemailer.createTransport({
   },
   secure: true,
 });
+
+// ------------------------------------------------------------------------------
 
 // SEND MAIL FUNCTION
 const sendMail = async (username, email, otpValue) => {
@@ -52,6 +62,8 @@ const sendMail = async (username, email, otpValue) => {
     console.log("Error in sending mail ❌" + err);
   }
 };
+
+// ------------------------------------------------------------------------------
 
 // EXPORTING MODULES
 module.exports = {
