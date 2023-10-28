@@ -6,11 +6,11 @@ const { PARKINGMODEL } = require("../../models/parkingSpotModel");
 // READ SPOT
 const readSpot = (query) => {
   try {
-    return new Promise((resovle, reject) => {
+    return new Promise((resolve, reject) => {
       PARKINGMODEL.find({ $or: query })
         .then((result) => {
           if (result) {
-            resovle(result);
+            resolve(result);
           }
         })
         .catch((error) => {
@@ -26,14 +26,14 @@ const readSpot = (query) => {
 // CREATE SPOT
 const createSpot = (data) => {
   try {
-    return new Promise((resovle, reject) => {
+    return new Promise((resolve, reject) => {
       const newSpot = new PARKINGMODEL(data);
       newSpot
         .save()
         .then((result) => {
           if (result) {
             console.log(`Parking Spot Created ✅ - {spotId : ${result._id}}`);
-            resovle(result);
+            resolve(result);
           }
         })
         .catch((error) => {
@@ -49,12 +49,13 @@ const createSpot = (data) => {
 // UPDATE SPOT
 const updateSpot = (query, data) => {
   try {
-    return new Promise((resovle, reject) => {
-      PARKINGMODEL.updateOne(query, data)
+    return new Promise((resolve, reject) => {
+      PARKINGMODEL.findOneAndUpdate(query, data, { new: true })
         .then((result) => {
           if (result) {
             console.log(`Parking Spot Updated ✅ - {spotId : ${result._id}}`);
-            resovle(result);
+            console.log(result)
+            resolve(result);
           }
         })
         .catch((error) => {
@@ -70,12 +71,12 @@ const updateSpot = (query, data) => {
 // DELETE SPOT
 const deleteSpot = (query) => {
   try {
-    return new Promise((resovle, reject) => {
-      PARKINGMODEL.deleteOne(query)
+    return new Promise((resolve, reject) => {
+      PARKINGMODEL.findOneAndDelete(query)
         .then((result) => {
           if (result) {
             console.log(`Parking Spot Deleted ✅ - {spotId : ${result._id}}`);
-            resovle(result);
+            resolve(result);
           }
         })
         .catch((error) => {

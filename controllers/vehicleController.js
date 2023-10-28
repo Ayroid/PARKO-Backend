@@ -162,7 +162,7 @@ const deleteVehicle = async (req, res) => {
 
     // 5. SENDING VEHICLE
     if (deleted) {
-      res.status(StatusCodes.OK).send(deleted);
+      res.status(StatusCodes.OK).send("Vehicle Deleted ✅", deleted);
     } else {
       res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)

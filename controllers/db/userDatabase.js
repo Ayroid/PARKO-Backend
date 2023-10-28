@@ -50,7 +50,7 @@ const createUser = (data) => {
 const updateUser = (query, data) => {
   try {
     return new Promise((resovle, reject) => {
-      USERMODEL.findOneAndUpdate(query, data, { new: true })
+      USERMODEL.findOneAndUpdate(query, data, { new: true }) // WHAT DOES NEW MEAN HERE? ANSWER: https://stackoverflow.com/questions/30419575/how-to-get-the-updated-document-after-mongoose-update
         .then((result) => {
           if (result) {
             console.log(`User Updated ✅ - {userId : ${result._id}}`);

@@ -43,7 +43,7 @@ const createNewParkingSpot = async (req, res) => {
 
     // 5. SENDING RESPONSE
     if (created) {
-      res.status(StatusCodes.CREATED).send({ created: created });
+      res.status(StatusCodes.CREATED).send({ parkingSpotId: created._id });
     } else {
       res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
@@ -143,7 +143,7 @@ const deleteParkingSpot = async (req, res) => {
 
     // 4. SENDING RESPONSE
     if (deleted) {
-      res.status(StatusCodes.OK).send("Parking spot deleted Sucessfully! ✅ ");
+      res.status(StatusCodes.OK).send("Parking Deleted ✅", deleted);
     } else {
       res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
