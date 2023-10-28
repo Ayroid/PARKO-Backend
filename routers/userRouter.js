@@ -15,13 +15,6 @@ const {
   UPLOADPROFILEPIC,
 } = require("../controllers/userController");
 
-const {
-  GETPARKING,
-  FINDCAR,
-  BOOKPARKING,
-  RAISEISSUE,
-} = require("../controllers/parkingController");
-
 // MIDDLEWARES IMPORT
 const { VERIFYUSERMW } = require("../middlewares/userMW");
 
