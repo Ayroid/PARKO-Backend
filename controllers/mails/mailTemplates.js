@@ -22,10 +22,10 @@ const templates = {
 };
 
 // CUSTOM TEMPLATING CONTROLLERS
-const emailLoginOTP = (username, otpvalue) => {
+const emailLoginOTP = (username, otpValue) => {
   const template = templates.LOGIN;
   template.html = template.html.replace("username", username);
-  template.html = template.html.replace("otpvalue", otpvalue);
+  template.html = template.html.replace("otpvalue", otpValue);
   return template;
 };
 

@@ -87,7 +87,7 @@ const loginUserMail = async (req, res) => {
     const otpexist = await READOTP([{ email: email }]);
 
     // 4. IF OTP EXIST AND NOT EXPIRED
-    if (otpexist.length > 0 && otpexist[0].expiryTime > Date.now()) {
+    if (otpexist.length > 0 && otpexist[0].reRequestTime > Date.now()) {
       return res.status(StatusCodes.BAD_REQUEST).send("OTP Already Sent ✅");
     }
 
@@ -102,7 +102,8 @@ const loginUserMail = async (req, res) => {
       email: email,
       otpValue: otpValue,
       issueTime: Date.now(),
-      expiryTime: Date.now() + 600000,
+      reRequestTime: Date.now() + 60000, // 1 minute
+      expiryTime: Date.now() + 600000, //
     })
       .then((result) => {
         console.log("OTP Created ✅", result._id);

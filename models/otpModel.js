@@ -24,6 +24,11 @@ const otpSchema = new mongoose.Schema({
     required: true,
     default: Date.now(),
   },
+  reRequestTime: {
+    type: Date,
+    required: true,
+    default: () => new Date(Date.now() + 60000),
+  },
   expiryTime: {
     type: Date,
     required: true,
