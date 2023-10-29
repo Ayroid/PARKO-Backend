@@ -5,6 +5,7 @@ const express = require("express");
 const {
   LOGINUSERMAIL,
   VERIFYOTPMAIL,
+  RESENDOTPMAIL,
   LOGINUSERPHONE,
   VERIFYOTPPHONE,
   REGISTERUSER,
@@ -36,6 +37,7 @@ USER.get("/test", (req, res) => {
 USER.post("/register", VERIFYUSERMW, REGISTERUSER);
 USER.post("/login/mail", LOGINUSERMAIL);
 USER.post("/verify/mail", VERIFYOTPMAIL);
+USER.post("/verify/reRequestMail", RESENDOTPMAIL);
 USER.post("/login/phone", LOGINUSERPHONE);
 USER.post("/verify/phone", VERIFYOTPPHONE);
 USER.post("/getUser", VERIFYTOKEN, READUSER);

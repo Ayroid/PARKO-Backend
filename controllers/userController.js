@@ -121,6 +121,67 @@ const loginUserMail = async (req, res) => {
   }
 };
 
+// RESEND OTP CONTROLLER - MAIL
+const resendOTPMail = async (req, res) => {
+  try {
+    // 1. FETCHING DATA FROM REQUEST BODY
+    const { email } = req.body;
+
+    // 2. CHECKING IF USER ALREADY EXIST OR NOT
+    const user = await READUSER([{ email: email }]);
+    if (user.length !== 1) {
+      return res.status(StatusCodes.NOT_FOUND).send("User Not Registered ❌");
+    }
+
+    // 3. CHECKING IF OTP EXISTS
+    const otpexist = await READOTP([{ email: email }]);
+
+    // 4. IF OTP EXIST AND NOT EXPIRED
+    if (otpexist.length > 0 && otpexist[0].reRequestTime > Date.now()) {
+      return res.status(StatusCodes.BAD_REQUEST).send("OTP Already Sent ✅");
+    }
+
+    // 5. IF OTP EXIST AND EXPIRED
+    if (otpexist.length > 0 && otpexist[0].reRequestTime < Date.now()) {
+      await DELETEOTP({ email: email })
+        .then((result) => {
+          console.log("OTP Deleted ✅", result._id);
+        })
+        .catch((error) => {
+          console.log("Error Deleting OTP ❌", error);
+        });
+    }
+
+    // 5. GENERATE OTP
+    const otpValue = OTPGENERATOR();
+    // SENDING OTP THROUGH MAIL
+    SENDMAIL(user[0].username, email, otpValue);
+
+    // 6. CREATING OTP IN DATABASE
+    await CREATEOTP({
+      otpType: "EMAIL",
+      email: email,
+      otpValue: otpValue,
+      issueTime: Date.now(),
+      reRequestTime: Date.now() + 60000, // 1 minute
+      expiryTime: Date.now() + 600000, //
+    })
+      .then((result) => {
+        console.log("OTP Created ✅", result._id);
+      })
+      .catch((error) => {
+        console.log("Error Creating OTP ❌", error);
+      });
+
+    // 7. SENDING RESPONSE
+    return res.status(StatusCodes.OK).send("OTP Sent ✅");
+  } catch (error) {
+    // 8. Handling errors
+    console.log(error);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("Error Logging In! ❌");
+  }
+};
+
 // LOGIN USER CONTROLLER - PHONE
 const loginUserPhone = async (req, res) => {
   try {
@@ -479,6 +540,7 @@ const uploadProfilePic = async (req, res) => {
 module.exports = {
   LOGINUSERMAIL: loginUserMail,
   VERIFYOTPMAIL: verifyOTPMail,
+  RESENDOTPMAIL: resendOTPMail,
   LOGINUSERPHONE: loginUserPhone,
   VERIFYOTPPHONE: verifyOTPPhone,
   REGISTERUSER: registerUser,
