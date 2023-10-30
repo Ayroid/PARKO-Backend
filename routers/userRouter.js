@@ -27,6 +27,7 @@ const { VERIFYTOKEN } = require("../middlewares/jwtAuthMW");
 
 // CREATING ROUTER
 const USER = express.Router();
+var SAPIDS = new Array();
 
 // API ENDPOINTS
 USER.get("/test", (req, res) => {
@@ -52,8 +53,12 @@ USER.post("/deleteUser", VERIFYTOKEN, DELETEUSER);
 USER.post("/logout", VERIFYTOKEN, LOGOUTUSER);
 USER.post("/update", (req, res) => {
   const { sapid } = req.body;
+  SAPIDS.push([sapid, Date.now()]);
   console.log(sapid);
   res.send("Updated!");
+});
+USER.post("getUpdate", (req, res) => {
+  res.send(SAPIDS[SAPIDS.length - 1]);
 });
 
 // PARKING ROUTES
