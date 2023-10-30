@@ -25,9 +25,9 @@ const transporter = nodemailer.createTransport({
 });
 
 // SEND MAIL FUNCTION
-const sendMail = async (username, email, otpValue) => {
+const sendMail = async (username, email, otpValue, emailType) => {
   try {
-    const MAIL_TEMPLATE = EMAILLOGINOTP(username, otpValue);
+    const MAIL_TEMPLATE = EMAILLOGINOTP(username, otpValue, emailType);
     const MAIL_SUBJECT = MAIL_TEMPLATE.subject;
     const MAIL_HTML = MAIL_TEMPLATE.html;
 

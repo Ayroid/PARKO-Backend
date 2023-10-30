@@ -57,6 +57,7 @@ const registerUser = async (req, res) => {
 
     // 5. SENDING USER
     if (created) {
+      SENDMAIL(username, email, 0, "REGISTRATION");
       res.status(StatusCodes.CREATED).send({ userId: created._id });
     } else {
       res
@@ -65,6 +66,7 @@ const registerUser = async (req, res) => {
     }
   } catch (error) {
     // 6. HANDLING ERRORS
+    console.log(error);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .send("Error Creating User! ❌");
@@ -94,7 +96,7 @@ const loginUserMail = async (req, res) => {
     // 5. GENERATE OTP
     const otpValue = OTPGENERATOR();
     // SENDING OTP THROUGH MAIL
-    SENDMAIL(user[0].username, email, otpValue);
+    SENDMAIL(user[0].username, email, otpValue, "LOGIN");
 
     // 6. CREATING OTP IN DATABASE
     await CREATEOTP({
