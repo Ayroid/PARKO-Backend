@@ -33,9 +33,9 @@ const { PARKINGSPOTROUTER } = require("./routers/parkingSpotRouter");
 const { VEHICLEROUTER } = require("./routers/vehicleRouter");
 
 // ROUTES
-app.use("/user", USERROUTER);
-app.use("/user/vehicle", VEHICLEROUTER);
-app.use("/user/parkingspot", PARKINGSPOTROUTER);
+app.use("/api/user", USERROUTER);
+app.use("/api/user/vehicle", VEHICLEROUTER);
+app.use("/api/user/parkingspot", PARKINGSPOTROUTER);
 
 // STARTING SERVER
 app.listen(PORT, () => {
