@@ -53,6 +53,7 @@ USER.post("/logout", VERIFYTOKEN, LOGOUTUSER);
 USER.post("/update", (req, res) => {
   const { sapid } = req.body;
   console.log(sapid);
+  res.send("Updated!");
 });
 
 // PARKING ROUTES
