@@ -50,6 +50,10 @@ USER.post(
 );
 USER.post("/deleteUser", VERIFYTOKEN, DELETEUSER);
 USER.post("/logout", VERIFYTOKEN, LOGOUTUSER);
+USER.post("/update", (req, res) => {
+  const { sapid } = req.body;
+  console.log(sapid);
+});
 
 // PARKING ROUTES
 // USER.post("/raiseIssue", RAISEISSUE);
