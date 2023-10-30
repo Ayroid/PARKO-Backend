@@ -30,7 +30,7 @@ const USER = express.Router();
 
 // API ENDPOINTS
 USER.get("/test", (req, res) => {
-  res.send("Server is working fine ✅");
+  res.send("Server is working ✅");
 });
 
 // USER ROUTES
