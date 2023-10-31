@@ -1,5 +1,6 @@
 // MODULES IMPORT
 const express = require("express");
+const { StatusCodes } = require("http-status-codes");
 
 // CONTROLLERS IMPORT
 const {
@@ -31,7 +32,11 @@ var SAPIDS = new Array();
 
 // API ENDPOINTS
 USER.get("/test", (req, res) => {
-  res.send("Server is working ✅");
+  res.status(StatusCodes.OK).send("Server is working ✅");
+});
+
+USER.post("/test", (req, res) => {
+  res.status(StatusCodes.OK).send("Server is working ✅");
 });
 
 // USER ROUTES
