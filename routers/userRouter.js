@@ -6,7 +6,6 @@ const { StatusCodes } = require("http-status-codes");
 const {
   LOGINUSERMAIL,
   VERIFYOTPMAIL,
-  RESENDOTPMAIL,
   LOGINUSERPHONE,
   VERIFYOTPPHONE,
   REGISTERUSER,
@@ -43,7 +42,6 @@ USER.post("/test", (req, res) => {
 USER.post("/register", VERIFYUSERMW, REGISTERUSER);
 USER.post("/login/mail", LOGINUSERMAIL);
 USER.post("/verify/mail", VERIFYOTPMAIL);
-USER.post("/verify/reRequestMail", RESENDOTPMAIL);
 USER.post("/login/phone", LOGINUSERPHONE);
 USER.post("/verify/phone", VERIFYOTPPHONE);
 USER.post("/getUser", VERIFYTOKEN, READUSER);
