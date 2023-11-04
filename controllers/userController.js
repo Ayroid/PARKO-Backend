@@ -276,7 +276,7 @@ const verifyOTPMail = async (req, res) => {
       return res.status(StatusCodes.BAD_REQUEST).send("OTP Expired ❌");
     }
     // 5. CHECKING IF OTP IS CORRECT
-    if (otpexist[0].otpValue !== otpValue) {
+    if (otpexist[0].otpValue != otpValue) {
       return res.status(StatusCodes.BAD_REQUEST).send("OTP Incorrect ❌");
     }
     // 6. DELETING OTP FROM DATABASE
