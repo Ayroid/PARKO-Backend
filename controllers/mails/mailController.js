@@ -27,9 +27,12 @@ const transporter = nodemailer.createTransport({
 // SEND MAIL FUNCTION
 const sendMail = async (username, email, otpValue, emailType) => {
   try {
-    const MAIL_TEMPLATE = EMAILLOGINOTP(username, otpValue, emailType);
-    const MAIL_SUBJECT = MAIL_TEMPLATE.subject;
-    const MAIL_HTML = MAIL_TEMPLATE.html;
+    let MAIL_TEMPLATE = EMAILLOGINOTP(emailType);
+    let MAIL_SUBJECT = MAIL_TEMPLATE.subject;
+    let MAIL_HTML = MAIL_TEMPLATE.html;
+
+    MAIL_HTML = MAIL_HTML.replace("username", username.trim());
+    MAIL_HTML = MAIL_HTML.replace("otpvalue", otpValue);
 
     const mailOptions = {
       from: MAIL_USERNAME,

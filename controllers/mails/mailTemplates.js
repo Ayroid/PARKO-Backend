@@ -108,10 +108,8 @@ const templates = {
 };
 
 // CUSTOM TEMPLATING CONTROLLERS
-const emailLoginOTP = (username, otpValue, emailType) => {
+const emailLoginOTP = (emailType) => {
   const template = templates[`${emailType}`];
-  template.html = template.html.replace("username", username);
-  template.html = template.html.replace("otpvalue", otpValue);
   return template;
 };
 
