@@ -2,7 +2,7 @@
 const mongoose = require("mongoose");
 
 // CREATING SCHEMA
-const parkingSchema = new mongoose.Schema({
+const parkingSpotSchema = new mongoose.Schema({
   parkingNumber: {
     type: String,
     required: true,
@@ -32,9 +32,9 @@ const parkingSchema = new mongoose.Schema({
 });
 
 // CREATING MODEL
-const parkingModel = mongoose.model("parking", parkingSchema);
+const parkingSpotModel = mongoose.model("parkingspots", parkingSpotSchema);
 
 // EXPORTING MODEL
 module.exports = {
-  PARKINGMODEL: parkingModel,
+  PARKINGSPOTMODEL: parkingSpotModel,
 };
