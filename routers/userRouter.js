@@ -4,11 +4,12 @@ const { StatusCodes } = require("http-status-codes");
 
 // CONTROLLERS IMPORT
 const {
+  REGISTERUSER,
   LOGINUSERMAIL,
   VERIFYOTPMAIL,
   LOGINUSERPHONE,
   VERIFYOTPPHONE,
-  REGISTERUSER,
+  VERIFYJWTTOKEN,
   READUSER,
   UPDATEUSER,
   DELETEUSER,
@@ -44,6 +45,7 @@ USER.post("/login/mail", LOGINUSERMAIL);
 USER.post("/verify/mail", VERIFYOTPMAIL);
 USER.post("/login/phone", LOGINUSERPHONE);
 USER.post("/verify/phone", VERIFYOTPPHONE);
+USER.post("/verify/token", VERIFYJWTTOKEN);
 USER.post("/getUser", VERIFYTOKEN, READUSER);
 USER.post("/updateUser", VERIFYTOKEN, UPDATEUSER);
 USER.post(

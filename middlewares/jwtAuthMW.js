@@ -16,6 +16,34 @@ const generateAccessToken = (payload, tokenExpiry) => {
   });
 };
 
+const checkAccessToken = async (token) => {
+  try {
+    // 1. CHECK IF TOKEN IS BLACKLISTED
+    const blackListed = await GETBLACKLISTTOKEN({ token: token });
+
+    // 2. IF TOKEN IS BLACKLISTED THEN RETURN FALSE
+    if (blackListed.length > 0) {
+      return res.status(StatusCodes.UNAUTHORIZED).send("Token Expired! ");
+    } else if (token) {
+      // 3. IF TOKEN IS NOT BLACKLISTED THEN VERIFY THE TOKEN
+      jwt.verify(token, process.env.JWT_SECRET, (err, data) => {
+        if (err) {
+          return false;
+        } else {
+          return true;
+        }
+      });
+    } else {
+      // 4. IF TOKEN IS NOT PROVIDED THEN RETURN FALSE
+
+      return false;
+    }
+  } catch (err) {
+    // 5. HANDLE ERROR
+    return false;
+  }
+};
+
 const verifyAccessToken = async (req, res, next) => {
   const token = req.headers["authorization"];
 
@@ -40,4 +68,5 @@ const verifyAccessToken = async (req, res, next) => {
 module.exports = {
   GENERATETOKEN: generateAccessToken,
   VERIFYTOKEN: verifyAccessToken,
+  CHECKTOKEN: checkAccessToken,
 };

@@ -29,7 +29,11 @@ const { SENDMAIL } = require("./mails/mailController");
 const { SENDSMS } = require("./messages/messageController");
 
 // JWT CONTROLLER
-const { GENERATETOKEN } = require("../middlewares/jwtAuthMW");
+const {
+  GENERATETOKEN,
+  VERIFYTOKEN,
+  CHECKTOKEN,
+} = require("../middlewares/jwtAuthMW");
 
 // REGISTER USER CONTROLLER
 const registerUser = async (req, res) => {
@@ -58,7 +62,7 @@ const registerUser = async (req, res) => {
     // 5. SENDING USER
     if (created) {
       SENDMAIL(username, email, 0, "REGISTRATION");
-      res.status(StatusCodes.CREATED).send({ userId: created._id });
+      res.status(StatusCodes.CREATED).send("User Created ✅");
     } else {
       res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
@@ -313,6 +317,33 @@ const verifyOTPPhone = async (req, res) => {
   }
 };
 
+// VERIFY JWT TOKEN CONTROLLER
+const verifyJWTToken = async (req, res) => {
+  try {
+    // 1. FETCHING TOKEN FROM REQUEST HEADERS
+    const { jwtToken } = req.body;
+
+    // 2. CHECKING IF TOKEN IS ALREADY BLACKLISTED
+    const blackListed = await GETBLACKLISTTOKEN({ token: jwtToken });
+
+    // 3. IF TOKEN IS NOT BLACKLISTED THEN VERIFY IT
+    if (blackListed.length !== 0) {
+      return res.status(StatusCodes.UNAUTHORIZED).send("Token Invalid! ");
+    }
+    const token = await CHECKTOKEN();
+    if (token) {
+      return res.status(StatusCodes.OK).send("Token Verified ✅");
+    }
+    return res.status(StatusCodes.UNAUTHORIZED).send("Token Invalid! ");
+  } catch (error) {
+    // 4. HANDLING ERRORS
+    console.log(error);
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .send("Error Verifying OTP! ❌");
+  }
+};
+
 // GET USER DETAILS CONTROLLER
 const readUser = async (req, res) => {
   try {
@@ -494,6 +525,7 @@ module.exports = {
   VERIFYOTPMAIL: verifyOTPMail,
   LOGINUSERPHONE: loginUserPhone,
   VERIFYOTPPHONE: verifyOTPPhone,
+  VERIFYJWTTOKEN: verifyJWTToken,
   REGISTERUSER: registerUser,
   READUSER: readUser,
   UPDATEUSER: updateUser,
