@@ -2,17 +2,18 @@
 const mongoose = require("mongoose");
 
 // ----------------- CREATING SCHEMA -----------------
-const vehicleParkingHistorySchema = new mongoose.Schema({
+const userParkingHistorySchema = new mongoose.Schema({
   vehicleID: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "vehicle",
     required: true,
   },
   ownerID: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "user",
     required: true,
   },
   parkingNumber: {
-    // Parking String that defines the parking location
     type: Number,
     required: true,
   },
@@ -29,7 +30,7 @@ const vehicleParkingHistorySchema = new mongoose.Schema({
 // ----------------- CREATING MODEL -----------------
 const vehicleParkingHistoryModel = mongoose.model(
   "vehicleParkingHistory",
-  vehicleParkingHistorySchema
+  userParkingHistorySchema
 );
 
 // ----------------- EXPORTING MODEL -----------------

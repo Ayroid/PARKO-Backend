@@ -4,7 +4,8 @@ const mongoose = require("mongoose");
 // CREATING SCHEMA
 const vehicleSchema = new mongoose.Schema({
   userId: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "user",
     required: true,
   },
   vehicleNumber: {
@@ -27,10 +28,12 @@ const vehicleSchema = new mongoose.Schema({
   // },
   registeredOn: {
     type: Date,
+    default: new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" }),
     required: true,
   },
-  lastUpdated: {
+  updatedOn: {
     type: Date,
+    default: new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" }),
     required: false,
   },
 });

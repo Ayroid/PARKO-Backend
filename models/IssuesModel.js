@@ -1,8 +1,9 @@
 const mongoose = require("mongoose");
 
 const issuesSchema = new mongoose.Schema({
-  initiatorID: {
-    type: String,
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "user",
     required: true,
   },
   issueTitle: {
@@ -18,7 +19,8 @@ const issuesSchema = new mongoose.Schema({
     required: true,
   },
   vehicleNumber: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "vehicle",
     required: true,
   },
   imgURL: {
@@ -32,7 +34,7 @@ const issuesSchema = new mongoose.Schema({
   issuedTime: {
     type: Date,
     required: true,
-    default: Date.now(),
+    default: new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" }),
   },
   resolvedTime: {
     type: Date,

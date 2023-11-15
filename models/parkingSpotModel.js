@@ -17,16 +17,24 @@ const parkingSpotSchema = new mongoose.Schema({
       required: true,
     },
   },
-  createdAt: {
-    type: Date,
-    required: true,
-  },
   currentlyParked: {
-    type: String, // vehicleID
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "vehicle",
     required: false,
   },
   lastParked: {
-    type: String, // vehicleID
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "vehicle",
+    required: false,
+  },
+  createdAt: {
+    type: Date,
+    default: new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" }),
+    required: true,
+  },
+  updatedAt: {
+    type: Date,
+    default: new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" }),
     required: false,
   },
 });
