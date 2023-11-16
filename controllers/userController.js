@@ -14,11 +14,6 @@ const {
 
 const { READOTP, CREATEOTP, DELETEOTP } = require("./db/otpDatabase");
 
-const {
-  CREATEBLACKLISTTOKEN,
-  GETBLACKLISTTOKEN,
-} = require("./db/tokenBlacklistDatabase");
-
 // OTP GENERATOR CONTROLLER
 const { OTPGENERATOR } = require("./optGenController");
 
@@ -251,8 +246,10 @@ const verifyOTPMail = async (req, res) => {
     };
 
     // 9. CREATING TOKEN
-    const token = GENERATETOKEN(payload, "36500d"); // 100 years
-    return res.status(StatusCodes.OK).send({ token: token });
+    const { token, refreshToken } = GENERATETOKEN(payload);
+    return res
+      .status(StatusCodes.OK)
+      .send({ token: token, refreshToken: refreshToken });
   } catch (error) {
     // 10. HANDLING ERRORS
     console.log(error);
@@ -321,26 +318,53 @@ const verifyOTPPhone = async (req, res) => {
 const verifyJWTToken = async (req, res) => {
   try {
     // 1. FETCHING TOKEN FROM REQUEST HEADERS
-    const { jwtToken } = req.body;
+    const jwtToken = req.headers.authorization;
 
-    // 2. CHECKING IF TOKEN IS ALREADY BLACKLISTED
-    const blackListed = await GETBLACKLISTTOKEN({ token: jwtToken });
+    // 2. CHECKING IF TOKEN IS VALID
+    const token = await CHECKTOKEN(jwtToken, "token");
+    console.log(token);
 
-    // 3. IF TOKEN IS NOT BLACKLISTED THEN VERIFY IT
-    if (blackListed.length !== 0) {
-      return res.status(StatusCodes.UNAUTHORIZED).send("Token Invalid! ");
-    }
-    const token = await CHECKTOKEN();
+    // 3. SENDING RESPONSE
     if (token) {
       return res.status(StatusCodes.OK).send("Token Verified ✅");
     }
+    // 4. SENDING ERROR RESPONSE
     return res.status(StatusCodes.UNAUTHORIZED).send("Token Invalid! ");
   } catch (error) {
-    // 4. HANDLING ERRORS
+    // 5. HANDLING ERRORS
     console.log(error);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .send("Error Verifying OTP! ❌");
+      .send("Error Verifying Token! ❌");
+  }
+};
+
+// REFRESH JWT TOKEN CONTROLLER
+const refreshJWTToken = async (req, res) => {
+  try {
+    // 1. FETCHING TOKEN FROM REQUEST HEADERS
+    const jwtToken = req.headers.authorization;
+
+    // 2. CHECKING IF TOKEN IS VALID
+    const token = await CHECKTOKEN(jwtToken, "refreshToken");
+
+    // 3. SENDING RESPONSE
+    if (token) {
+      const payload = {
+        userId: token.userId,
+      };
+
+      const newToken = GENERATETOKEN(payload);
+      return res.status(StatusCodes.OK).send(newToken);
+    }
+    // 4. SENDING ERROR RESPONSE
+    return res.status(StatusCodes.UNAUTHORIZED).send("Token Invalid! ");
+  } catch (error) {
+    // 5. HANDLING ERRORS
+    console.log(error);
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .send("Error Verifying Token! ❌");
   }
 };
 
@@ -360,7 +384,8 @@ const readUser = async (req, res) => {
 
     // 3. SENDING RESPONSE
     if (user.length === 1) {
-      res.status(StatusCodes.OK).send(user);
+      console.log(user[0]);
+      res.status(StatusCodes.OK).send(user[0]);
     } else {
       res.status(StatusCodes.NOT_FOUND).send("User Not Found ❌");
     }
@@ -526,6 +551,7 @@ module.exports = {
   LOGINUSERPHONE: loginUserPhone,
   VERIFYOTPPHONE: verifyOTPPhone,
   VERIFYJWTTOKEN: verifyJWTToken,
+  REFRESHJWTTOKEN: refreshJWTToken,
   REGISTERUSER: registerUser,
   READUSER: readUser,
   UPDATEUSER: updateUser,

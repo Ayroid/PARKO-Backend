@@ -2,71 +2,67 @@
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 
-//IMPORT DB-CONTROLLER FOR CHECKING BLACKLISTED CONTROLLER
-const {
-  GETBLACKLISTTOKEN,
-} = require("../controllers/db/tokenBlacklistDatabase");
+// ---------------------------- FUNCTIONS ----------------------------
 
-const { StatusCodes } = require("http-status-codes");
-
-// CREATING ACCESS TOKEN
-const generateAccessToken = (payload, tokenExpiry) => {
-  return jwt.sign(payload, process.env.JWT_SECRET, {
-    expiresIn: tokenExpiry,
+// CREATING ACCESS TOKEN VIA PAYLOAD
+const generateAccessToken = (payload) => {
+  const token = jwt.sign(payload, process.env.JWT_SECRET, {
+    expiresIn: "86400s",
   });
+  const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET, {
+    expiresIn: "2592000s",
+  });
+  return { token, refreshToken };
 };
 
-const checkAccessToken = async (token) => {
+// CREATE ACCESS TOKEN VIA REFRESH TOKEN
+const generateAccessTokenViaRefreshToken = (refreshToken) => {
+  const payload = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
+  const token = jwt.sign(payload, process.env.JWT_SECRET, {
+    expiresIn: "86400s",
+  });
+  return token;
+};
+
+// CHECKING ACCESS TOKEN
+const checkAccessToken = async (token, tokenType) => {
   try {
-    // 1. CHECK IF TOKEN IS BLACKLISTED
-    const blackListed = await GETBLACKLISTTOKEN({ token: token });
-
-    // 2. IF TOKEN IS BLACKLISTED THEN RETURN FALSE
-    if (blackListed.length > 0) {
-      return res.status(StatusCodes.UNAUTHORIZED).send("Token Expired! ");
-    } else if (token) {
-      // 3. IF TOKEN IS NOT BLACKLISTED THEN VERIFY THE TOKEN
-      jwt.verify(token, process.env.JWT_SECRET, (err, data) => {
-        if (err) {
-          return false;
-        } else {
-          return true;
-        }
-      });
-    } else {
-      // 4. IF TOKEN IS NOT PROVIDED THEN RETURN FALSE
-
-      return false;
+    // 1. VERIFY THE TOKEN
+    let payload = null;
+    if (tokenType === "token") {
+      payload = jwt.verify(token, process.env.JWT_SECRET);
+    } else if (tokenType === "refreshToken") {
+      payload = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
     }
+    return payload;
   } catch (err) {
-    // 5. HANDLE ERROR
+    // 2. HANDLE ERROR
     return false;
   }
 };
 
+// ---------------------------- MIDDLEWARES ----------------------------
+
+// VERIFYING ACCESS TOKEN
 const verifyAccessToken = async (req, res, next) => {
-  const token = req.headers["authorization"];
-
-  const blackListed = await GETBLACKLISTTOKEN({ token: token });
-
-  if (blackListed.length > 0) {
-    return res.status(StatusCodes.UNAUTHORIZED).send("Token Expired! ");
-  } else if (token) {
+  try {
+    const token = req.headers.authorization;
     jwt.verify(token, process.env.JWT_SECRET, (err, data) => {
       if (err) {
-        return res.sendStatus(403).json({ msg: "No Valid Token Provided" });
+        return res.sendStatus(403).json({ msg: "User Unauthorized ❌" });
       } else {
         req.body.payload = data;
         next();
       }
     });
-  } else {
-    return res.status(401).json({ msg: "No Valid Token Provided" });
+  } catch (err) {
+    return res.sendStatus(403).json({ msg: "User Unauthorized ❌" });
   }
 };
 
 module.exports = {
   GENERATETOKEN: generateAccessToken,
-  VERIFYTOKEN: verifyAccessToken,
+  GENERATETOKENVIAREFRESHTOKEN: generateAccessTokenViaRefreshToken,
   CHECKTOKEN: checkAccessToken,
+  VERIFYTOKEN: verifyAccessToken,
 };

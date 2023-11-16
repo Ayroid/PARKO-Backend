@@ -10,6 +10,7 @@ const {
   LOGINUSERPHONE,
   VERIFYOTPPHONE,
   VERIFYJWTTOKEN,
+  REFRESHJWTTOKEN,
   READUSER,
   UPDATEUSER,
   DELETEUSER,
@@ -46,6 +47,7 @@ USER.post("/verify/mail", VERIFYOTPMAIL);
 USER.post("/login/phone", LOGINUSERPHONE);
 USER.post("/verify/phone", VERIFYOTPPHONE);
 USER.post("/verify/token", VERIFYJWTTOKEN);
+USER.post("/refreshToken", REFRESHJWTTOKEN);
 USER.post("/getUser", VERIFYTOKEN, READUSER);
 USER.post("/updateUser", VERIFYTOKEN, UPDATEUSER);
 USER.post(
