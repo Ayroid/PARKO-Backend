@@ -322,7 +322,6 @@ const verifyJWTToken = async (req, res) => {
 
     // 2. CHECKING IF TOKEN IS VALID
     const token = await CHECKTOKEN(jwtToken, "token");
-    console.log(token);
 
     // 3. SENDING RESPONSE
     if (token) {
