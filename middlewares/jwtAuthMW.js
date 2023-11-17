@@ -56,6 +56,7 @@ const verifyAccessToken = async (req, res, next) => {
       }
     });
   } catch (err) {
+    console.log(err);
     return res.sendStatus(403).json({ msg: "User Unauthorized ❌" });
   }
 };

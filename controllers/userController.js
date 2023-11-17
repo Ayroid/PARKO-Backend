@@ -188,18 +188,14 @@ const logOutUser = async (req, res) => {
     // 1. FETCHING TOKEN FROM REQUEST HEADERS
     const token = req.headers.authorization;
 
-    // 2. CHECKING IF TOKEN IS ALREADY BLACKLISTED
-    const blackListed = await GETBLACKLISTTOKEN({ token: token });
-
-    // 3. IF TOKEN IS NOT BLACKLISTED THEN BLACKLIST IT
-    if (blackListed.length === 0) {
-      await CREATEBLACKLISTTOKEN({
-        token: token,
-      });
+    // 3. IF TOKEN IS VERIFIED
+    if (token) {
+      // 4. SENDING RESPONSE
+      res.status(StatusCodes.OK).send("Logged Out ✅");
+    } else {
+      // 5. SENDING ERROR RESPONSE
+      res.status(StatusCodes.UNAUTHORIZED).send("Token Invalid! ");
     }
-
-    // 4. SENDING RESPONSE
-    res.status(StatusCodes.OK).send("Logged Out ✅");
   } catch (error) {
     console.log(error);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("Error logging out ❌");
@@ -383,7 +379,6 @@ const readUser = async (req, res) => {
 
     // 4. SENDING RESPONSE
     if (user.length === 1) {
-
       const data = {
         username: user[0].username,
         email: user[0].email,
