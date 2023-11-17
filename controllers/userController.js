@@ -391,6 +391,7 @@ const readUser = async (req, res) => {
           brand: vehicle.brand,
         })),
       };
+
       res.status(StatusCodes.OK).send(data);
     } else {
       res.status(StatusCodes.NOT_FOUND).send("User Not Found ❌");
@@ -408,7 +409,7 @@ const readUser = async (req, res) => {
 const updateUser = async (req, res) => {
   try {
     // 1. FETCHING DATA FROM REQUEST BODY
-    const { query, data } = req.body;
+    let { query, data } = req.body;
 
     // 2. CHECKING IF QUERY IS EMPTY
     if (query === undefined || query === null) {
@@ -437,7 +438,7 @@ const updateUser = async (req, res) => {
 
     // 7. SENDING RESPONSE
     if (updated) {
-      res.status(StatusCodes.OK).send(updated);
+      res.status(StatusCodes.OK).send("User Updated ✅");
     } else {
       res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
