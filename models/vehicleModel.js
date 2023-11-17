@@ -8,7 +8,7 @@ const vehicleSchema = new mongoose.Schema({
     ref: "user",
     required: true,
   },
-  vehicleNumber: {
+  brand: {
     type: String,
     required: true,
   },
@@ -16,16 +16,18 @@ const vehicleSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  vehicleNumber: {
+    type: String,
+    required: true,
+  },
+  parkedAt: {
+    type: String,
+    required: false,
+  },
   parkingHistory: {
     type: Array,
     required: false,
   },
-  // registered: {
-  //   // Defines if vehicle is registered or not - RETHINK OVER IT
-  //   type: Boolean,
-  //   required: true,
-  //   default: false,
-  // },
   registeredOn: {
     type: Date,
     default: new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" }),

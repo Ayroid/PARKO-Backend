@@ -15,7 +15,7 @@ const { UPDATEUSER } = require("./db/userDatabase");
 const registerVehicle = async (req, res) => {
   try {
     // 1. FETCHING DATA FROM REQUEST BODY
-    const data = ({ vehicleNumber, model } = req.body);
+    const data = ({ brand, model, vehicleNumber } = req.body);
 
     // 2. CHECKING IF THE VEHICLE EXISTS
     const vehicle = await READVEHICLE([{ vehicleNumber: vehicleNumber }]);

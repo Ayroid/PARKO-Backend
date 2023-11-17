@@ -8,6 +8,8 @@ const readUser = (query) => {
   try {
     return new Promise((resovle, reject) => {
       USERMODEL.find({ $or: query })
+        .populate("vehicles")
+        .exec()
         .then((result) => {
           if (result) {
             resovle(result);

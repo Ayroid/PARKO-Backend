@@ -378,18 +378,30 @@ const readUser = async (req, res) => {
       query = { _id: req.body.payload.userId };
     }
 
-    // 2. CHECKING IF USER EXISTS
+    // 3. CHECKING IF USER EXISTS
     const user = await READUSER([query]);
 
-    // 3. SENDING RESPONSE
+    // 4. SENDING RESPONSE
     if (user.length === 1) {
-      console.log(user[0]);
-      res.status(StatusCodes.OK).send(user[0]);
+
+      const data = {
+        username: user[0].username,
+        email: user[0].email,
+        phone: user[0].phone,
+        sapid: user[0].sapid,
+        profilePic: user[0].profilePic,
+        vehicles: user[0].vehicles.map((vehicle) => ({
+          model: vehicle.model,
+          vehicleNumber: vehicle.vehicleNumber,
+          brand: vehicle.brand,
+        })),
+      };
+      res.status(StatusCodes.OK).send(data);
     } else {
       res.status(StatusCodes.NOT_FOUND).send("User Not Found ❌");
     }
   } catch (error) {
-    // 4. HANDLING ERRORS
+    // 5. HANDLING ERRORS
     console.log(error);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
