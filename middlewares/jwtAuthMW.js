@@ -47,18 +47,21 @@ const checkAccessToken = async (token, tokenType) => {
 const verifyAccessToken = async (req, res, next) => {
   try {
     const token = req.headers.authorization;
+    if (!token) {
+      return res.sendStatus(403).json({ msg: "User Unauthorized ❌" });
+    }
     jwt.verify(token, process.env.JWT_SECRET, (err, data) => {
       if (err) {
+        console.log("Error Verifying Token ❌");
         return res.sendStatus(403).json({ msg: "User Unauthorized ❌" });
-      } else {
-        req.body.payload = data;
-        next();
       }
+      req.body.payload = data;
     });
   } catch (err) {
     console.log(err);
     return res.sendStatus(403).json({ msg: "User Unauthorized ❌" });
   }
+  next();
 };
 
 module.exports = {
