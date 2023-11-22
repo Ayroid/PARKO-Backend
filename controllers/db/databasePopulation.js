@@ -430,7 +430,7 @@ const data = [
 
 const test = (parkingNumber, coordinates, parkingStatus) => {
   axios
-    .post("http://192.168.1.9:3000/api/user/parkingspot/createParkingSpot", {
+    .post("http://localhost:3000/api/user/parkingspot/createParkingSpot", {
       parkingNumber: parkingNumber,
       coordinates: coordinates,
       parkingStatus: parkingStatus,
@@ -443,10 +443,10 @@ const test = (parkingNumber, coordinates, parkingStatus) => {
     });
 };
 
-// for (let i = 1; i < 86; i++) {
-//   (function (i) {
-//     setTimeout(() => {
-//       test(data[i].parkingNumber, data[i].coordinates, data[i].parkingStatus);
-//     }, 2000 * i);
-//   })(i);
-// }
+for (let i = 1; i < 86; i++) {
+  (function (i) {
+    setTimeout(() => {
+      test(data[i].parkingNumber, data[i].coordinates, data[i].parkingStatus);
+    }, 2000 * i);
+  })(i);
+}

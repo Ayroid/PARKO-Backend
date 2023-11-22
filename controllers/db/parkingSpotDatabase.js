@@ -4,10 +4,11 @@ const { PARKINGSPOTMODEL } = require("../../models/parkingSpotModel");
 // DATABASE OPERATIONS
 
 // READ SPOT
-const readSpot = (query) => {
+const readSpot = (query, fields) => {
   try {
     return new Promise((resolve, reject) => {
       PARKINGSPOTMODEL.find({ $or: query })
+        .select(fields)
         .then((result) => {
           if (result) {
             resolve(result);

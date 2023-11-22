@@ -65,7 +65,12 @@ const getParkingSpots = async (req, res) => {
       query = {};
     }
     // 3. GETTING PARKING SPOTS
-    const spots = await READSPOT([query]);
+    const spots = await READSPOT([query], {
+      _id: 0,
+      parkingNumber: 1,
+      coordinates: 1,
+      parkingStatus: 1,
+    });
 
     // 4. SENDING RESPONSE
     if (spots.length >= 0) {
