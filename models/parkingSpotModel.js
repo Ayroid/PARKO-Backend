@@ -7,15 +7,13 @@ const parkingSpotSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  location: {
-    lat: {
-      type: Number,
-      required: true,
-    },
-    long: {
-      type: Number,
-      required: true,
-    },
+  coordinates: {
+    type: Array,
+    required: true,
+  },
+  parkingStatus: {
+    type: String,
+    required: true,
   },
   currentlyParked: {
     type: mongoose.Schema.Types.ObjectId,

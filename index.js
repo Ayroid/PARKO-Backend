@@ -27,6 +27,12 @@ app.use(bodyParser.json());
 // SETTING UP CORS
 app.use(cors());
 
+// TEST ROUTE
+// app.post("/test", (req, res) => {
+//   console.log("Server is working ✅", Date.now());
+//   res.status(200).send("Server is working ✅");
+// });
+
 // ROUTERS
 const { USERROUTER } = require("./routers/userRouter");
 const { PARKINGSPOTROUTER } = require("./routers/parkingSpotRouter");
@@ -35,7 +41,7 @@ const { VEHICLEROUTER } = require("./routers/vehicleRouter");
 // ROUTES
 app.use("/api/user", USERROUTER);
 app.use("/api/user/vehicle", VEHICLEROUTER);
-app.use("/api/user/parkingspot", PARKINGSPOTROUTER);
+app.use("/api/parkingspot", PARKINGSPOTROUTER);
 
 // STARTING SERVER
 app.listen(PORT, () => {

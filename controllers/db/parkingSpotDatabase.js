@@ -1,5 +1,5 @@
 // IMPORTING DATABASE MODELS
-const { PARKINGMODEL } = require("../../models/parkingSpotModel");
+const { PARKINGSPOTMODEL } = require("../../models/parkingSpotModel");
 
 // DATABASE OPERATIONS
 
@@ -7,7 +7,7 @@ const { PARKINGMODEL } = require("../../models/parkingSpotModel");
 const readSpot = (query) => {
   try {
     return new Promise((resolve, reject) => {
-      PARKINGMODEL.find({ $or: query })
+      PARKINGSPOTMODEL.find({ $or: query })
         .then((result) => {
           if (result) {
             resolve(result);
@@ -27,7 +27,7 @@ const readSpot = (query) => {
 const createSpot = (data) => {
   try {
     return new Promise((resolve, reject) => {
-      const newSpot = new PARKINGMODEL(data);
+      const newSpot = new PARKINGSPOTMODEL(data);
       newSpot
         .save()
         .then((result) => {
@@ -50,11 +50,11 @@ const createSpot = (data) => {
 const updateSpot = (query, data) => {
   try {
     return new Promise((resolve, reject) => {
-      PARKINGMODEL.findOneAndUpdate(query, data, { new: true })
+      PARKINGSPOTMODEL.findOneAndUpdate(query, data, { new: true })
         .then((result) => {
           if (result) {
             console.log(`Parking Spot Updated ✅ - {spotId : ${result._id}}`);
-            console.log(result)
+            console.log(result);
             resolve(result);
           }
         })
@@ -72,7 +72,7 @@ const updateSpot = (query, data) => {
 const deleteSpot = (query) => {
   try {
     return new Promise((resolve, reject) => {
-      PARKINGMODEL.findOneAndDelete(query)
+      PARKINGSPOTMODEL.findOneAndDelete(query)
         .then((result) => {
           if (result) {
             console.log(`Parking Spot Deleted ✅ - {spotId : ${result._id}}`);

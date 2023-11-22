@@ -15,12 +15,12 @@ const { Query } = require("mongoose");
 const createNewParkingSpot = async (req, res) => {
   try {
     // 1. FETCHING DATA FROM REQUEST BODY
-    const data = ({ parkingNumber, location } = req.body);
+    const data = ({ parkingNumber, coordinates, parkingStatus } = req.body);
 
     // 2. CHECHKING IF SPOT EXISTS
     const spot = await READSPOT([
       { parkingNumber: parkingNumber },
-      { location: location },
+      { coordinates: coordinates },
     ]);
     if (spot.length >= 1) {
       return res
@@ -31,8 +31,6 @@ const createNewParkingSpot = async (req, res) => {
     // 3. CREATING FINAL DATA OBJECT
     const finaldata = {
       ...data,
-      lastParked: "",
-      currentlyParked: "",
       createdAt: Date.now(),
     };
 
@@ -60,7 +58,7 @@ const createNewParkingSpot = async (req, res) => {
 const getParkingSpots = async (req, res) => {
   try {
     // 1. FETCHING DATA FROM REQUEST BODY
-    const { query } = req.body;
+    let { query } = req.body;
 
     // 2. CHECKING IF QUERY IS EMPTY
     if (query === null || query === undefined) {
@@ -71,7 +69,7 @@ const getParkingSpots = async (req, res) => {
 
     // 4. SENDING RESPONSE
     if (spots.length >= 0) {
-      res.status(StatusCodes.OK).send({ spots });
+      res.status(StatusCodes.OK).send({ parkingSpots: spots });
     } else {
       res.status(StatusCodes.NOT_FOUND).send("No Parking Spots Found! ❌");
     }
