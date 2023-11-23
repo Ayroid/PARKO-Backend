@@ -15,7 +15,8 @@ const { Query } = require("mongoose");
 const createNewParkingSpot = async (req, res) => {
   try {
     // 1. FETCHING DATA FROM REQUEST BODY
-    const data = ({ parkingNumber, coordinates, parkingStatus } = req.body);
+    const data = ({ parkingNumber, coordinates, nearBy, parkingStatus } =
+      req.body);
 
     // 2. CHECHKING IF SPOT EXISTS
     const spot = await READSPOT([
@@ -70,6 +71,8 @@ const getParkingSpots = async (req, res) => {
       parkingNumber: 1,
       coordinates: 1,
       parkingStatus: 1,
+      nearBy: 1,
+      currentlyParked: 1,
     });
 
     // 4. SENDING RESPONSE
