@@ -55,7 +55,7 @@ const verifyAccessToken = async (req, res, next) => {
         console.log("Error Verifying Token ❌");
         return res.sendStatus(403).json({ msg: "User Unauthorized ❌" });
       }
-      req.body.payload = data;
+      req.payload = data;
     });
   } catch (err) {
     console.log(err);
