@@ -49,9 +49,13 @@ USER.post("/verify/phone", VERIFYOTPPHONE);
 USER.post("/verify/token", VERIFYJWTTOKEN);
 USER.post("/refreshToken", REFRESHJWTTOKEN);
 USER.post("/getUser", VERIFYTOKEN, READUSER);
-USER.post("/updateUser", VERIFYTOKEN, UPDATEUSER);
 USER.post(
-  "/uploadProfilePic",
+  "/updateUser",
+  VERIFYTOKEN,
+  UPDATEUSER
+);
+USER.post(
+  "/updateProfilePic",
   VERIFYTOKEN,
   UPLOAD.fields([{ name: "profilePic", maxCount: 1 }]),
   UPLOADPROFILEPIC
