@@ -6,21 +6,26 @@ const path = require("path");
 
 // FILE DESTINATION MAPPING
 const fileDestionationMapping = (fileName) => {
-  const fileDestionationMap = {
-    profilePic:
-      "/home/ayroid/Documents/Projects/Parko/MINOR-APIServer/public/img/profilePIc",
-    transactionSS: "/public/img/screenshots/transactionSS",
-  };
-  return fileDestionationMap[fileName];
+  try {
+    const fileDestionationMap = {
+      profilePic: "public/img/profilePic",
+    };
+    return fileDestionationMap[fileName];
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 // FILE NAME MAPPING
 const filenameMapping = (req, fileName, fileExtension) => {
-  const fileNameMap = {
-    profilePic: `${req.body.email}${fileExtension}`,
-    transactionSS: `${req.body.email}${fileExtension}`,
-  };
-  return fileNameMap[fileName];
+  try {
+    const fileNameMap = {
+      profilePic: `${req.payload.userId}${fileExtension}`,
+    };
+    return fileNameMap[fileName];
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 // MULTER CONFIGURATION
