@@ -371,7 +371,7 @@ const readUser = async (req, res) => {
 
     // 2. CHECKING IF QUERY IS EMPTY
     if (query === undefined || query === null) {
-      query = { _id: req.body.payload.userId };
+      query = { _id: req.payload.userId };
     }
 
     // 3. CHECKING IF USER EXISTS
@@ -410,10 +410,11 @@ const updateUser = async (req, res) => {
   try {
     // 1. FETCHING DATA FROM REQUEST BODY
     let { query, data } = req.body;
+    console.log(req.body);
 
     // 2. CHECKING IF QUERY IS EMPTY
     if (query === undefined || query === null) {
-      query = { _id: req.body.payload.userId };
+      query = { _id: req.payload.userId };
     } else {
       // 3. CHECKING IF USER EXISTS
       const user = await READUSER([query]);
@@ -426,7 +427,7 @@ const updateUser = async (req, res) => {
       const userId = user[0]._id;
 
       // 5. CHECKING IF USER IS AUTHORIZED
-      if (userId != req.body.payload.userId) {
+      if (userId != req.payload.userId) {
         return res
           .status(StatusCodes.UNAUTHORIZED)
           .send("User Not Authorized ❌");
@@ -461,7 +462,7 @@ const deleteUser = async (req, res) => {
 
     // 2. CHECKING IF QUERY IS EMPTY
     if (query === undefined || query === null) {
-      query = { _id: req.body.payload.userId };
+      query = { _id: req.payload.userId };
     } else {
       // 3. CHECKING IF USER EXISTS
       const user = await READUSER([query]);
@@ -470,7 +471,7 @@ const deleteUser = async (req, res) => {
       }
 
       // 4. CHECKING IF USER IS AUTHORIZED
-      if (user[0]._id !== req.body.payload.userId) {
+      if (user[0]._id !== req.payload.userId) {
         return res
           .status(StatusCodes.UNAUTHORIZED)
           .send("User Not Authorized ❌");
@@ -501,32 +502,30 @@ const deleteUser = async (req, res) => {
 const uploadProfilePic = async (req, res) => {
   try {
     // 0. SETTING DEFAULT URL
-    const defaultUrl = "http://localhost:3000/img/profilePic/";
-
-    console.log(req.body);
+    const defaultUrl = "http://192.168.1.9:3000/img/profilePic/";
 
     // 1. FETCHING DATA FROM REQUEST BODY
-    const query = { _id: req.body.payload.userId };
+    const userId = req.payload.userId;
 
-    // 2. CHECKING IF USER EXISTS
+    // 2. CREATING QUERY
+    const query = { _id: userId };
+
+    // 3. CHECKING IF USER EXISTS
     const user = await READUSER([query]);
     if (user.length === 0) {
       return res.status(StatusCodes.NOT_FOUND).send("User Not Found ❌");
     }
 
-    // 3. FETCHING USER ID
-    const userId = user[0]._id;
-
     // 4. CHECKING IF USER IS AUTHORIZED
-    if (userId != req.body.payload.userId) {
+    if (userId != req.payload.userId) {
       return res
         .status(StatusCodes.UNAUTHORIZED)
         .send("User Not Authorized ❌");
     }
 
     // 5. CREATING DATA OBJECT
-    const extension = path.extname(req.files.profilePic[0].filename),
-      filename = user[0].email;
+    const extension = path.extname(req.files.profilePic[0].originalname);
+    const filename = userId;
     const data = {
       profilePic: defaultUrl + filename + extension,
     };
