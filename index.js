@@ -28,10 +28,10 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // TEST ROUTE
-// app.post("/test", (req, res) => {
-//   console.log("Server is working ✅", Date.now());
-//   res.status(200).send("Server is working ✅");
-// });
+app.post("/api/test", (req, res) => {
+  console.log("Server is working ✅", Date.now());
+  res.status(200).send("Server is working ✅");
+});
 
 // ROUTERS
 const { USERROUTER } = require("./routers/userRouter");
