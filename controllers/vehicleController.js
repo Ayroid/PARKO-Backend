@@ -26,7 +26,7 @@ const registerVehicle = async (req, res) => {
     }
 
     // 3. FETCHING USER DATA
-    const userdata = ({ userId: userId } = req.body.payload);
+    const userdata = ({ userId: userId } = req.payload);
 
     // 4. EXTRA DATA OBJECT
     const extradata = {
@@ -77,7 +77,7 @@ const readVehicle = async (req, res) => {
 
     // 2. CHECKING IF QUERY IS EMPTY & SETTING DEFAULT QUERY TO ALL USER VEHICLES
     if (query === undefined || query === null) {
-      query = { userId: req.body.payload.userId };
+      query = { userId: req.payload.userId };
     }
 
     // 3. CHECKING IF THE VEHICLE EXISTS
@@ -109,7 +109,7 @@ const updateVehicle = async (req, res) => {
     }
 
     // 3. CHECKING IF THE USER IS AUTHORIZED
-    if (vehicle[0].userId !== req.body.payload.userId) {
+    if (vehicle[0].userId !== req.payload.userId) {
       return res.status(StatusCodes.UNAUTHORIZED).send("Unauthorized! ❌");
     }
 
@@ -146,7 +146,7 @@ const deleteVehicle = async (req, res) => {
     }
 
     // 3. CHECKING IF THE USER IS AUTHORIZED
-    if (vehicle[0].userId !== req.body.payload.userId) {
+    if (vehicle[0].userId !== req.payload.userId) {
       return res.status(StatusCodes.UNAUTHORIZED).send("Unauthorized! ❌");
     }
 
