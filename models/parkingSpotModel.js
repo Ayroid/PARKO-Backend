@@ -11,6 +11,10 @@ const parkingSpotSchema = new mongoose.Schema({
     type: Array,
     required: true,
   },
+  nearBy: {
+    type: String,
+    required: true,
+  },
   parkingStatus: {
     type: String,
     required: true,
