@@ -27,7 +27,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     trim: true,
     required: false,
-    default: "-",
+    default: "",
   },
   vehicles: [
     {
