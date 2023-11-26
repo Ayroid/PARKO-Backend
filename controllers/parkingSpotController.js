@@ -9,7 +9,6 @@ const {
   UPDATESPOT,
   DELETESPOT,
 } = require("./db/parkingSpotDatabase");
-const { Query } = require("mongoose");
 
 // CREATE NEW PARKING SPOT CONTROLLER
 const createNewParkingSpot = async (req, res) => {
@@ -158,9 +157,51 @@ const deleteParkingSpot = async (req, res) => {
   }
 };
 
+const bookParkingSpot = async (req, res) => {
+  try {
+    // 1. FETCHING DATA FROM REQUEST BODY
+    const { parkingNumber } = req.body;
+
+    // 2. CHECKING IF SPOT EXISTS
+    const spot = await READSPOT([{ parkingNumber: parkingNumber }]);
+    if (spot.length === 0) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .send("Parking Spot Not Found ! ❌");
+    }
+
+    // 3. UPDATING SPOT STATUS
+
+    const query = { parkingNumber: parkingNumber };
+    console.log(req.payload)
+    const data = {
+      currentlyParkedUser: req.payload.userId,
+      parkingStatus: "booked",
+    };
+
+    const updated = await UPDATESPOT(query, data);
+
+    // 4. SENDING RESPONSE
+    if (updated) {
+      res.status(StatusCodes.OK).send("Parking Spot Booked ✅");
+    } else {
+      res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .send("Error Updating parking Spot! ❌");
+    }
+  } catch (error) {
+    // 5. HANDLING ERRORS
+    console.log(error);
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .send("Error Updating parking Spot! ❌");
+  }
+};
+
 module.exports = {
   CREATENEWPARKINGSPOT: createNewParkingSpot,
   UPDATEPARKINGSPOT: updateParkingSpot,
   DELETEPARKINGSPOT: deleteParkingSpot,
   GETPARKINGSPOTS: getParkingSpots,
+  BOOKPARKINGSPOT: bookParkingSpot,
 };

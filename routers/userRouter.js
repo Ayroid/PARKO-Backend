@@ -24,7 +24,7 @@ const { VERIFYUSERMW } = require("../middlewares/userMW");
 // FILE UPLOAD CONTROLLER IMPORT
 const { UPLOAD } = require("../controllers/fileUploadController");
 
-// JWT IMPORT AND BLACKLIST CHECK IMPORT
+// JWT IMPORT
 const { VERIFYTOKEN } = require("../middlewares/jwtAuthMW");
 
 // CREATING ROUTER
@@ -49,11 +49,7 @@ USER.post("/verify/phone", VERIFYOTPPHONE);
 USER.post("/verify/token", VERIFYJWTTOKEN);
 USER.post("/refreshToken", REFRESHJWTTOKEN);
 USER.post("/getUser", VERIFYTOKEN, READUSER);
-USER.post(
-  "/updateUser",
-  VERIFYTOKEN,
-  UPDATEUSER
-);
+USER.post("/updateUser", VERIFYTOKEN, UPDATEUSER);
 USER.post(
   "/updateProfilePic",
   VERIFYTOKEN,

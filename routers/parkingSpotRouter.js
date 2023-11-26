@@ -7,7 +7,11 @@ const {
   CREATENEWPARKINGSPOT,
   UPDATEPARKINGSPOT,
   DELETEPARKINGSPOT,
+  BOOKPARKINGSPOT,
 } = require("../controllers/parkingSpotController");
+
+// JWT IMPORT
+const { VERIFYTOKEN } = require("../middlewares/jwtAuthMW");
 
 // CREATING ROUTER
 const PARKINGSPOT = express.Router();
@@ -17,6 +21,8 @@ PARKINGSPOT.post("/createParkingSpot", CREATENEWPARKINGSPOT);
 PARKINGSPOT.post("/getParkingSpot", GETPARKINGSPOTS);
 PARKINGSPOT.post("/updateParkingSpot", UPDATEPARKINGSPOT);
 PARKINGSPOT.post("/deleteParkingSpot", DELETEPARKINGSPOT);
+
+PARKINGSPOT.post("/bookParkingSpot", VERIFYTOKEN, BOOKPARKINGSPOT);
 
 // EXPORTING ROUTER
 module.exports = {
