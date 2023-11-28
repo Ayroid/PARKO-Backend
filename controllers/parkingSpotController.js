@@ -50,7 +50,7 @@ const createNewParkingSpot = async (req, res) => {
   } catch (error) {
     // 6. HANDLING ERRORS
     console.log("Error Creating Parking Spot! ❌ ", error);
-    res
+    return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .send("Error Creating Spot ! ❌");
   }
@@ -87,7 +87,7 @@ const getParkingSpots = async (req, res) => {
   } catch (error) {
     // 5. HANDLING ERRORS
     console.log(error);
-    res
+    return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .send("Error Getting Parking Spots! ❌");
   }
@@ -121,7 +121,7 @@ const updateParkingSpot = async (req, res) => {
   } catch (error) {
     // 5. HANDLING ERRORS
     console.log(error);
-    res
+    return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .send("Error Updating parking Spot! ❌");
   }
@@ -155,7 +155,7 @@ const deleteParkingSpot = async (req, res) => {
   } catch (error) {
     // 5. HANDLING ERRORS
     console.log(error);
-    res
+    return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .send("Error Deleting parking Spot! ❌");
   }
@@ -195,7 +195,7 @@ const bookParkingSpot = async (req, res) => {
   } catch (error) {
     // 5. HANDLING ERRORS
     console.log(error);
-    res
+    return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .send("Error Updating parking Spot! ❌");
   }

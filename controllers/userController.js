@@ -66,7 +66,7 @@ const registerUser = async (req, res) => {
   } catch (error) {
     // 6. HANDLING ERRORS
     console.log(error);
-    res
+    return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .send("Error Creating User! ❌");
   }
@@ -251,11 +251,11 @@ const verifyOTPMail = async (req, res) => {
     const { token, refreshToken } = GENERATETOKEN(payload);
     return res
       .status(StatusCodes.OK)
-      .send({ token: token, refreshToken: refreshToken });
+      .send({ token: token, refreshToken: refreshToken, userId: user[0]._id });
   } catch (error) {
     // 10. HANDLING ERRORS
     console.log(error);
-    res
+    return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .send("Error Verifying OTP! ❌");
   }
@@ -310,7 +310,7 @@ const verifyOTPPhone = async (req, res) => {
   } catch (error) {
     // 11. HANDLING ERRORS
     console.log(error);
-    res
+    return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .send("Error Verifying OTP! ❌");
   }
@@ -363,7 +363,7 @@ const refreshJWTToken = async (req, res) => {
   } catch (error) {
     // 5. HANDLING ERRORS
     console.log(error);
-    res
+    return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .send("Error Verifying Token! ❌");
   }
@@ -405,7 +405,7 @@ const readUser = async (req, res) => {
   } catch (error) {
     // 5. HANDLING ERRORS
     console.log(error);
-    res
+    return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .send("Error Getting User Details! ❌");
   }
@@ -453,7 +453,7 @@ const updateUser = async (req, res) => {
   } catch (error) {
     // 8. HANDLING ERRORS
     console.log(error);
-    res
+    return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .send("Error Updating User! ❌");
   }
@@ -497,7 +497,7 @@ const deleteUser = async (req, res) => {
   } catch (error) {
     // 7. HANDLING ERRORS
     console.log(error);
-    res
+    return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .send("Error Deleting User! ❌");
   }
@@ -549,7 +549,7 @@ const uploadProfilePic = async (req, res) => {
   } catch (error) {
     // 8. HANDLING ERRORS
     console.log(error);
-    res
+    return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .send("Error Uploading Profile Pic! ❌");
   }

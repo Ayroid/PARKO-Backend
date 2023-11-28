@@ -63,7 +63,7 @@ const registerVehicle = async (req, res) => {
   } catch (error) {
     // 8. HANDLING ERRORS
     console.log(error);
-    res
+    return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .send("Error Registering Vehicle! ❌");
   }
@@ -90,7 +90,7 @@ const readVehicle = async (req, res) => {
   } catch (error) {
     // 4. HANDLING ERRORS
     console.log(error);
-    res
+    return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .send("Error Reading Vehicle! ❌");
   }
@@ -127,7 +127,7 @@ const updateVehicle = async (req, res) => {
   } catch (error) {
     // 6. HANDLING ERRORS
     console.log(error);
-    res
+    return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .send("Error Updating Vehicle! ❌");
   }
@@ -164,7 +164,7 @@ const deleteVehicle = async (req, res) => {
   } catch (error) {
     // 6. HANDLING ERRORS
     console.log(error);
-    res
+    return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .send("Error Deleting Vehicle! ❌");
   }
