@@ -73,7 +73,8 @@ const getParkingSpots = async (req, res) => {
       coordinates: 1,
       parkingStatus: 1,
       nearBy: 1,
-      currentlyParked: 1,
+      currentlyParkedUser: 1,
+      currentlyParkedVehicle: 1,
     });
 
     // 4. SENDING RESPONSE
@@ -107,8 +108,10 @@ const updateParkingSpot = async (req, res) => {
         .send("Parking Spot Not Found ! ❌");
     }
 
+    const finalData = { ...data, updatedAt: Date.now() };
+
     // 3. UPDATING SPOT STATUS
-    const updated = await UPDATESPOT(query, data);
+    const updated = await UPDATESPOT(query, finalData);
 
     // 4. SENDING RESPONSE
     if (updated) {
@@ -161,6 +164,7 @@ const deleteParkingSpot = async (req, res) => {
   }
 };
 
+// BOOK PARKING SPOT CONTROLLER
 const bookParkingSpot = async (req, res) => {
   try {
     // 1. FETCHING DATA FROM REQUEST BODY
@@ -180,6 +184,7 @@ const bookParkingSpot = async (req, res) => {
     const data = {
       currentlyParkedUser: req.payload.userId,
       parkingStatus: "booked",
+      updatedAt: Date.now(),
     };
 
     const updated = await UPDATESPOT(query, data);
@@ -190,14 +195,60 @@ const bookParkingSpot = async (req, res) => {
     } else {
       return res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
-        .send("Error Updating parking Spot! ❌");
+        .send("Error Booking Parking Spot! ❌");
     }
   } catch (error) {
     // 5. HANDLING ERRORS
     console.log(error);
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .send("Error Updating parking Spot! ❌");
+      .send("Error Booking Parking Spot! ❌");
+  }
+};
+
+// CANCEL PARKING SPOT CONTROLLER
+const cancelParkingSpot = async (req, res) => {
+  try {
+    // 1. FETCHING DATA FROM REQUEST BODY
+    const { parkingNumber } = req.body;
+
+    // 2. CHECKING IF SPOT EXISTS
+    const spot = await READSPOT([
+      { parkingNumber: parkingNumber, currentlyParkedUser: req.payload.userId },
+    ]);
+    if (spot.length === 0) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .send("Parking Spot Not Found ! ❌");
+    }
+
+    // 3. UPDATING SPOT STATUS
+
+    const query = { parkingNumber: parkingNumber };
+    const data = {
+      currentlyParkedUser: null,
+      parkingStatus: "available",
+      updatedAt: Date.now(),
+    };
+
+    const updated = await UPDATESPOT(query, data);
+
+    // 4. SENDING RESPONSE
+    if (updated) {
+      return res
+        .status(StatusCodes.OK)
+        .send("Parking Spot Booking Cancelled ✅");
+    } else {
+      return res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .send("Error Cancelling Parking Spot Booking ❌");
+    }
+  } catch (error) {
+    // 5. HANDLING ERRORS
+    console.log(error);
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .send("Error Cancelling Parking Spot Booking ❌");
   }
 };
 
@@ -207,4 +258,5 @@ module.exports = {
   DELETEPARKINGSPOT: deleteParkingSpot,
   GETPARKINGSPOTS: getParkingSpots,
   BOOKPARKINGSPOT: bookParkingSpot,
+  CANCELPARKINGSPOT: cancelParkingSpot,
 };

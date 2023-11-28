@@ -8,6 +8,7 @@ const {
   UPDATEPARKINGSPOT,
   DELETEPARKINGSPOT,
   BOOKPARKINGSPOT,
+  CANCELPARKINGSPOT,
 } = require("../controllers/parkingSpotController");
 
 // JWT IMPORT
@@ -23,6 +24,7 @@ PARKINGSPOT.post("/updateParkingSpot", UPDATEPARKINGSPOT);
 PARKINGSPOT.post("/deleteParkingSpot", DELETEPARKINGSPOT);
 
 PARKINGSPOT.post("/bookParkingSpot", VERIFYTOKEN, BOOKPARKINGSPOT);
+PARKINGSPOT.post("/cancelParkingSpot", VERIFYTOKEN, CANCELPARKINGSPOT);
 
 // EXPORTING ROUTER
 module.exports = {
