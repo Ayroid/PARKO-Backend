@@ -57,11 +57,11 @@ const verifyAccessToken = async (req, res, next) => {
       }
       req.payload = data;
     });
+    next();
   } catch (error) {
     console.log(error);
     return res.status(403).json({ msg: "User Unauthorized ❌" });
   }
-  next();
 };
 
 module.exports = {
