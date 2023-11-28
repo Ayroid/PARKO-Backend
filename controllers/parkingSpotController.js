@@ -39,9 +39,11 @@ const createNewParkingSpot = async (req, res) => {
 
     // 5. SENDING RESPONSE
     if (created) {
-      res.status(StatusCodes.CREATED).send({ parkingSpotId: created._id });
+      return res
+        .status(StatusCodes.CREATED)
+        .send({ parkingSpotId: created._id });
     } else {
-      res
+      return res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
         .send("Error Creating Parking Spot! ❌ ");
     }
@@ -76,9 +78,11 @@ const getParkingSpots = async (req, res) => {
 
     // 4. SENDING RESPONSE
     if (spots.length >= 0) {
-      res.status(StatusCodes.OK).send({ parkingSpots: spots });
+      return res.status(StatusCodes.OK).send({ parkingSpots: spots });
     } else {
-      res.status(StatusCodes.NOT_FOUND).send("No Parking Spots Found! ❌");
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .send("No Parking Spots Found! ❌");
     }
   } catch (error) {
     // 5. HANDLING ERRORS
@@ -108,9 +112,9 @@ const updateParkingSpot = async (req, res) => {
 
     // 4. SENDING RESPONSE
     if (updated) {
-      res.status(StatusCodes.OK).send(updated);
+      return res.status(StatusCodes.OK).send(updated);
     } else {
-      res
+      return res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
         .send("Error Updating parking Spot! ❌");
     }
@@ -142,9 +146,9 @@ const deleteParkingSpot = async (req, res) => {
 
     // 4. SENDING RESPONSE
     if (deleted) {
-      res.status(StatusCodes.OK).send("Parking Deleted ✅", deleted);
+      return res.status(StatusCodes.OK).send("Parking Deleted ✅", deleted);
     } else {
-      res
+      return res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
         .send("Error Deleting parking Spot! ❌");
     }
@@ -173,7 +177,6 @@ const bookParkingSpot = async (req, res) => {
     // 3. UPDATING SPOT STATUS
 
     const query = { parkingNumber: parkingNumber };
-    console.log(req.payload)
     const data = {
       currentlyParkedUser: req.payload.userId,
       parkingStatus: "booked",
@@ -183,9 +186,9 @@ const bookParkingSpot = async (req, res) => {
 
     // 4. SENDING RESPONSE
     if (updated) {
-      res.status(StatusCodes.OK).send("Parking Spot Booked ✅");
+      return res.status(StatusCodes.OK).send("Parking Spot Booked ✅");
     } else {
-      res
+      return res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
         .send("Error Updating parking Spot! ❌");
     }

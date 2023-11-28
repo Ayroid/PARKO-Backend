@@ -30,7 +30,7 @@ app.use(cors());
 // TEST ROUTE
 app.post("/api/test", (req, res) => {
   console.log("Server is working ✅", Date.now());
-  res.status(200).send("Server is working ✅");
+  return res.status(200).send("Server is working ✅");
 });
 
 // ROUTERS

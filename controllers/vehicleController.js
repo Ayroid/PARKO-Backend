@@ -49,14 +49,14 @@ const registerVehicle = async (req, res) => {
 
       // 9. SENDING VEHICLE
       if (updated) {
-        res.status(StatusCodes.CREATED).send({ vehicleId: created._id });
+        return res.status(StatusCodes.CREATED).send({ vehicleId: created._id });
       } else {
-        res
+        return res
           .status(StatusCodes.INTERNAL_SERVER_ERROR)
           .send("Error Registering Vehicle! ❌");
       }
     } else {
-      res
+      return res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
         .send("Error Registering Vehicle! ❌");
     }
@@ -118,9 +118,9 @@ const updateVehicle = async (req, res) => {
 
     // 5. SENDING VEHICLE
     if (updated) {
-      res.status(StatusCodes.OK).send(updated);
+      return res.status(StatusCodes.OK).send(updated);
     } else {
-      res
+      return res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
         .send("Error Updating Vehicle! ❌");
     }
@@ -155,9 +155,9 @@ const deleteVehicle = async (req, res) => {
 
     // 5. SENDING VEHICLE
     if (deleted) {
-      res.status(StatusCodes.OK).send("Vehicle Deleted ✅", deleted);
+      return res.status(StatusCodes.OK).send("Vehicle Deleted ✅", deleted);
     } else {
-      res
+      return res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
         .send("Error Deleting Vehicle! ❌");
     }

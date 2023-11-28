@@ -35,7 +35,7 @@ const checkAccessToken = async (token, tokenType) => {
       payload = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
     }
     return payload;
-  } catch (err) {
+  } catch (error) {
     // 2. HANDLE ERROR
     return false;
   }
@@ -57,8 +57,8 @@ const verifyAccessToken = async (req, res, next) => {
       }
       req.payload = data;
     });
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    console.log(error);
     return res.status(403).json({ msg: "User Unauthorized ❌" });
   }
   next();

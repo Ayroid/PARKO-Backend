@@ -57,9 +57,9 @@ const registerUser = async (req, res) => {
     // 5. SENDING USER
     if (created) {
       SENDMAIL(username, email, 0, "REGISTRATION");
-      res.status(StatusCodes.CREATED).send("User Created ✅");
+      return res.status(StatusCodes.CREATED).send("User Created ✅");
     } else {
-      res
+      return res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
         .send("Error Creating User! ❌");
     }
@@ -129,7 +129,9 @@ const loginUserMail = async (req, res) => {
   } catch (error) {
     // 8. Handling errors
     console.log(error);
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("Error Logging In! ❌");
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .send("Error Logging In! ❌");
   }
 };
 
@@ -178,7 +180,9 @@ const loginUserPhone = async (req, res) => {
   } catch (error) {
     // 7. Handling errors
     console.log(error);
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("Error Logging In! ❌");
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .send("Error Logging In! ❌");
   }
 };
 
@@ -191,14 +195,16 @@ const logOutUser = async (req, res) => {
     // 3. IF TOKEN IS VERIFIED
     if (token) {
       // 4. SENDING RESPONSE
-      res.status(StatusCodes.OK).send("Logged Out ✅");
+      return res.status(StatusCodes.OK).send("Logged Out ✅");
     } else {
       // 5. SENDING ERROR RESPONSE
-      res.status(StatusCodes.UNAUTHORIZED).send("Token Invalid! ");
+      return res.status(StatusCodes.UNAUTHORIZED).send("Token Invalid! ");
     }
   } catch (error) {
     console.log(error);
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("Error logging out ❌");
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .send("Error logging out ❌");
   }
 };
 
@@ -328,7 +334,7 @@ const verifyJWTToken = async (req, res) => {
   } catch (error) {
     // 5. HANDLING ERRORS
     console.log(error);
-    res
+    return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .send("Error Verifying Token! ❌");
   }
@@ -392,9 +398,9 @@ const readUser = async (req, res) => {
         })),
       };
 
-      res.status(StatusCodes.OK).send(data);
+      return res.status(StatusCodes.OK).send(data);
     } else {
-      res.status(StatusCodes.NOT_FOUND).send("User Not Found ❌");
+      return res.status(StatusCodes.NOT_FOUND).send("User Not Found ❌");
     }
   } catch (error) {
     // 5. HANDLING ERRORS
@@ -410,7 +416,6 @@ const updateUser = async (req, res) => {
   try {
     // 1. FETCHING DATA FROM REQUEST BODY
     let { query, data } = req.body;
-    console.log(req.body);
 
     // 2. CHECKING IF QUERY IS EMPTY
     if (query === undefined || query === null) {
@@ -439,9 +444,9 @@ const updateUser = async (req, res) => {
 
     // 7. SENDING RESPONSE
     if (updated) {
-      res.status(StatusCodes.OK).send("User Updated ✅");
+      return res.status(StatusCodes.OK).send("User Updated ✅");
     } else {
-      res
+      return res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
         .send("Error Updating User! ❌");
     }
@@ -483,9 +488,9 @@ const deleteUser = async (req, res) => {
 
     // 6. SENDING RESPONSE
     if (deleted) {
-      res.status(StatusCodes.OK).send("User Deleted ✅", deleted);
+      return res.status(StatusCodes.OK).send("User Deleted ✅", deleted);
     } else {
-      res
+      return res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
         .send("Error Deleting User! ❌");
     }
@@ -502,7 +507,7 @@ const deleteUser = async (req, res) => {
 const uploadProfilePic = async (req, res) => {
   try {
     // 0. SETTING DEFAULT URL
-    const defaultUrl = "http://192.168.1.9:3000/img/profilePic/";
+    const defaultUrl = "http://localhost:3000/img/profilePic/";
 
     // 1. FETCHING DATA FROM REQUEST BODY
     const userId = req.payload.userId;
@@ -535,9 +540,9 @@ const uploadProfilePic = async (req, res) => {
 
     // 7. SENDING RESPONSE
     if (updated) {
-      res.status(StatusCodes.OK).send("Profile Pic Uploaded ✅");
+      return res.status(StatusCodes.OK).send("Profile Pic Uploaded ✅");
     } else {
-      res
+      return res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
         .send("Error Uploading Profile Pic! ❌");
     }

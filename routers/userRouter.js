@@ -33,11 +33,11 @@ var SAPIDS = new Array();
 
 // API ENDPOINTS
 USER.get("/test", (req, res) => {
-  res.status(StatusCodes.OK).send("Server is working ✅");
+  return res.status(StatusCodes.OK).send("Server is working ✅");
 });
 
 USER.post("/test", (req, res) => {
-  res.status(StatusCodes.OK).send("Server is working ✅");
+  return res.status(StatusCodes.OK).send("Server is working ✅");
 });
 
 // USER ROUTES
@@ -62,10 +62,10 @@ USER.post("/update", (req, res) => {
   const { sapid } = req.body;
   SAPIDS.push([sapid, Date.now()]);
   console.log(sapid);
-  res.send("Updated!");
+  return res.send("Updated!");
 });
 USER.post("getUpdate", (req, res) => {
-  res.send(SAPIDS[SAPIDS.length - 1]);
+  return res.send(SAPIDS[SAPIDS.length - 1]);
 });
 
 // PARKING ROUTES

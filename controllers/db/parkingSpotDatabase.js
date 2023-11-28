@@ -55,7 +55,6 @@ const updateSpot = (query, data) => {
         .then((result) => {
           if (result) {
             console.log(`Parking Spot Updated ✅ - {spotId : ${result._id}}`);
-            console.log(result);
             resolve(result);
           }
         })

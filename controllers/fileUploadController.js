@@ -11,8 +11,8 @@ const fileDestionationMapping = (fileName) => {
       profilePic: "public/img/profilePic",
     };
     return fileDestionationMap[fileName];
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    console.log(error);
   }
 };
 
@@ -23,8 +23,8 @@ const filenameMapping = (req, fileName, fileExtension) => {
       profilePic: `${req.payload.userId}${fileExtension}`,
     };
     return fileNameMap[fileName];
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    console.log(error);
   }
 };
 
