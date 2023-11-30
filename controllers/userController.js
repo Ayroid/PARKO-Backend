@@ -49,7 +49,12 @@ const registerUser = async (req, res) => {
     }
 
     // 3. CREATING FINAL DATA OBJECT
-    const finaldata = { ...data, registeredOn: Date.now() };
+    const finaldata = {
+      ...data,
+      registeredOn: new Date().toLocaleString("en-US", {
+        timeZone: "Asia/Kolkata",
+      }),
+    };
 
     // 4. CREATING USER
     const created = await CREATEUSER(finaldata);
@@ -88,12 +93,20 @@ const loginUserMail = async (req, res) => {
     const otpexist = await READOTP([{ email: email }]);
 
     // 4. IF OTP EXIST AND NOT EXPIRED
-    if (otpexist.length > 0 && otpexist[0].reRequestTime > Date.now()) {
+    if (
+      otpexist.length > 0 &&
+      otpexist[0].reRequestTime >
+        new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
+    ) {
       return res.status(StatusCodes.BAD_REQUEST).send("OTP Already Sent ✅");
     }
 
     // 5. IF OTP EXIST AND EXPIRED
-    if (otpexist.length > 0 && otpexist[0].reRequestTime < Date.now()) {
+    if (
+      otpexist.length > 0 &&
+      otpexist[0].reRequestTime <
+        new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
+    ) {
       await DELETEOTP({ email: email })
         .then((result) => {
           console.log("OTP Deleted ✅", result._id);
@@ -113,9 +126,15 @@ const loginUserMail = async (req, res) => {
       otpType: "EMAIL",
       email: email,
       otpValue: otpValue,
-      issueTime: Date.now(),
-      reRequestTime: Date.now() + 60000, // 1 minute
-      expiryTime: Date.now() + 600000, //
+      issueTime: new Date().toLocaleString("en-US", {
+        timeZone: "Asia/Kolkata",
+      }),
+      reRequestTime:
+        new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" }) +
+        60000, // 1 minute
+      expiryTime:
+        new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" }) +
+        600000, //
     })
       .then((result) => {
         console.log("OTP Created ✅", result._id);
@@ -151,7 +170,11 @@ const loginUserPhone = async (req, res) => {
     const otpexist = await READOTP([{ phone: phone }]);
 
     // 4. IF OTP EXIST AND NOT EXPIRED
-    if (otpexist.length > 0 && otpexist[0].expiryTime > Date.now()) {
+    if (
+      otpexist.length > 0 &&
+      otpexist[0].expiryTime >
+        new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
+    ) {
       return res.status(StatusCodes.BAD_REQUEST).send("OTP Already Sent ✅");
     }
 
@@ -165,8 +188,12 @@ const loginUserPhone = async (req, res) => {
       otpType: "SMS",
       phone: phone,
       otpValue: otpValue,
-      issueTime: Date.now(),
-      expiryTime: Date.now() + 600000,
+      issueTime: new Date().toLocaleString("en-US", {
+        timeZone: "Asia/Kolkata",
+      }),
+      expiryTime:
+        new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" }) +
+        600000,
     })
       .then((result) => {
         console.log("OTP Created ✅", result._id);
@@ -223,7 +250,10 @@ const verifyOTPMail = async (req, res) => {
     }
 
     // 4. CHECKING IF OTP IS EXPIRED
-    if (otpexist[0].expiryTime < Date.now()) {
+    if (
+      otpexist[0].expiryTime <
+      new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
+    ) {
       return res.status(StatusCodes.BAD_REQUEST).send("OTP Expired ❌");
     }
     // 5. CHECKING IF OTP IS CORRECT
@@ -276,7 +306,10 @@ const verifyOTPPhone = async (req, res) => {
     }
 
     // 4. CHECKING IF OTP IS EXPIRED
-    if (otpexist[0].expiryTime < Date.now()) {
+    if (
+      otpexist[0].expiryTime <
+      new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
+    ) {
       return res.status(StatusCodes.BAD_REQUEST).send("OTP Expired ❌");
     }
 

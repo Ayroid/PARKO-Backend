@@ -54,10 +54,11 @@ const verifyAccessToken = async (req, res, next) => {
       if (err) {
         console.log("Error Verifying Token ❌");
         return res.status(403).json({ msg: "User Unauthorized ❌" });
+      } else {
+        req.payload = data;
+        next();
       }
-      req.payload = data;
     });
-    next();
   } catch (error) {
     console.log(error);
     return res.status(403).json({ msg: "User Unauthorized ❌" });

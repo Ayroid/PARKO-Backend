@@ -29,7 +29,10 @@ app.use(cors());
 
 // TEST ROUTE
 app.post("/api/test", (req, res) => {
-  console.log("Server is working ✅", Date.now());
+  console.log(
+    "Server is working ✅",
+    new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
+  );
   return res.status(200).send("Server is working ✅");
 });
 

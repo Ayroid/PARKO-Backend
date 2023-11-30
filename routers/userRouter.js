@@ -60,7 +60,10 @@ USER.post("/deleteUser", VERIFYTOKEN, DELETEUSER);
 USER.post("/logout", VERIFYTOKEN, LOGOUTUSER);
 USER.post("/update", (req, res) => {
   const { sapid } = req.body;
-  SAPIDS.push([sapid, Date.now()]);
+  SAPIDS.push([
+    sapid,
+    new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" }),
+  ]);
   console.log(sapid);
   return res.send("Updated!");
 });

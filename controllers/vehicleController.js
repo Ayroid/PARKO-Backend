@@ -31,8 +31,12 @@ const registerVehicle = async (req, res) => {
     // 4. EXTRA DATA OBJECT
     const extradata = {
       parkingHistory: [],
-      registeredOn: Date.now(),
-      lastUpdated: Date.now(),
+      registeredOn: new Date().toLocaleString("en-US", {
+        timeZone: "Asia/Kolkata",
+      }),
+      lastUpdated: new Date().toLocaleString("en-US", {
+        timeZone: "Asia/Kolkata",
+      }),
     };
 
     // 5. CREATING FINAL DATA OBJECT

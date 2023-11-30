@@ -18,21 +18,25 @@ const parkingSpotSchema = new mongoose.Schema({
   parkingStatus: {
     type: String,
     required: true,
+    default: "available",
   },
   currentlyParkedUser: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "user",
     required: false,
+    default: null,
   },
   currentlyParkedVehicle: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "vehicle",
     required: false,
+    default: null,
   },
   lastParkedVehicle: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "vehicle",
     required: false,
+    default: null,
   },
   createdAt: {
     type: Date,

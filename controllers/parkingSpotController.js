@@ -17,6 +17,8 @@ const createNewParkingSpot = async (req, res) => {
     const data = ({ parkingNumber, coordinates, nearBy, parkingStatus } =
       req.body);
 
+    console.log(data);
+
     // 2. CHECHKING IF SPOT EXISTS
     const spot = await READSPOT([
       { parkingNumber: parkingNumber },
@@ -31,7 +33,9 @@ const createNewParkingSpot = async (req, res) => {
     // 3. CREATING FINAL DATA OBJECT
     const finaldata = {
       ...data,
-      createdAt: Date.now(),
+      createdAt: new Date().toLocaleString("en-US", {
+        timeZone: "Asia/Kolkata",
+      }),
     };
 
     // 4. CREATING SPOT
@@ -108,7 +112,12 @@ const updateParkingSpot = async (req, res) => {
         .send("Parking Spot Not Found ! ❌");
     }
 
-    const finalData = { ...data, updatedAt: Date.now() };
+    const finalData = {
+      ...data,
+      updatedAt: new Date().toLocaleString("en-US", {
+        timeZone: "Asia/Kolkata",
+      }),
+    };
 
     // 3. UPDATING SPOT STATUS
     const updated = await UPDATESPOT(query, finalData);
@@ -184,7 +193,9 @@ const bookParkingSpot = async (req, res) => {
     const data = {
       currentlyParkedUser: req.payload.userId,
       parkingStatus: "booked",
-      updatedAt: Date.now(),
+      updatedAt: new Date().toLocaleString("en-US", {
+        timeZone: "Asia/Kolkata",
+      }),
     };
 
     const updated = await UPDATESPOT(query, data);
@@ -228,7 +239,9 @@ const cancelParkingSpot = async (req, res) => {
     const data = {
       currentlyParkedUser: null,
       parkingStatus: "available",
-      updatedAt: Date.now(),
+      updatedAt: new Date().toLocaleString("en-US", {
+        timeZone: "Asia/Kolkata",
+      }),
     };
 
     const updated = await UPDATESPOT(query, data);
