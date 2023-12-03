@@ -34,7 +34,7 @@ const issuesSchema = new mongoose.Schema({
   issuedTime: {
     type: Date,
     required: true,
-    default: new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" }),
+    default: Date.now(),
   },
   resolvedTime: {
     type: Date,

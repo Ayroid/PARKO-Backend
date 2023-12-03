@@ -22,19 +22,17 @@ const otpSchema = new mongoose.Schema({
   issueTime: {
     type: Date,
     required: true,
-    default: new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" }),
+    default: Date.now(),
   },
   reRequestTime: {
     type: Date,
     required: true,
-    default:
-      new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" }) + 60000,
+    default: Date.now() + 60000,
   },
   expiryTime: {
     type: Date,
     required: true,
-    default:
-      new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" }) + 300000,
+    default: Date.now() + 300000,
   },
 });
 

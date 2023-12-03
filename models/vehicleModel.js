@@ -30,12 +30,12 @@ const vehicleSchema = new mongoose.Schema({
   },
   registeredOn: {
     type: Date,
-    default: new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" }),
+    default: Date.now(),
     required: true,
   },
   updatedOn: {
     type: Date,
-    default: new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" }),
+    default: Date.now(),
     required: false,
   },
 });

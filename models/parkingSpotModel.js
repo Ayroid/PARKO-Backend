@@ -40,12 +40,12 @@ const parkingSpotSchema = new mongoose.Schema({
   },
   createdAt: {
     type: Date,
-    default: new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" }),
+    default: Date.now(),
     required: true,
   },
   updatedAt: {
     type: Date,
-    default: new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" }),
+    default: Date.now(),
     required: false,
   },
 });

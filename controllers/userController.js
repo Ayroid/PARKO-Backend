@@ -96,7 +96,7 @@ const loginUserMail = async (req, res) => {
     if (
       otpexist.length > 0 &&
       otpexist[0].reRequestTime >
-        new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
+        Date.now()
     ) {
       return res.status(StatusCodes.BAD_REQUEST).send("OTP Already Sent ✅");
     }
@@ -105,7 +105,7 @@ const loginUserMail = async (req, res) => {
     if (
       otpexist.length > 0 &&
       otpexist[0].reRequestTime <
-        new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
+        Date.now()
     ) {
       await DELETEOTP({ email: email })
         .then((result) => {
@@ -130,10 +130,10 @@ const loginUserMail = async (req, res) => {
         timeZone: "Asia/Kolkata",
       }),
       reRequestTime:
-        new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" }) +
+        Date.now() +
         60000, // 1 minute
       expiryTime:
-        new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" }) +
+        Date.now() +
         600000, //
     })
       .then((result) => {
@@ -173,7 +173,7 @@ const loginUserPhone = async (req, res) => {
     if (
       otpexist.length > 0 &&
       otpexist[0].expiryTime >
-        new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
+        Date.now()
     ) {
       return res.status(StatusCodes.BAD_REQUEST).send("OTP Already Sent ✅");
     }
@@ -192,7 +192,7 @@ const loginUserPhone = async (req, res) => {
         timeZone: "Asia/Kolkata",
       }),
       expiryTime:
-        new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" }) +
+        Date.now() +
         600000,
     })
       .then((result) => {
@@ -252,7 +252,7 @@ const verifyOTPMail = async (req, res) => {
     // 4. CHECKING IF OTP IS EXPIRED
     if (
       otpexist[0].expiryTime <
-      new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
+      Date.now()
     ) {
       return res.status(StatusCodes.BAD_REQUEST).send("OTP Expired ❌");
     }
@@ -308,7 +308,7 @@ const verifyOTPPhone = async (req, res) => {
     // 4. CHECKING IF OTP IS EXPIRED
     if (
       otpexist[0].expiryTime <
-      new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
+      Date.now()
     ) {
       return res.status(StatusCodes.BAD_REQUEST).send("OTP Expired ❌");
     }
