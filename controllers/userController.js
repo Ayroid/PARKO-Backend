@@ -519,7 +519,7 @@ const deleteUser = async (req, res) => {
 const uploadProfilePic = async (req, res) => {
   try {
     // 0. SETTING DEFAULT URL
-    const defaultUrl = process.env.VITE_BACKEND_SERVER_URL + "/img/profilePic/";
+    const defaultUrl = process.env.VITE_BACKEND_SERVER_URL + "/api/img/profilePic/";
 
     // 1. FETCHING DATA FROM REQUEST BODY
     const userId = req.payload.userId;
