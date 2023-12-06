@@ -202,7 +202,7 @@ const bookParkingSpot = async (req, res) => {
 
     // 4. SENDING RESPONSE
     if (updated) {
-      return res.status(StatusCodes.OK).send("Parking Spot Booked ✅");
+      return res.status(StatusCodes.OK).send("Parking Spot Booked!");
     } else {
       return res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)

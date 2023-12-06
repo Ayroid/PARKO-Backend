@@ -549,7 +549,7 @@ const uploadProfilePic = async (req, res) => {
 
     // 7. SENDING RESPONSE
     if (updated) {
-      return res.status(StatusCodes.OK).send("Profile Pic Uploaded ✅");
+      return res.status(StatusCodes.OK).send("Profile Pic Uploaded Successfully!");
     } else {
       return res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
