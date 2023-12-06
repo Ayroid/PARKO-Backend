@@ -1,3 +1,6 @@
+// DOT ENV CONFIG
+require("dotenv").config();
+
 // IMPORTING MODULES
 const { StatusCodes } = require("http-status-codes");
 const path = require("path");
@@ -93,20 +96,12 @@ const loginUserMail = async (req, res) => {
     const otpexist = await READOTP([{ email: email }]);
 
     // 4. IF OTP EXIST AND NOT EXPIRED
-    if (
-      otpexist.length > 0 &&
-      otpexist[0].reRequestTime >
-        Date.now()
-    ) {
+    if (otpexist.length > 0 && otpexist[0].reRequestTime > Date.now()) {
       return res.status(StatusCodes.BAD_REQUEST).send("OTP Already Sent ✅");
     }
 
     // 5. IF OTP EXIST AND EXPIRED
-    if (
-      otpexist.length > 0 &&
-      otpexist[0].reRequestTime <
-        Date.now()
-    ) {
+    if (otpexist.length > 0 && otpexist[0].reRequestTime < Date.now()) {
       await DELETEOTP({ email: email })
         .then((result) => {
           console.log("OTP Deleted ✅", result._id);
@@ -129,12 +124,8 @@ const loginUserMail = async (req, res) => {
       issueTime: new Date().toLocaleString("en-US", {
         timeZone: "Asia/Kolkata",
       }),
-      reRequestTime:
-        Date.now() +
-        60000, // 1 minute
-      expiryTime:
-        Date.now() +
-        600000, //
+      reRequestTime: Date.now() + 60000, // 1 minute
+      expiryTime: Date.now() + 600000, //
     })
       .then((result) => {
         console.log("OTP Created ✅", result._id);
@@ -170,11 +161,7 @@ const loginUserPhone = async (req, res) => {
     const otpexist = await READOTP([{ phone: phone }]);
 
     // 4. IF OTP EXIST AND NOT EXPIRED
-    if (
-      otpexist.length > 0 &&
-      otpexist[0].expiryTime >
-        Date.now()
-    ) {
+    if (otpexist.length > 0 && otpexist[0].expiryTime > Date.now()) {
       return res.status(StatusCodes.BAD_REQUEST).send("OTP Already Sent ✅");
     }
 
@@ -191,9 +178,7 @@ const loginUserPhone = async (req, res) => {
       issueTime: new Date().toLocaleString("en-US", {
         timeZone: "Asia/Kolkata",
       }),
-      expiryTime:
-        Date.now() +
-        600000,
+      expiryTime: Date.now() + 600000,
     })
       .then((result) => {
         console.log("OTP Created ✅", result._id);
@@ -250,10 +235,7 @@ const verifyOTPMail = async (req, res) => {
     }
 
     // 4. CHECKING IF OTP IS EXPIRED
-    if (
-      otpexist[0].expiryTime <
-      Date.now()
-    ) {
+    if (otpexist[0].expiryTime < Date.now()) {
       return res.status(StatusCodes.BAD_REQUEST).send("OTP Expired ❌");
     }
     // 5. CHECKING IF OTP IS CORRECT
@@ -306,10 +288,7 @@ const verifyOTPPhone = async (req, res) => {
     }
 
     // 4. CHECKING IF OTP IS EXPIRED
-    if (
-      otpexist[0].expiryTime <
-      Date.now()
-    ) {
+    if (otpexist[0].expiryTime < Date.now()) {
       return res.status(StatusCodes.BAD_REQUEST).send("OTP Expired ❌");
     }
 
@@ -540,7 +519,7 @@ const deleteUser = async (req, res) => {
 const uploadProfilePic = async (req, res) => {
   try {
     // 0. SETTING DEFAULT URL
-    const defaultUrl = "https://parko.studio/img/profilePic/";
+    const defaultUrl = process.env.VITE_BACKEND_SERVER_URL + "/img/profilePic/";
 
     // 1. FETCHING DATA FROM REQUEST BODY
     const userId = req.payload.userId;
