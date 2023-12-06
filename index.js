@@ -19,6 +19,7 @@ const app = express();
 
 // SETTING UP STATIC FILES
 app.use(express.static(path.join(__dirname, "public")));
+app.use('/api/img', express.static(path.join(__dirname, "public/img")));
 
 // SETTING UP BODY PARSER
 app.use(bodyParser.urlencoded({ extended: false }));
