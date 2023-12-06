@@ -540,7 +540,7 @@ const deleteUser = async (req, res) => {
 const uploadProfilePic = async (req, res) => {
   try {
     // 0. SETTING DEFAULT URL
-    const defaultUrl = "http://localhost:3000/img/profilePic/";
+    const defaultUrl = "https://parko.studio/img/profilePic/";
 
     // 1. FETCHING DATA FROM REQUEST BODY
     const userId = req.payload.userId;

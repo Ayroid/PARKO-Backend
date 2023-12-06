@@ -33,6 +33,11 @@ app.post("/api/test", (req, res) => {
   return res.status(200).send("Server is working ✅");
 });
 
+app.get("/api/test", (req, res) => {
+  console.log("Server is working ✅", Date.now());
+  return res.status(200).send("Server is working ✅");
+});
+
 // ROUTERS
 const { USERROUTER } = require("./routers/userRouter");
 const { PARKINGSPOTROUTER } = require("./routers/parkingSpotRouter");
