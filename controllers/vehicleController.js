@@ -22,7 +22,7 @@ const registerVehicle = async (req, res) => {
     if (vehicle.length > 0) {
       return res
         .status(StatusCodes.BAD_REQUEST)
-        .send("Vehicle Already Exists! ❌");
+        .send("Vehicle Already Exists!");
     }
 
     // 3. FETCHING USER DATA
@@ -57,19 +57,19 @@ const registerVehicle = async (req, res) => {
       } else {
         return res
           .status(StatusCodes.INTERNAL_SERVER_ERROR)
-          .send("Error Registering Vehicle! ❌");
+          .send("Error Registering Vehicle!");
       }
     } else {
       return res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
-        .send("Error Registering Vehicle! ❌");
+        .send("Error Registering Vehicle!");
     }
   } catch (error) {
     // 8. HANDLING ERRORS
     console.log(error);
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .send("Error Registering Vehicle! ❌");
+      .send("Error Registering Vehicle!");
   }
 };
 
@@ -89,14 +89,14 @@ const readVehicle = async (req, res) => {
     if (vehicle.length > 0) {
       return res.status(StatusCodes.OK).send(vehicle);
     } else {
-      return res.status(StatusCodes.NOT_FOUND).send("Vehicle Not Found! ❌");
+      return res.status(StatusCodes.NOT_FOUND).send("Vehicle Not Found!");
     }
   } catch (error) {
     // 4. HANDLING ERRORS
     console.log(error);
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .send("Error Reading Vehicle! ❌");
+      .send("Error Reading Vehicle!");
   }
 };
 
@@ -109,12 +109,12 @@ const updateVehicle = async (req, res) => {
     // 2. CHECKING IF THE VEHICLE EXISTS
     const vehicle = await READVEHICLE([query]);
     if (vehicle.length === 0) {
-      return res.status(StatusCodes.NOT_FOUND).send("Vehicle Not Found! ❌");
+      return res.status(StatusCodes.NOT_FOUND).send("Vehicle Not Found!");
     }
 
     // 3. CHECKING IF THE USER IS AUTHORIZED
     if (vehicle[0].userId !== req.payload.userId) {
-      return res.status(StatusCodes.UNAUTHORIZED).send("Unauthorized! ❌");
+      return res.status(StatusCodes.UNAUTHORIZED).send("Unauthorized!");
     }
 
     // 4. UPDATING VEHICLE
@@ -126,14 +126,14 @@ const updateVehicle = async (req, res) => {
     } else {
       return res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
-        .send("Error Updating Vehicle! ❌");
+        .send("Error Updating Vehicle!");
     }
   } catch (error) {
     // 6. HANDLING ERRORS
     console.log(error);
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .send("Error Updating Vehicle! ❌");
+      .send("Error Updating Vehicle!");
   }
 };
 
@@ -146,12 +146,12 @@ const deleteVehicle = async (req, res) => {
     // 2. CHECKING IF THE VEHICLE EXISTS
     const vehicle = await READVEHICLE([query]);
     if (vehicle.length === 0) {
-      return res.status(StatusCodes.NOT_FOUND).send("Vehicle Not Found! ❌");
+      return res.status(StatusCodes.NOT_FOUND).send("Vehicle Not Found!");
     }
 
     // 3. CHECKING IF THE USER IS AUTHORIZED
     if (vehicle[0].userId !== req.payload.userId) {
-      return res.status(StatusCodes.UNAUTHORIZED).send("Unauthorized! ❌");
+      return res.status(StatusCodes.UNAUTHORIZED).send("Unauthorized!");
     }
 
     // 4. DELETING VEHICLE
@@ -163,14 +163,14 @@ const deleteVehicle = async (req, res) => {
     } else {
       return res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
-        .send("Error Deleting Vehicle! ❌");
+        .send("Error Deleting Vehicle!");
     }
   } catch (error) {
     // 6. HANDLING ERRORS
     console.log(error);
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .send("Error Deleting Vehicle! ❌");
+      .send("Error Deleting Vehicle!");
   }
 };
 

@@ -46,9 +46,7 @@ const registerUser = async (req, res) => {
       { sapid: sapid },
     ]);
     if (user.length > 0) {
-      return res
-        .status(StatusCodes.BAD_REQUEST)
-        .send("User Already Exists! ❌");
+      return res.status(StatusCodes.BAD_REQUEST).send("User Already Exists!");
     }
 
     // 3. CREATING FINAL DATA OBJECT
@@ -65,18 +63,18 @@ const registerUser = async (req, res) => {
     // 5. SENDING USER
     if (created) {
       SENDMAIL(username, email, 0, "REGISTRATION");
-      return res.status(StatusCodes.CREATED).send("User Created ✅");
+      return res.status(StatusCodes.CREATED).send("Registration Successfull!");
     } else {
       return res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
-        .send("Error Creating User! ❌");
+        .send("Error Creating User!");
     }
   } catch (error) {
     // 6. HANDLING ERRORS
     console.log(error);
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .send("Error Creating User! ❌");
+      .send("Error Creating User!");
   }
 };
 
@@ -89,7 +87,7 @@ const loginUserMail = async (req, res) => {
     // 2. CHECKING IF USER ALREADY EXIST OR NOT
     const user = await READUSER([{ email: email }]);
     if (user.length !== 1) {
-      return res.status(StatusCodes.NOT_FOUND).send("User Not Registered ❌");
+      return res.status(StatusCodes.NOT_FOUND).send("User Not Registered!");
     }
 
     // 3. CHECKING IF OTP EXISTS
@@ -154,7 +152,7 @@ const loginUserPhone = async (req, res) => {
     // 2. CHECKING IF USER ALREADY EXIST OR NOT
     const user = await READUSER([{ phone: phone }]);
     if (user.length !== 1) {
-      return res.status(StatusCodes.NOT_FOUND).send("User Not Registered ❌");
+      return res.status(StatusCodes.NOT_FOUND).send("User Not Registered!");
     }
 
     // 3. CHECKING IF OTP EXISTS
@@ -162,7 +160,7 @@ const loginUserPhone = async (req, res) => {
 
     // 4. IF OTP EXIST AND NOT EXPIRED
     if (otpexist.length > 0 && otpexist[0].expiryTime > Date.now()) {
-      return res.status(StatusCodes.BAD_REQUEST).send("OTP Already Sent ✅");
+      return res.status(StatusCodes.BAD_REQUEST).send("OTP Already Sent!");
     }
 
     //5. GENERATE OTP
@@ -188,7 +186,7 @@ const loginUserPhone = async (req, res) => {
         console.log("Error Creating OTP ❌", error);
       });
 
-    return res.status(StatusCodes.OK).send("OTP Sent ✅");
+    return res.status(StatusCodes.OK).send("OTP Sent Successfully!");
   } catch (error) {
     // 7. Handling errors
     console.log(error);
@@ -207,10 +205,10 @@ const logOutUser = async (req, res) => {
     // 3. IF TOKEN IS VERIFIED
     if (token) {
       // 4. SENDING RESPONSE
-      return res.status(StatusCodes.OK).send("Logged Out ✅");
+      return res.status(StatusCodes.OK).send("Logged Out Successfully!");
     } else {
       // 5. SENDING ERROR RESPONSE
-      return res.status(StatusCodes.UNAUTHORIZED).send("Token Invalid! ");
+      return res.status(StatusCodes.UNAUTHORIZED).send("User Unauthorized!");
     }
   } catch (error) {
     console.log(error);
@@ -231,16 +229,16 @@ const verifyOTPMail = async (req, res) => {
 
     // 3. CHECKING IF OTP IS VALID
     if (otpexist.length !== 1) {
-      return res.status(StatusCodes.NOT_FOUND).send("OTP Not Found ❌");
+      return res.status(StatusCodes.NOT_FOUND).send("OTP Not Found!");
     }
 
     // 4. CHECKING IF OTP IS EXPIRED
     if (otpexist[0].expiryTime < Date.now()) {
-      return res.status(StatusCodes.BAD_REQUEST).send("OTP Expired ❌");
+      return res.status(StatusCodes.BAD_REQUEST).send("OTP Expired!");
     }
     // 5. CHECKING IF OTP IS CORRECT
     if (otpexist[0].otpValue != otpValue) {
-      return res.status(StatusCodes.BAD_REQUEST).send("OTP Incorrect ❌");
+      return res.status(StatusCodes.BAD_REQUEST).send("OTP Incorrect!");
     }
     // 6. DELETING OTP FROM DATABASE
     await DELETEOTP({ email: email })
@@ -269,7 +267,7 @@ const verifyOTPMail = async (req, res) => {
     console.log(error);
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .send("Error Verifying OTP! ❌");
+      .send("Error Verifying OTP!");
   }
 };
 
@@ -284,17 +282,17 @@ const verifyOTPPhone = async (req, res) => {
 
     // 3. CHECKING IF OTP IS VALID
     if (otpexist.length !== 1) {
-      return res.status(StatusCodes.NOT_FOUND).send("OTP Not Found ❌");
+      return res.status(StatusCodes.NOT_FOUND).send("OTP Not Found!");
     }
 
     // 4. CHECKING IF OTP IS EXPIRED
     if (otpexist[0].expiryTime < Date.now()) {
-      return res.status(StatusCodes.BAD_REQUEST).send("OTP Expired ❌");
+      return res.status(StatusCodes.BAD_REQUEST).send("OTP Expired!");
     }
 
     // 5. CHECKING IF OTP IS CORRECT
     if (otpexist[0].otpValue !== otpValue) {
-      return res.status(StatusCodes.BAD_REQUEST).send("OTP Incorrect ❌");
+      return res.status(StatusCodes.BAD_REQUEST).send("OTP Incorrect!");
     }
 
     // 6. DELETING OTP FROM DATABASE
@@ -324,7 +322,7 @@ const verifyOTPPhone = async (req, res) => {
     console.log(error);
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .send("Error Verifying OTP! ❌");
+      .send("Error Verifying OTP!");
   }
 };
 
@@ -339,16 +337,16 @@ const verifyJWTToken = async (req, res) => {
 
     // 3. SENDING RESPONSE
     if (token) {
-      return res.status(StatusCodes.OK).send("Token Verified ✅");
+      return res.status(StatusCodes.OK).send("Token Verified!");
     }
     // 4. SENDING ERROR RESPONSE
-    return res.status(StatusCodes.UNAUTHORIZED).send("Token Invalid! ");
+    return res.status(StatusCodes.UNAUTHORIZED).send("Token Invalid!");
   } catch (error) {
     // 5. HANDLING ERRORS
     console.log(error);
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .send("Error Verifying Token! ❌");
+      .send("Error Verifying Token!");
   }
 };
 
@@ -371,13 +369,13 @@ const refreshJWTToken = async (req, res) => {
       return res.status(StatusCodes.OK).send(newToken);
     }
     // 4. SENDING ERROR RESPONSE
-    return res.status(StatusCodes.UNAUTHORIZED).send("Token Invalid! ");
+    return res.status(StatusCodes.UNAUTHORIZED).send("Token Invalid!");
   } catch (error) {
     // 5. HANDLING ERRORS
     console.log(error);
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .send("Error Verifying Token! ❌");
+      .send("Error Verifying Token!");
   }
 };
 
@@ -412,14 +410,14 @@ const readUser = async (req, res) => {
 
       return res.status(StatusCodes.OK).send(data);
     } else {
-      return res.status(StatusCodes.NOT_FOUND).send("User Not Found ❌");
+      return res.status(StatusCodes.NOT_FOUND).send("User Not Found!");
     }
   } catch (error) {
     // 5. HANDLING ERRORS
     console.log(error);
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .send("Error Getting User Details! ❌");
+      .send("Error Getting User Details!");
   }
 };
 
@@ -437,7 +435,7 @@ const updateUser = async (req, res) => {
       const user = await READUSER([query]);
 
       if (user.length === 0) {
-        return res.status(StatusCodes.NOT_FOUND).send("User Not Found ❌");
+        return res.status(StatusCodes.NOT_FOUND).send("User Not Found!");
       }
 
       // 4. FETCHING USER ID
@@ -447,7 +445,7 @@ const updateUser = async (req, res) => {
       if (userId != req.payload.userId) {
         return res
           .status(StatusCodes.UNAUTHORIZED)
-          .send("User Not Authorized ❌");
+          .send("User Not Authorized!");
       }
     }
 
@@ -456,18 +454,18 @@ const updateUser = async (req, res) => {
 
     // 7. SENDING RESPONSE
     if (updated) {
-      return res.status(StatusCodes.OK).send("User Updated ✅");
+      return res.status(StatusCodes.OK).send("User Updated!");
     } else {
       return res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
-        .send("Error Updating User! ❌");
+        .send("Error Updating User!");
     }
   } catch (error) {
     // 8. HANDLING ERRORS
     console.log(error);
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .send("Error Updating User! ❌");
+      .send("Error Updating User!");
   }
 };
 
@@ -484,14 +482,14 @@ const deleteUser = async (req, res) => {
       // 3. CHECKING IF USER EXISTS
       const user = await READUSER([query]);
       if (user.length === 0) {
-        return res.status(StatusCodes.NOT_FOUND).send("User Not Found ❌");
+        return res.status(StatusCodes.NOT_FOUND).send("User Not Found!");
       }
 
       // 4. CHECKING IF USER IS AUTHORIZED
       if (user[0]._id !== req.payload.userId) {
         return res
           .status(StatusCodes.UNAUTHORIZED)
-          .send("User Not Authorized ❌");
+          .send("User Not Authorized!");
       }
     }
 
@@ -500,18 +498,18 @@ const deleteUser = async (req, res) => {
 
     // 6. SENDING RESPONSE
     if (deleted) {
-      return res.status(StatusCodes.OK).send("User Deleted ✅", deleted);
+      return res.status(StatusCodes.OK).send("User Deleted!", deleted);
     } else {
       return res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
-        .send("Error Deleting User! ❌");
+        .send("Error Deleting User!");
     }
   } catch (error) {
     // 7. HANDLING ERRORS
     console.log(error);
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .send("Error Deleting User! ❌");
+      .send("Error Deleting User!");
   }
 };
 
@@ -531,14 +529,12 @@ const uploadProfilePic = async (req, res) => {
     // 3. CHECKING IF USER EXISTS
     const user = await READUSER([query]);
     if (user.length === 0) {
-      return res.status(StatusCodes.NOT_FOUND).send("User Not Found ❌");
+      return res.status(StatusCodes.NOT_FOUND).send("User Not Found!");
     }
 
     // 4. CHECKING IF USER IS AUTHORIZED
     if (userId != req.payload.userId) {
-      return res
-        .status(StatusCodes.UNAUTHORIZED)
-        .send("User Not Authorized ❌");
+      return res.status(StatusCodes.UNAUTHORIZED).send("User Not Authorized!");
     }
 
     // 5. CREATING DATA OBJECT
@@ -557,14 +553,14 @@ const uploadProfilePic = async (req, res) => {
     } else {
       return res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
-        .send("Error Uploading Profile Pic! ❌");
+        .send("Error Uploading Profile Pic!");
     }
   } catch (error) {
     // 8. HANDLING ERRORS
     console.log(error);
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .send("Error Uploading Profile Pic! ❌");
+      .send("Error Uploading Profile Pic!");
   }
 };
 

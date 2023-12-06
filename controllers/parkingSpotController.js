@@ -27,7 +27,7 @@ const createNewParkingSpot = async (req, res) => {
     if (spot.length >= 1) {
       return res
         .status(StatusCodes.BAD_GATEWAY)
-        .send("Spot is Already Mapped ! ❌");
+        .send("Spot is Already Mapped!");
     }
 
     // 3. CREATING FINAL DATA OBJECT
@@ -49,14 +49,14 @@ const createNewParkingSpot = async (req, res) => {
     } else {
       return res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
-        .send("Error Creating Parking Spot! ❌ ");
+        .send("Error Creating Parking Spot!");
     }
   } catch (error) {
     // 6. HANDLING ERRORS
     console.log("Error Creating Parking Spot! ❌ ", error);
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .send("Error Creating Spot ! ❌");
+      .send("Error Creating Spot!");
   }
 };
 
@@ -87,14 +87,14 @@ const getParkingSpots = async (req, res) => {
     } else {
       return res
         .status(StatusCodes.NOT_FOUND)
-        .send("No Parking Spots Found! ❌");
+        .send("No Parking Spots Found!");
     }
   } catch (error) {
     // 5. HANDLING ERRORS
     console.log(error);
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .send("Error Getting Parking Spots! ❌");
+      .send("Error Getting Parking Spots!");
   }
 };
 
@@ -109,7 +109,7 @@ const updateParkingSpot = async (req, res) => {
     if (spot.length === 0) {
       return res
         .status(StatusCodes.NOT_FOUND)
-        .send("Parking Spot Not Found ! ❌");
+        .send("Parking Spot Not Found!");
     }
 
     const finalData = {
@@ -128,14 +128,14 @@ const updateParkingSpot = async (req, res) => {
     } else {
       return res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
-        .send("Error Updating parking Spot! ❌");
+        .send("Error Updating parking Spot!");
     }
   } catch (error) {
     // 5. HANDLING ERRORS
     console.log(error);
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .send("Error Updating parking Spot! ❌");
+      .send("Error Updating parking Spot!");
   }
 };
 
@@ -150,7 +150,7 @@ const deleteParkingSpot = async (req, res) => {
     if (spot.length !== 1) {
       return res
         .status(StatusCodes.NOT_FOUND)
-        .send("Parking Spot not Found ! ❌");
+        .send("Parking Spot not Found!");
     }
 
     // 3. DELETING SPOT
@@ -158,18 +158,18 @@ const deleteParkingSpot = async (req, res) => {
 
     // 4. SENDING RESPONSE
     if (deleted) {
-      return res.status(StatusCodes.OK).send("Parking Deleted ✅", deleted);
+      return res.status(StatusCodes.OK).send("Parking Deleted!", deleted);
     } else {
       return res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
-        .send("Error Deleting parking Spot! ❌");
+        .send("Error Deleting parking Spot!");
     }
   } catch (error) {
     // 5. HANDLING ERRORS
     console.log(error);
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .send("Error Deleting parking Spot! ❌");
+      .send("Error Deleting parking Spot!");
   }
 };
 
@@ -184,7 +184,7 @@ const bookParkingSpot = async (req, res) => {
     if (spot.length === 0) {
       return res
         .status(StatusCodes.NOT_FOUND)
-        .send("Parking Spot Not Found ! ❌");
+        .send("Parking Spot Not Found!");
     }
 
     // 3. UPDATING SPOT STATUS
@@ -206,14 +206,14 @@ const bookParkingSpot = async (req, res) => {
     } else {
       return res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
-        .send("Error Booking Parking Spot! ❌");
+        .send("Error Booking Parking Spot!");
     }
   } catch (error) {
     // 5. HANDLING ERRORS
     console.log(error);
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .send("Error Booking Parking Spot! ❌");
+      .send("Error Booking Parking Spot!");
   }
 };
 
@@ -230,7 +230,7 @@ const cancelParkingSpot = async (req, res) => {
     if (spot.length === 0) {
       return res
         .status(StatusCodes.NOT_FOUND)
-        .send("Parking Spot Not Found ! ❌");
+        .send("Parking Spot Not Found!");
     }
 
     // 3. UPDATING SPOT STATUS
@@ -250,18 +250,18 @@ const cancelParkingSpot = async (req, res) => {
     if (updated) {
       return res
         .status(StatusCodes.OK)
-        .send("Parking Spot Booking Cancelled ✅");
+        .send("Parking Spot Booking Cancelled!");
     } else {
       return res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
-        .send("Error Cancelling Parking Spot Booking ❌");
+        .send("Error Cancelling Parking Spot Booking!");
     }
   } catch (error) {
     // 5. HANDLING ERRORS
     console.log(error);
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .send("Error Cancelling Parking Spot Booking ❌");
+      .send("Error Cancelling Parking Spot Booking!");
   }
 };
 
