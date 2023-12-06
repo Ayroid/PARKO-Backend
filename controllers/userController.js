@@ -97,7 +97,7 @@ const loginUserMail = async (req, res) => {
 
     // 4. IF OTP EXIST AND NOT EXPIRED
     if (otpexist.length > 0 && otpexist[0].reRequestTime > Date.now()) {
-      return res.status(StatusCodes.BAD_REQUEST).send("OTP Already Sent ✅");
+      return res.status(StatusCodes.BAD_REQUEST).send("OTP Already Sent!");
     }
 
     // 5. IF OTP EXIST AND EXPIRED
@@ -135,7 +135,7 @@ const loginUserMail = async (req, res) => {
       });
 
     // 7. SENDING RESPONSE
-    return res.status(StatusCodes.OK).send("OTP Sent ✅");
+    return res.status(StatusCodes.OK).send("OTP Sent Successfully!");
   } catch (error) {
     // 8. Handling errors
     console.log(error);
@@ -519,7 +519,8 @@ const deleteUser = async (req, res) => {
 const uploadProfilePic = async (req, res) => {
   try {
     // 0. SETTING DEFAULT URL
-    const defaultUrl = process.env.VITE_BACKEND_SERVER_URL + "/api/img/profilePic/";
+    const defaultUrl =
+      process.env.VITE_BACKEND_SERVER_URL + "/api/img/profilePic/";
 
     // 1. FETCHING DATA FROM REQUEST BODY
     const userId = req.payload.userId;
