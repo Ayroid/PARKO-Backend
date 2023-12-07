@@ -8,6 +8,39 @@ const { StatusCodes } = require("http-status-codes");
 
 const { READSPOT, UPDATESPOT } = require("./db/parkingSpotDatabase");
 
+// ADD CAMERA MAPPING CONTROLLER
+
+const addCameraMapping = async (req, res) => {
+  try {
+    // 1. FETCHING DATA FROM REQUEST BODY
+    const { query, data } = req.body;
+
+    // 2. CHECKING IF SPOT EXISTS
+    const spot = await READSPOT([query]);
+    if (spot.length === 0) {
+      return res.status(StatusCodes.NOT_FOUND).send("Spot Not Found!");
+    }
+
+    // 3. UPDATING SPOT
+    const updated = await UPDATESPOT(query, data);
+
+    // 4. SENDING RESPONSE
+    if (updated) {
+      return res.status(StatusCodes.OK).send("Camera Mapped!");
+    } else {
+      return res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .send("Error Updating Spot!");
+    }
+  } catch (error) {
+    // 6. HANDLING ERRORS
+    console.log("Error Mapping Camera! ❌ ", error);
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .send("Error Mapping Camera!");
+  }
+};
+
 // GET BOOKING STATUS CONTROLLER
 
 const getBookingStatus = async (req, res) => {
@@ -133,6 +166,7 @@ const cancelBookingStatus = async (req, res) => {
 // EXPORTING MODULES
 
 module.exports = {
+  ADDCAMERAMAPPING: addCameraMapping,
   GETBOOKINGSTATUS: getBookingStatus,
   CONFIRMBOOKINGSTATUS: confirmBookingStatus,
   CANCELBOOKINGSTATUS: cancelBookingStatus,
