@@ -85,9 +85,7 @@ const getParkingSpots = async (req, res) => {
     if (spots.length >= 0) {
       return res.status(StatusCodes.OK).send({ parkingSpots: spots });
     } else {
-      return res
-        .status(StatusCodes.NOT_FOUND)
-        .send("No Parking Spots Found!");
+      return res.status(StatusCodes.NOT_FOUND).send("No Parking Spots Found!");
     }
   } catch (error) {
     // 5. HANDLING ERRORS
@@ -107,9 +105,7 @@ const updateParkingSpot = async (req, res) => {
     // 2. CHECKING IF SPOT EXISTS
     const spot = await READSPOT([query]);
     if (spot.length === 0) {
-      return res
-        .status(StatusCodes.NOT_FOUND)
-        .send("Parking Spot Not Found!");
+      return res.status(StatusCodes.NOT_FOUND).send("Parking Spot Not Found!");
     }
 
     const finalData = {
@@ -148,9 +144,7 @@ const deleteParkingSpot = async (req, res) => {
     // 2. CHECKING IF SPOT EXISTS
     const spot = await READSPOT([query]);
     if (spot.length !== 1) {
-      return res
-        .status(StatusCodes.NOT_FOUND)
-        .send("Parking Spot not Found!");
+      return res.status(StatusCodes.NOT_FOUND).send("Parking Spot not Found!");
     }
 
     // 3. DELETING SPOT
@@ -182,9 +176,19 @@ const bookParkingSpot = async (req, res) => {
     // 2. CHECKING IF SPOT EXISTS
     const spot = await READSPOT([{ parkingNumber: parkingNumber }]);
     if (spot.length === 0) {
+      return res.status(StatusCodes.NOT_FOUND).send("Parking Spot Not Found!");
+    }
+
+    // 3. CHECKING IF USER HAS ALREADY BOOKED
+
+    const userBooked = await READSPOT([
+      { currentlyParkedUser: req.payload.userId },
+    ]);
+
+    if (userBooked.length !== 0) {
       return res
-        .status(StatusCodes.NOT_FOUND)
-        .send("Parking Spot Not Found!");
+        .status(StatusCodes.BAD_REQUEST)
+        .send("You have already booked a spot!");
     }
 
     // 3. UPDATING SPOT STATUS
@@ -228,9 +232,7 @@ const cancelParkingSpot = async (req, res) => {
       { parkingNumber: parkingNumber, currentlyParkedUser: req.payload.userId },
     ]);
     if (spot.length === 0) {
-      return res
-        .status(StatusCodes.NOT_FOUND)
-        .send("Parking Spot Not Found!");
+      return res.status(StatusCodes.NOT_FOUND).send("Parking Spot Not Found!");
     }
 
     // 3. UPDATING SPOT STATUS
@@ -248,9 +250,7 @@ const cancelParkingSpot = async (req, res) => {
 
     // 4. SENDING RESPONSE
     if (updated) {
-      return res
-        .status(StatusCodes.OK)
-        .send("Parking Spot Booking Cancelled!");
+      return res.status(StatusCodes.OK).send("Parking Spot Booking Cancelled!");
     } else {
       return res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
