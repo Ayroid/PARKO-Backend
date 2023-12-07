@@ -19,7 +19,7 @@ const app = express();
 
 // SETTING UP STATIC FILES
 app.use(express.static(path.join(__dirname, "public")));
-app.use('/api/img', express.static(path.join(__dirname, "public/img")));
+app.use("/api/img", express.static(path.join(__dirname, "public/img")));
 
 // SETTING UP BODY PARSER
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -43,11 +43,13 @@ app.get("/api/test", (req, res) => {
 const { USERROUTER } = require("./routers/userRouter");
 const { PARKINGSPOTROUTER } = require("./routers/parkingSpotRouter");
 const { VEHICLEROUTER } = require("./routers/vehicleRouter");
+const { IPSERVERROUTER } = require("./routers/ipServerRouter");
 
 // ROUTES
 app.use("/api/user", USERROUTER);
 app.use("/api/user/vehicle", VEHICLEROUTER);
 app.use("/api/parkingspot", PARKINGSPOTROUTER);
+app.use("/api/ipserver", IPSERVERROUTER);
 
 // STARTING SERVER
 app.listen(PORT, () => {
