@@ -20,6 +20,19 @@ const parkingSpotSchema = new mongoose.Schema({
     required: true,
     default: "available",
   },
+  cameraMapping: {
+    cameraNo: {
+      type: String,
+      trim: true,
+      required: false,
+      default: null,
+    },
+    polygon: {
+      type: Array,
+      required: false,
+      default: null,
+    },
+  },
   currentlyParkedUser: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "user",
