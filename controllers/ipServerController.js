@@ -94,8 +94,8 @@ const confirmBookingStatus = async (req, res) => {
     }
 
     // 3. CHECKING IF SPOT IS ALREADY BOOKED
-    if (spot[0].parkingStatus === "booked") {
-      return res.status(StatusCodes.BAD_REQUEST).send("Spot Already Booked!");
+    if (spot[0].parkingStatus !== "booked") {
+      return res.status(StatusCodes.BAD_REQUEST).send("Spot not Pre-Booked!");
     }
 
     // 4. CHECK IF PARKING SPOT IS ALREADY PARKED
