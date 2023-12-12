@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         NODEJS_HOME = tool 'NodeJS'
+        PATH = "$NODEJS_HOME/bin:$PATH"
     }
 
     stages {
@@ -23,7 +24,7 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 script {
-                    withSonarQubeEnv('SonarQubeServer') {
+                    withSonarQubeEnv('SonarQube_Server') {
                         sh 'npm run sonar-scanner'
                     }
                 }
