@@ -15,15 +15,6 @@ const generateAccessToken = (payload) => {
   return { token, refreshToken };
 };
 
-// CREATE ACCESS TOKEN VIA REFRESH TOKEN
-const generateAccessTokenViaRefreshToken = (refreshToken) => {
-  const payload = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
-  const token = jwt.sign(payload, process.env.JWT_SECRET, {
-    expiresIn: "86400s",
-  });
-  return token;
-};
-
 // CHECKING ACCESS TOKEN
 const checkAccessToken = async (token, tokenType) => {
   try {
@@ -67,7 +58,6 @@ const verifyAccessToken = async (req, res, next) => {
 
 module.exports = {
   GENERATETOKEN: generateAccessToken,
-  GENERATETOKENVIAREFRESHTOKEN: generateAccessTokenViaRefreshToken,
   CHECKTOKEN: checkAccessToken,
   VERIFYTOKEN: verifyAccessToken,
 };

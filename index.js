@@ -1,12 +1,19 @@
 // IMPORITNG MODULES
-require("dotenv").config();
-const express = require("express");
-const path = require("path");
-const bodyParser = require("body-parser");
-const cors = require("cors");
+import dotenv from "dotenv";
+dotenv.config();
+import express from "express";
+import path from "path";
+import bodyParser from "body-parser";
+import cors from "cors";
+
+// ROUTERS
+import { USERROUTER } from "./routers/userRouter";
+import { PARKINGSPOTROUTER } from "./routers/parkingSpotRouter";
+import { VEHICLEROUTER } from "./routers/vehicleRouter";
+import { IPSERVERROUTER } from "./routers/ipServerRouter";
 
 // CUSTOM MODULES IMPORT
-const { CONNECTDATABSE } = require("./controllers/db/connectDatabase");
+import { CONNECTDATABSE } from "./controllers/db/connectDatabase";
 
 // CONNECTING TO DATABASE
 CONNECTDATABSE();
@@ -29,21 +36,10 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // TEST ROUTE
-app.post("/api/test", (req, res) => {
+app.route("/api/test", (req, res) => {
   console.log("Server is working!", Date.now());
   return res.status(200).send("Server is working!");
 });
-
-app.get("/api/test", (req, res) => {
-  console.log("Server is working!", Date.now());
-  return res.status(200).send("Server is working!");
-});
-
-// ROUTERS
-const { USERROUTER } = require("./routers/userRouter");
-const { PARKINGSPOTROUTER } = require("./routers/parkingSpotRouter");
-const { VEHICLEROUTER } = require("./routers/vehicleRouter");
-const { IPSERVERROUTER } = require("./routers/ipServerRouter");
 
 // ROUTES
 app.use("/api/user", USERROUTER);
